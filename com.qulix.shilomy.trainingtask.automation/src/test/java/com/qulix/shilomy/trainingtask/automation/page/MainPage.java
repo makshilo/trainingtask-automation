@@ -15,6 +15,11 @@ import org.openqa.selenium.support.PageFactory;
 public class MainPage {
 
     /**
+     * Url главной страницы
+     */
+    public static final String URL = "http://localhost:8080/Trainingtask/";
+
+    /**
      * Ссылка на страницу списка проектов
      */
     @FindBy(xpath = "//a[@href='/Trainingtask/projects']")

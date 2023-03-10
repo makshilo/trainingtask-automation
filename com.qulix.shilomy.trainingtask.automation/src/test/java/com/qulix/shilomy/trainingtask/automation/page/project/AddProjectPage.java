@@ -8,6 +8,11 @@ import org.openqa.selenium.support.PageFactory;
 public class AddProjectPage {
 
     /**
+     * Url страницы добавления проекта
+     */
+    public static final String URL = "http://localhost:8080/Trainingtask/addProject";
+
+    /**
      * Лейбл формы добавления проектов
      */
     @FindBy(xpath = "//label[contains(text(), 'Форма добавления проекта')]")

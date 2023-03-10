@@ -13,23 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.AddPersonPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.EditPersonPage;
 
 public class PersonListTest {
-
-    /**
-     * Url главной страницы
-     */
-    private static final String MAIN_PAGE_URL = "http://localhost:8080/Trainingtask/";
-
-    /**
-     * Url страницы добавления персоны
-     */
-    private static final String ADD_PERSON_FORM_URL = "http://localhost:8080/Trainingtask/addEmployee";
-
-    /**
-     * Url страницы изменения персоны
-     */
-    private static final String EDIT_PERSON_FORM_URL = "http://localhost:8080/Trainingtask/updateEmployee";
 
     private static WebDriver driver;
 
@@ -45,7 +32,7 @@ public class PersonListTest {
 
     @BeforeEach
     public void setUp() {
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         mainPage = new MainPage(driver);
     }
 
@@ -64,7 +51,7 @@ public class PersonListTest {
             .clickPersonsButton()
             .clickAddButton();
 
-        assertEquals(ADD_PERSON_FORM_URL, driver.getCurrentUrl());
+        assertEquals(AddPersonPage.URL, driver.getCurrentUrl());
     }
 
     @Test
@@ -73,7 +60,7 @@ public class PersonListTest {
             .clickPersonsButton()
             .clickEditButton();
 
-        assertEquals(EDIT_PERSON_FORM_URL, driver.getCurrentUrl());
+        assertEquals(EditPersonPage.URL, driver.getCurrentUrl());
     }
 
     @Test

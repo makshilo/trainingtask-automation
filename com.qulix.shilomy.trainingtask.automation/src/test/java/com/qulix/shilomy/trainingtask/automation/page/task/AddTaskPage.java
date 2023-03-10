@@ -11,6 +11,11 @@ import org.openqa.selenium.support.ui.Select;
 public class AddTaskPage {
 
     /**
+     * Url страницы добавления задачи
+     */
+    public static final String URL = "http://localhost:8080/Trainingtask/addTask";
+
+    /**
      * Лейбл формы добавления задач
      */
     @FindBy(xpath = "//label[contains(text(), 'Форма добавления задания')]")

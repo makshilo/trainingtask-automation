@@ -11,22 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.task.AddTaskPage;
+import com.qulix.shilomy.trainingtask.automation.page.task.EditTaskPage;
 
 public class TaskListTest {
-    /**
-     * Url главной страницы
-     */
-    private static final String MAIN_PAGE_URL = "http://localhost:8080/Trainingtask/";
-
-    /**
-     * Url страницы добавления задачи
-     */
-    private static final String ADD_TASK_FORM_URL = "http://localhost:8080/Trainingtask/addTask";
-
-    /**
-     * Url страницы изменения задачи
-     */
-    private static final String EDIT_TASK_FORM_URL = "http://localhost:8080/Trainingtask/updateTask";
 
     private static WebDriver driver;
 
@@ -42,7 +30,7 @@ public class TaskListTest {
 
     @BeforeEach
     public void setUp() {
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         mainPage = new MainPage(driver);
     }
 
@@ -61,7 +49,7 @@ public class TaskListTest {
             .clickTasksButton()
             .clickAddButton();
 
-        assertTrue(driver.getCurrentUrl().contains(ADD_TASK_FORM_URL));
+        assertTrue(driver.getCurrentUrl().contains(AddTaskPage.URL));
     }
 
     @Test
@@ -70,7 +58,7 @@ public class TaskListTest {
             .clickTasksButton()
             .clickEditButton();
 
-        assertEquals(driver.getCurrentUrl(), EDIT_TASK_FORM_URL);
+        assertEquals(driver.getCurrentUrl(), EditTaskPage.URL);
     }
 
     @Test

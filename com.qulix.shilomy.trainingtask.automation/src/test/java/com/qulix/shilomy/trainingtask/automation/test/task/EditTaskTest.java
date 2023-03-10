@@ -17,11 +17,6 @@ import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 public class EditTaskTest {
 
     /**
-     * Url главной страницы
-     */
-    private static final String MAIN_PAGE_URL = "http://localhost:8080/Trainingtask/";
-
-    /**
      * Верные входные данные
      */
     private static final String NAME = "Задача13579";
@@ -46,7 +41,7 @@ public class EditTaskTest {
 
     @BeforeEach
     public void setUp() {
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         mainPage = new MainPage(driver);
     }
 

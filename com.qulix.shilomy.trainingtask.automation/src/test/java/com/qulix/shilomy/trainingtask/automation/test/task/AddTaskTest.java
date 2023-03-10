@@ -13,10 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 
 public class AddTaskTest {
-    /**
-     * Url главной страницы
-     */
-    private static final String MAIN_PAGE_URL = "http://localhost:8080/Trainingtask/";
 
     /**
      * Верные входные данные
@@ -106,7 +102,7 @@ public class AddTaskTest {
 
     @BeforeEach
     public void setUp() {
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         mainPage = new MainPage(driver);
     }
 
@@ -154,7 +150,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -186,7 +182,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         int newMaxId = mainPage.clickTasksButton().getLastId();
 
         assertEquals(newMaxId, maxId + 1);
@@ -206,7 +202,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -236,7 +232,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -266,7 +262,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -296,7 +292,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -326,7 +322,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -355,7 +351,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -384,7 +380,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -414,7 +410,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -444,7 +440,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -474,7 +470,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
@@ -505,7 +501,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getRowNameByIndex(SECOND_INDEX);
@@ -535,7 +531,7 @@ public class AddTaskTest {
             .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickTasksButton().getLastRow();
         String executor = mainPage.clickPersonsButton().getAllNames();
@@ -699,7 +695,7 @@ public class AddTaskTest {
             .selectProjectByIndex(SECOND_INDEX)
             .getSelectedProject();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String project = mainPage
             .clickTasksButton()

@@ -16,6 +16,11 @@ import org.openqa.selenium.support.PageFactory;
 public class PersonListPage {
 
     /**
+     * Url списка персон
+     */
+    public static final String URL = "http://localhost:8080/Trainingtask/employees";
+
+    /**
      * Колонка Идентификатор
      */
     @FindBy(xpath = "//th[contains(text(), 'Идентификатор')]")

@@ -10,10 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class AddPersonTest {
-    /**
-     * Url главной страницы
-     */
-    private static final String MAIN_PAGE_URL = "http://localhost:8080/Trainingtask/";
 
     /**
      * Верные входные данные
@@ -87,7 +83,7 @@ public class AddPersonTest {
 
     @BeforeEach
     public void setUp() {
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         mainPage = new MainPage(driver);
     }
 
@@ -131,7 +127,7 @@ public class AddPersonTest {
             .enterPosition(POSITION)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         int newMaxId = mainPage.clickPersonsButton().getLastId();
 
         assertEquals(newMaxId, maxId + 1);
@@ -148,7 +144,7 @@ public class AddPersonTest {
             .enterPosition(SPECIAL_POSITION)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickPersonsButton().getLastRow();
         String person = String.join(SPACE_SIGN, SPECIAL_SURNAME, SPECIAL_NAME, SPECIAL_PATRONYMIC, SPECIAL_POSITION);
@@ -167,7 +163,7 @@ public class AddPersonTest {
             .enterPosition(MIN_POSITION)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickPersonsButton().getLastRow();
         String person = String.join(SPACE_SIGN, MIN_SURNAME, MIN_NAME, MIN_PATRONYMIC, MIN_POSITION);
@@ -186,7 +182,7 @@ public class AddPersonTest {
             .enterPosition(MAX_POSITION)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickPersonsButton().getLastRow();
         String person = String.join(SPACE_SIGN, MAX_SURNAME, MAX_NAME, MAX_PATRONYMIC, MAX_POSITION);

@@ -15,10 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 
 public class EditPersonTest {
-    /**
-     * Url главной страницы
-     */
-    private static final String MAIN_PAGE_URL = "http://localhost:8080/Trainingtask/";
 
     /**
      * Входные данные
@@ -42,7 +38,7 @@ public class EditPersonTest {
 
     @BeforeEach
     public void setUp() {
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         mainPage = new MainPage(driver);
     }
 

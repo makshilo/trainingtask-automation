@@ -9,6 +9,12 @@ import org.openqa.selenium.support.PageFactory;
  * Объектная модель страницы редактирования персоны
  */
 public class EditPersonPage {
+
+    /**
+     * Url страницы изменения персоны
+     */
+    public static final String URL = "http://localhost:8080/Trainingtask/updateEmployee";
+
     /**
      * Заголовочный лейбл формы редактирования
      */

@@ -11,6 +11,11 @@ import org.openqa.selenium.support.PageFactory;
 public class AddPersonPage {
 
     /**
+     * Url страницы добавления персоны
+     */
+    public static final String URL = "http://localhost:8080/Trainingtask/addEmployee";
+
+    /**
      * Заголовочный лейбл формы добавления
      */
     @FindBy(xpath = "//label[contains(text(), 'Форма добавления персон')]")

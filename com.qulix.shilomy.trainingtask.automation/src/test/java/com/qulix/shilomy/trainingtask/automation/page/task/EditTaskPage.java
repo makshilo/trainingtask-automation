@@ -11,6 +11,11 @@ import org.openqa.selenium.support.ui.Select;
 public class EditTaskPage {
 
     /**
+     * Url страницы изменения задачи
+     */
+    public static final String URL = "http://localhost:8080/Trainingtask/updateTask";
+
+    /**
      * Лейбл формы добавления задач
      */
     @FindBy(xpath = "//label[contains(text(), 'Форма редактирования задачи')]")

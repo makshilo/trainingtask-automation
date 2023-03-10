@@ -12,22 +12,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.AddProjectPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.EditProjectPage;
 
 public class ProjectListTest {
-    /**
-     * Url главной страницы
-     */
-    private static final String MAIN_PAGE_URL = "http://localhost:8080/Trainingtask/";
-
-    /**
-     * Url страницы добавления проекта
-     */
-    private static final String ADD_PROJECT_FORM_URL = "http://localhost:8080/Trainingtask/addProject";
-
-    /**
-     * Url страницы изменения проекта
-     */
-    private static final String EDIT_PROJECT_FORM_URL = "http://localhost:8080/Trainingtask/updateProject";
 
     private static WebDriver driver;
 
@@ -43,7 +31,7 @@ public class ProjectListTest {
 
     @BeforeEach
     public void setUp() {
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         mainPage = new MainPage(driver);
     }
 
@@ -62,7 +50,7 @@ public class ProjectListTest {
             .clickProjectsButton()
             .clickAddButton();
 
-        assertTrue(driver.getCurrentUrl().contains(ADD_PROJECT_FORM_URL));
+        assertTrue(driver.getCurrentUrl().contains(AddProjectPage.URL));
     }
 
     @Test
@@ -71,7 +59,7 @@ public class ProjectListTest {
             .clickProjectsButton()
             .clickEditButton();
 
-        assertTrue(driver.getCurrentUrl().contains(EDIT_PROJECT_FORM_URL));
+        assertTrue(driver.getCurrentUrl().contains(EditProjectPage.URL));
     }
 
     @Test

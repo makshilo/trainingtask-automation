@@ -13,27 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
+import com.qulix.shilomy.trainingtask.automation.page.task.TaskListPage;
 
 public class MainPageTest {
-    /**
-     * Url главной страницы
-     */
-    private static final String MAIN_PAGE_URL = "http://localhost:8080/Trainingtask/";
-
-    /**
-     * Url списка проектов
-     */
-    private static final String PROJECT_LIST_URL = "http://localhost:8080/Trainingtask/projects";
-
-    /**
-     * Url списка задач
-     */
-    private static final String TASK_LIST_URL = "http://localhost:8080/Trainingtask/tasks";
-
-    /**
-     * Url списка персон
-     */
-    private static final String PERSON_LIST_URL = "http://localhost:8080/Trainingtask/employees";
 
     private static WebDriver driver;
 
@@ -49,13 +33,13 @@ public class MainPageTest {
 
     @BeforeEach
     public void setUp() {
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         mainPage = new MainPage(driver);
     }
 
     @Test
     public void toMainMenu() {
-        assertEquals(MAIN_PAGE_URL, driver.getCurrentUrl());
+        assertEquals(MainPage.URL, driver.getCurrentUrl());
     }
 
     @Test
@@ -68,19 +52,19 @@ public class MainPageTest {
     @Test
     public void toProjectList() {
         mainPage.clickProjectsButton();
-        assertEquals(PROJECT_LIST_URL, driver.getCurrentUrl());
+        assertEquals(ProjectListPage.URL, driver.getCurrentUrl());
     }
 
     @Test
     public void toTaskList() {
         mainPage.clickTasksButton();
-        assertEquals(TASK_LIST_URL, driver.getCurrentUrl());
+        assertEquals(TaskListPage.URL, driver.getCurrentUrl());
     }
 
     @Test
     public void toPersonList() {
         mainPage.clickPersonsButton();
-        assertEquals(PERSON_LIST_URL, driver.getCurrentUrl());
+        assertEquals(PersonListPage.URL, driver.getCurrentUrl());
     }
 
     @AfterAll

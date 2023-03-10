@@ -13,10 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 
 public class AddProjectTest {
-    /**
-     * Url главной страницы
-     */
-    private static final String MAIN_PAGE_URL = "http://localhost:8080/Trainingtask/";
 
     /**
      * Верные входные данные
@@ -94,7 +90,7 @@ public class AddProjectTest {
 
     @BeforeEach
     public void setUp() {
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         mainPage = new MainPage(driver);
     }
 
@@ -136,7 +132,7 @@ public class AddProjectTest {
             .enterDescription(DESCRIPTION)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
         int newMaxId = mainPage.clickProjectsButton().getFirstId();
 
         assertEquals(newMaxId, maxId + 1);
@@ -152,7 +148,7 @@ public class AddProjectTest {
             .enterDescription(DIGIT_SPECIAL_DESCRIPTION)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickProjectsButton().getLastRow();
         String project = String.join(SPACE_SIGN, DIGIT_SPECIAL_NAME, DIGIT_SPECIAL_SHORTNAME, DIGIT_SPECIAL_DESCRIPTION);
@@ -170,7 +166,7 @@ public class AddProjectTest {
             .enterDescription(DIGIT_DESCRIPTION)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickProjectsButton().getLastRow();
         String project = String.join(SPACE_SIGN, DIGIT_NAME, DIGIT_SHORTNAME, DIGIT_DESCRIPTION);
@@ -187,7 +183,7 @@ public class AddProjectTest {
             .enterShortName(MIN_SHORTNAME)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickProjectsButton().getLastRow();
         String project = String.join(SPACE_SIGN, MIN_NAME, MIN_SHORTNAME);
@@ -205,7 +201,7 @@ public class AddProjectTest {
             .enterDescription(MAX_DESCRIPTION)
             .clickSaveButton();
 
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MainPage.URL);
 
         String lastRow = mainPage.clickProjectsButton().getLastRow();
         String project = String.join(SPACE_SIGN, MAX_NAME, MAX_SHORTNAME, MAX_DESCRIPTION);

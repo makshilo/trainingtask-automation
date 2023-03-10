@@ -10,6 +10,11 @@ import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 public class TaskListPage {
 
     /**
+     * Url списка задач
+     */
+    public static final String URL = "http://localhost:8080/Trainingtask/tasks";
+
+    /**
      * Колонка Идентификатор
      */
     @FindBy(xpath = "//th[contains(text(), 'Идентификатор')]")
