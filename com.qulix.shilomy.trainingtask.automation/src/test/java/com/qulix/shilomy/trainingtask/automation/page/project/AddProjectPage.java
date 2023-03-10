@@ -197,15 +197,6 @@ public class AddProjectPage {
     }
 
     /**
-     * Проверка отображения лейбла длины описания
-     *
-     * @return если лейбл отображён true, иначе false
-     */
-    public boolean descriptionLengthLabelDisplayed() {
-        return descriptionLengthLabel.isDisplayed();
-    }
-
-    /**
      * Проверка отображения лейбла уникальности названия
      *
      * @return если лейбл отображён true, иначе false

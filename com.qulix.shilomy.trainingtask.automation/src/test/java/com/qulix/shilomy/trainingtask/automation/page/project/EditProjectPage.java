@@ -55,18 +55,6 @@ public class EditProjectPage {
     private WebElement shortNameLengthLabel;
 
     /**
-     * Лейбл ошибки длины описания
-     */
-    @FindBy(xpath = "//label[contains(text(), 'Описание не должно превышать 255 символов')]")
-    private WebElement descriptionLengthLabel;
-
-    /**
-     * Лейбл недопустимого символа описания
-     */
-    @FindBy(xpath = "//label[contains(text(), 'Описание содержит недопустимый символ')]")
-    private WebElement descriptionInvalidLabel;
-
-    /**
      * Кнопка сохранить
      */
     @FindBy(xpath = "//input[@value='Сохранить']")
