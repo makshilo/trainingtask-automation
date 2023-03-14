@@ -1,12 +1,15 @@
 package com.qulix.shilomy.trainingtask.automation.test.person;
 
-import com.qulix.shilomy.trainingtask.automation.page.MainPage;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 
 public class AddPersonTest {
@@ -78,7 +81,7 @@ public class AddPersonTest {
 
     @BeforeAll
     public static void init() {
-        driver = new ChromeDriver();
+        driver = DriverManager.getInstance().getDriver();
     }
 
     @BeforeEach

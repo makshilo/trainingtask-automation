@@ -11,9 +11,19 @@ import org.openqa.selenium.support.PageFactory;
 public class AddPersonPage {
 
     /**
+     * Корневой url приложения
+     */
+    private static final String ROOT_URL_PROPERTY = "rootUrl";
+
+    /**
+     * Путь страницы добавления персоны
+     */
+    private static final String PATH = "/addEmployee";
+
+    /**
      * Url страницы добавления персоны
      */
-    public static final String URL = "http://localhost:8080/Trainingtask/addEmployee";
+    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
 
     /**
      * Заголовочный лейбл формы добавления

@@ -5,14 +5,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.page.task.AddTaskPage;
 import com.qulix.shilomy.trainingtask.automation.page.task.EditTaskPage;
+import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 public class TaskListTest {
 
@@ -25,7 +24,7 @@ public class TaskListTest {
 
     @BeforeAll
     public static void init() {
-        driver = new ChromeDriver();
+        driver = DriverManager.getInstance().getDriver();
     }
 
     @BeforeEach

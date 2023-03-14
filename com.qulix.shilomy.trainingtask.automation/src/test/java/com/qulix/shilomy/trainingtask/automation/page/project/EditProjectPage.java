@@ -8,9 +8,19 @@ import org.openqa.selenium.support.PageFactory;
 public class EditProjectPage {
 
     /**
+     * Корневой url приложения
+     */
+    private static final String ROOT_URL_PROPERTY = "rootUrl";
+
+    /**
+     * Путь страницы изменения проекта
+     */
+    private static final String PATH = "/updateProject";
+
+    /**
      * Url страницы изменения проекта
      */
-    public static final String URL = "http://localhost:8080/Trainingtask/updateProject";
+    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
 
     /**
      * Лейбл формы добавления проектов

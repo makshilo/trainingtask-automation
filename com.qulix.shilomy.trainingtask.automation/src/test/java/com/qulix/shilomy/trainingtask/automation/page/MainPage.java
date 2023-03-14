@@ -1,13 +1,13 @@
 package com.qulix.shilomy.trainingtask.automation.page;
 
-import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
-import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
-import com.qulix.shilomy.trainingtask.automation.page.task.TaskListPage;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
+import com.qulix.shilomy.trainingtask.automation.page.task.TaskListPage;
 
 /**
  * Объектная модель стартовой страницы приложения
@@ -15,9 +15,19 @@ import org.openqa.selenium.support.PageFactory;
 public class MainPage {
 
     /**
+     * Корневой url приложения
+     */
+    private static final String ROOT_URL_PROPERTY = "rootUrl";
+
+    /**
+     * Путь главной страницы
+     */
+    private static final String PATH = "/";
+
+    /**
      * Url главной страницы
      */
-    public static final String URL = "http://localhost:8080/Trainingtask/";
+    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
 
     /**
      * Ссылка на страницу списка проектов

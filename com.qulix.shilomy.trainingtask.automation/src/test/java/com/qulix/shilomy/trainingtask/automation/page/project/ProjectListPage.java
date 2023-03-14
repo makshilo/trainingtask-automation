@@ -14,9 +14,19 @@ import org.openqa.selenium.support.PageFactory;
 public class ProjectListPage {
 
     /**
+     * Корневой url приложения
+     */
+    private static final String ROOT_URL_PROPERTY = "rootUrl";
+
+    /**
+     * Путь списка проектов
+     */
+    private static final String PATH = "/projects";
+
+    /**
      * Url списка проектов
      */
-    public static final String URL = "http://localhost:8080/Trainingtask/projects";
+    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
 
     /**
      * Колонка Идентификатор

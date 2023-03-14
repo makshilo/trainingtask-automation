@@ -10,9 +10,19 @@ import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 public class TaskListPage {
 
     /**
+     * Корневой url приложения
+     */
+    private static final String ROOT_URL_PROPERTY = "rootUrl";
+
+    /**
+     * Путь списка задач
+     */
+    private static final String PATH = "/tasks";
+
+    /**
      * Url списка задач
      */
-    public static final String URL = "http://localhost:8080/Trainingtask/tasks";
+    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
 
     /**
      * Колонка Идентификатор

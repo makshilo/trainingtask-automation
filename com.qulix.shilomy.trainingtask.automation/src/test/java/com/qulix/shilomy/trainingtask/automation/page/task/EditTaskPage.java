@@ -11,9 +11,19 @@ import org.openqa.selenium.support.ui.Select;
 public class EditTaskPage {
 
     /**
+     * Корневой url приложения
+     */
+    private static final String ROOT_URL_PROPERTY = "rootUrl";
+
+    /**
+     * Путь страницы изменения задачи
+     */
+    private static final String PATH = "/updateTask";
+
+    /**
      * Url страницы изменения задачи
      */
-    public static final String URL = "http://localhost:8080/Trainingtask/updateTask";
+    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
 
     /**
      * Лейбл формы добавления задач

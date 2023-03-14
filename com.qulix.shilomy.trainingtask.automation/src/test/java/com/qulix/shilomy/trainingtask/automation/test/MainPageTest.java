@@ -1,14 +1,10 @@
 package com.qulix.shilomy.trainingtask.automation.test;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,6 +12,7 @@ import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 import com.qulix.shilomy.trainingtask.automation.page.task.TaskListPage;
+import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 public class MainPageTest {
 
@@ -27,8 +24,8 @@ public class MainPageTest {
     private MainPage mainPage;
 
     @BeforeAll
-    public static void init() throws IOException {
-        driver = new ChromeDriver();
+    public static void init() {
+        driver = DriverManager.getInstance().getDriver();
     }
 
     @BeforeEach

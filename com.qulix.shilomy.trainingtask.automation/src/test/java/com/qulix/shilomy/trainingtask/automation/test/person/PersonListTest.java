@@ -1,20 +1,17 @@
 package com.qulix.shilomy.trainingtask.automation.test.person;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.page.person.AddPersonPage;
 import com.qulix.shilomy.trainingtask.automation.page.person.EditPersonPage;
+import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 public class PersonListTest {
 
@@ -26,8 +23,8 @@ public class PersonListTest {
     private MainPage mainPage;
 
     @BeforeAll
-    public static void init() throws IOException {
-        driver = new ChromeDriver();
+    public static void init() {
+        driver = DriverManager.getInstance().getDriver();
     }
 
     @BeforeEach
