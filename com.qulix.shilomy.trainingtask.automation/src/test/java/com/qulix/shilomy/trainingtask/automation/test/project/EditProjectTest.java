@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.qulix.shilomy.trainingtask.automation.model.Project;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
@@ -52,18 +53,20 @@ public class EditProjectTest {
 
     @Test
     public void editProjectCancel() {
-        String lastRow = mainPage.clickProjectsButton().getLastRow();
+        Project project = mainPage.clickProjectsButton().getLastProject();
 
-        String newLastRow = mainPage
+        Project newProject = mainPage
             .clickProjectsButton()
             .clickEditButton()
-            .enterName(NAME)
-            .enterShortName(SHORTNAME)
-            .enterDescription(DESCRIPTION)
+            .enterProject(
+                new Project(
+                    NAME,
+                    SHORTNAME,
+                    DESCRIPTION))
             .clickCancelButton()
-            .getLastRow();
+            .getLastProject();
 
-        assertEquals(lastRow, newLastRow);
+        assertEquals(project, newProject);
     }
 
     @Test
@@ -78,19 +81,22 @@ public class EditProjectTest {
 
     @Test
     public void editAllowed() {
-        String project = mainPage.clickProjectsButton().getLastRow();
+        Project project = mainPage.clickProjectsButton().getLastProject();
 
         mainPage
             .clickProjectsButton()
             .clickEditButton()
-            .enterName(NAME)
-            .enterShortName(SHORTNAME)
-            .enterDescription(DESCRIPTION)
+            .enterProject(
+                new Project(
+                    NAME,
+                    SHORTNAME,
+                    DESCRIPTION))
             .clickSaveButton();
 
-        String updatedProject = mainPage.clickProjectsButton().getLastRow();
+        Project updatedProject = mainPage.clickProjectsButton().getLastProject();
+        project.setId(updatedProject.getId());
 
-        assertNotEquals(project, updatedProject);
+        assertNotEquals(updatedProject, project);
     }
 
     @Test

@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.qulix.shilomy.trainingtask.automation.model.Project;
+
 public class EditProjectPage {
 
     /**
@@ -113,38 +115,20 @@ public class EditProjectPage {
     }
 
     /**
-     * Ввод названия
+     * Ввод данных из модели проекта
      *
-     * @param name название
+     * @param project проект
      * @return текущее состояние страницы
      */
-    public EditProjectPage enterName(String name) {
+    public EditProjectPage enterProject(Project project) {
         nameInput.clear();
-        nameInput.sendKeys(name);
-        return this;
-    }
-
-    /**
-     * Ввод сокращённого имени
-     *
-     * @param shortname сокращённое имя
-     * @return текущее состояние страницы
-     */
-    public EditProjectPage enterShortName(String shortname) {
         shortnameInput.clear();
-        shortnameInput.sendKeys(shortname);
-        return this;
-    }
-
-    /**
-     * Ввод описания
-     *
-     * @param description описание
-     * @return текущее состояние страницы
-     */
-    public EditProjectPage enterDescription(String description) {
         descriptionInput.clear();
-        descriptionInput.sendKeys(description);
+
+        nameInput.sendKeys(project.getName());
+        shortnameInput.sendKeys(project.getShortName());
+        descriptionInput.sendKeys(project.getDescription());
+
         return this;
     }
 

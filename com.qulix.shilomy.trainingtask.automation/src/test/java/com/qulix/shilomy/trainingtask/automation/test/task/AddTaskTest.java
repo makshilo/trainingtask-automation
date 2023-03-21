@@ -1,5 +1,8 @@
 package com.qulix.shilomy.trainingtask.automation.test.task;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +11,13 @@ import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.qulix.shilomy.trainingtask.automation.model.Person;
+import com.qulix.shilomy.trainingtask.automation.model.Project;
+import com.qulix.shilomy.trainingtask.automation.model.Task;
+import com.qulix.shilomy.trainingtask.automation.model.TaskStatus;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 public class AddTaskTest {
@@ -26,8 +35,6 @@ public class AddTaskTest {
     private static final String STATUS_IN_PROCESS = "В процессе";
     private static final String STATUS_COMPLETED = "Завершена";
     private static final String STATUS_POSTPONED = "Отложена";
-    private static final int FIRST_INDEX = 1;
-    private static final int SECOND_INDEX = 2;
 
     /**
      * Входные данные c цифрами и допустимыми спец. символами
@@ -85,7 +92,11 @@ public class AddTaskTest {
     private static final String COLLISION_START_DATE = "11.11.2020";
     private static final String COLLISION_END_DATE = "02.12.2019";
 
+
     private static final String SPACE_SIGN = " ";
+    private static final int FIRST_INDEX = 1;
+    private static final int SECOND_INDEX = 2;
+    private static final String EMPTY_STRING = "";
 
     private static WebDriver driver;
 
@@ -117,433 +128,344 @@ public class AddTaskTest {
 
     @Test
     public void addTaskCancel() {
-        String lastRow = mainPage.clickTasksButton().getLastRow();
+        Task lastRow = mainPage.clickTasksButton().getLastTask();
 
-        String newLastRow = mainPage
+        Task newLastRow = mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(START_DATE)
-            .enterEndDate(END_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    START_DATE,
+                    END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
+                )
+            )
             .clickCancelButton()
-            .getLastRow();
+            .getLastTask();
 
         assertEquals(lastRow, newLastRow);
     }
 
     @Test
     public void addTask() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            NAME,
+            WORK,
+            START_DATE,
+            END_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_IN_PROCESS)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(START_DATE)
-            .enterEndDate(END_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(task)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(NAME)
-                && lastRow.contains(START_DATE)
-                && lastRow.contains(END_DATE)
-                && lastRow.contains(STATUS_IN_PROCESS)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void idFormation() {
-        int maxId = mainPage.clickTasksButton().getLastId();
+        Long maxId = mainPage.clickTasksButton().getLastTask().getId();
 
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(START_DATE)
-            .enterEndDate(END_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    START_DATE,
+                    END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
+                )
+            )
             .clickSaveButton();
 
         driver.get(MainPage.URL);
-        int newMaxId = mainPage.clickTasksButton().getLastId();
+        Long newMaxId = mainPage.clickTasksButton().getLastTask().getId();
 
         assertEquals(newMaxId, maxId + 1);
     }
 
     @Test
     public void digitsName() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            DIGIT_NAME,
+            WORK,
+            START_DATE,
+            END_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_IN_PROCESS)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(DIGIT_NAME)
-            .enterWork(WORK)
-            .enterStartDate(START_DATE)
-            .enterEndDate(END_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(
+                task
+            )
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(DIGIT_NAME)
-                && lastRow.contains(START_DATE)
-                && lastRow.contains(END_DATE)
-                && lastRow.contains(STATUS_IN_PROCESS)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void lettersDigitsSpecialsName() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            DIGIT_SPECIAL_NAME,
+            WORK,
+            START_DATE,
+            END_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_IN_PROCESS)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(DIGIT_SPECIAL_NAME)
-            .enterWork(WORK)
-            .enterStartDate(START_DATE)
-            .enterEndDate(END_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(task)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(DIGIT_SPECIAL_NAME)
-                && lastRow.contains(START_DATE)
-                && lastRow.contains(END_DATE)
-                && lastRow.contains(STATUS_IN_PROCESS)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void minLength() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            MIN_NAME,
+            WORK,
+            START_DATE,
+            END_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_IN_PROCESS)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(MIN_NAME)
-            .enterWork(WORK)
-            .enterStartDate(START_DATE)
-            .enterEndDate(END_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(
+                task
+            )
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(MIN_NAME)
-                && lastRow.contains(START_DATE)
-                && lastRow.contains(END_DATE)
-                && lastRow.contains(STATUS_IN_PROCESS)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void maxLength() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            MAX_NAME,
+            MAX_WORK,
+            START_DATE,
+            END_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_IN_PROCESS)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(MAX_NAME)
-            .enterWork(MAX_WORK)
-            .enterStartDate(START_DATE)
-            .enterEndDate(END_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(task)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(MAX_NAME)
-                && lastRow.contains(START_DATE)
-                && lastRow.contains(END_DATE)
-                && lastRow.contains(STATUS_IN_PROCESS)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void minDate() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            MIN_NAME,
+            WORK,
+            MIN_DATE,
+            MIN_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_IN_PROCESS)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(MIN_NAME)
-            .enterWork(WORK)
-            .enterStartDate(MIN_DATE)
-            .enterEndDate(MIN_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(task)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(MIN_NAME)
-                && lastRow.contains(MIN_DATE)
-                && lastRow.contains(STATUS_IN_PROCESS)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void maxDate() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            MIN_NAME,
+            WORK,
+            MAX_DATE,
+            MAX_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_IN_PROCESS)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(MIN_NAME)
-            .enterWork(WORK)
-            .enterStartDate(MAX_DATE)
-            .enterEndDate(MAX_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(task)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(MIN_NAME)
-                && lastRow.contains(MAX_DATE)
-                && lastRow.contains(STATUS_IN_PROCESS)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void statusNotStarted() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            NAME,
+            WORK,
+            MID_START_DATE,
+            MID_END_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_NOT_STARTED)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(MID_START_DATE)
-            .enterEndDate(MID_END_DATE)
-            .selectStatusByText(STATUS_NOT_STARTED)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(task)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(NAME)
-                && lastRow.contains(MID_START_DATE)
-                && lastRow.contains(MID_END_DATE)
-                && lastRow.contains(STATUS_NOT_STARTED)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
-    }
-
-    @Test
-    public void statusInProcess() {
-        mainPage
-            .clickTasksButton()
-            .clickAddButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(MID_START_DATE)
-            .enterEndDate(MID_END_DATE)
-            .selectStatusByText(STATUS_IN_PROCESS)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
-            .clickSaveButton();
-
-        driver.get(MainPage.URL);
-
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
-
-        assertTrue(
-            lastRow.contains(NAME)
-                && lastRow.contains(MID_START_DATE)
-                && lastRow.contains(MID_END_DATE)
-                && lastRow.contains(STATUS_IN_PROCESS)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
-    }
-
-    @Test
-    public void statusCompleted() {
-        mainPage
-            .clickTasksButton()
-            .clickAddButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(MID_START_DATE)
-            .enterEndDate(MID_END_DATE)
-            .selectStatusByText(STATUS_COMPLETED)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
-            .clickSaveButton();
-
-        driver.get(MainPage.URL);
-
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
-
-        assertTrue(
-            lastRow.contains(NAME)
-                && lastRow.contains(MID_START_DATE)
-                && lastRow.contains(MID_END_DATE)
-                && lastRow.contains(STATUS_COMPLETED)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void statusPostponed() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            NAME,
+            WORK,
+            MID_START_DATE,
+            MID_END_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_POSTPONED)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(MID_START_DATE)
-            .enterEndDate(MID_END_DATE)
-            .selectStatusByText(STATUS_POSTPONED)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(task)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(FIRST_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(NAME)
-                && lastRow.contains(MID_START_DATE)
-                && lastRow.contains(MID_END_DATE)
-                && lastRow.contains(STATUS_POSTPONED)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void multipleExecutors() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            NAME,
+            WORK,
+            MID_START_DATE,
+            MID_END_DATE,
+            List.of(getPerson(FIRST_INDEX), getPerson(SECOND_INDEX)),
+            TaskStatus.of(STATUS_POSTPONED)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(MID_START_DATE)
-            .enterEndDate(MID_END_DATE)
-            .selectStatusByText(STATUS_POSTPONED)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectExecutorByIndex(SECOND_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(task)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getRowNameByIndex(SECOND_INDEX);
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
 
-        assertTrue(
-            lastRow.contains(NAME)
-                && lastRow.contains(MID_START_DATE)
-                && lastRow.contains(MID_END_DATE)
-                && lastRow.contains(STATUS_POSTPONED)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
     public void allExecutors() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            NAME,
+            WORK,
+            MID_START_DATE,
+            MID_END_DATE,
+            Collections.emptyList(),
+            TaskStatus.of(STATUS_POSTPONED)
+        );
+
         mainPage
             .clickTasksButton()
             .clickAddButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(MID_START_DATE)
-            .enterEndDate(MID_END_DATE)
-            .selectStatusByText(STATUS_POSTPONED)
+            .enterTask(task)
             .selectAllExecutors()
-            .selectProjectByIndex(FIRST_INDEX)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickTasksButton().getLastRow();
-        String executor = mainPage.clickPersonsButton().getAllNames();
-        String project = mainPage.clickProjectsButton().getShortNameByIndex(FIRST_INDEX);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
+        task.setExecutors(lastTask.getExecutors());
 
-        assertTrue(
-            lastRow.contains(NAME)
-                && lastRow.contains(MID_START_DATE)
-                && lastRow.contains(MID_END_DATE)
-                && lastRow.contains(STATUS_POSTPONED)
-                && lastRow.contains(executor)
-                && lastRow.contains(project)
-        );
+        assertEquals(task, lastTask);
     }
 
     @Test
@@ -552,13 +474,17 @@ public class AddTaskTest {
             mainPage.
                 clickTasksButton()
                 .clickAddButton()
-                .enterName(INVALID_SPECIAL_NAME)
-                .enterWork(INVALID_SPECIAL_WORK)
-                .enterStartDate(MID_START_DATE)
-                .enterEndDate(MID_END_DATE)
-                .selectStatusByText(STATUS_POSTPONED)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        INVALID_SPECIAL_NAME,
+                        INVALID_SPECIAL_WORK,
+                        MID_START_DATE,
+                        MID_END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_POSTPONED)
+                    )
+                )
                 .clickSaveButton()
                 .nameWorkInvalidLabelDisplayed()
         );
@@ -570,13 +496,17 @@ public class AddTaskTest {
             mainPage.
                 clickTasksButton()
                 .clickAddButton()
-                .enterName(SPACE_SIGN.repeat(4))
-                .enterWork(SPACE_SIGN.repeat(2))
-                .enterStartDate(MID_START_DATE)
-                .enterEndDate(MID_END_DATE)
-                .selectStatusByText(STATUS_POSTPONED)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        SPACE_SIGN.repeat(4),
+                        SPACE_SIGN.repeat(2),
+                        MID_START_DATE,
+                        MID_END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_POSTPONED)
+                    )
+                )
                 .clickSaveButton()
                 .nameWorkInvalidLabelDisplayed()
         );
@@ -588,13 +518,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(BELOW_MIN_NAME)
-                .enterWork(WORK)
-                .enterStartDate(MID_START_DATE)
-                .enterEndDate(MID_END_DATE)
-                .selectStatusByText(STATUS_POSTPONED)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        BELOW_MIN_NAME,
+                        WORK,
+                        MID_START_DATE,
+                        MID_END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_POSTPONED)
+                    )
+                )
                 .clickSaveButton()
                 .nameLengthLabelDisplayed()
         );
@@ -606,13 +540,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(OVER_MAX_NAME)
-                .enterWork(OVER_MAX_WORK)
-                .enterStartDate(MID_START_DATE)
-                .enterEndDate(MID_END_DATE)
-                .selectStatusByText(STATUS_POSTPONED)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        OVER_MAX_NAME,
+                        OVER_MAX_WORK,
+                        MID_START_DATE,
+                        MID_END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_POSTPONED)
+                    )
+                )
                 .clickSaveButton()
                 .nameWorkLengthLabelDisplayed()
         );
@@ -624,13 +562,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterWork(WORK)
-                .enterStartDate(COLLISION_START_DATE)
-                .enterEndDate(COLLISION_END_DATE)
-                .selectStatusByText(STATUS_IN_PROCESS)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        NAME,
+                        WORK,
+                        COLLISION_START_DATE,
+                        COLLISION_END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
+                )
                 .clickSaveButton()
                 .dateCollisionLabelDisplayed()
         );
@@ -642,13 +584,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterWork(WORK)
-                .enterStartDate(BELOW_MIN_START_DATE)
-                .enterEndDate(BELOW_MIN_END_DATE)
-                .selectStatusByText(STATUS_IN_PROCESS)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        NAME,
+                        WORK,
+                        BELOW_MIN_START_DATE,
+                        BELOW_MIN_END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
+                )
                 .clickSaveButton()
                 .allDateInvalidLabelsDisplayed()
         );
@@ -660,13 +606,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterWork(WORK)
-                .enterStartDate(OVER_MAX_START_DATE)
-                .enterEndDate(OVER_MAX_END_DATE)
-                .selectStatusByText(STATUS_IN_PROCESS)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        NAME,
+                        WORK,
+                        OVER_MAX_START_DATE,
+                        OVER_MAX_END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
+                )
                 .clickSaveButton()
                 .allDateInvalidLabelsDisplayed()
         );
@@ -711,12 +661,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterWork(WORK)
-                .enterStartDate(START_DATE)
-                .enterEndDate(END_DATE)
-                .selectStatusByText(STATUS_IN_PROCESS)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        EMPTY_STRING,
+                        WORK,
+                        START_DATE,
+                        END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
+                )
                 .clickSaveButton()
                 .nameLengthLabelDisplayed()
         );
@@ -728,12 +683,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterStartDate(START_DATE)
-                .enterEndDate(END_DATE)
-                .selectStatusByText(STATUS_IN_PROCESS)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        NAME,
+                        EMPTY_STRING,
+                        START_DATE,
+                        END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
+                )
                 .clickSaveButton()
                 .workLengthLabelDisplayed()
         );
@@ -745,12 +705,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterWork(WORK)
-                .enterEndDate(END_DATE)
-                .selectStatusByText(STATUS_IN_PROCESS)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        NAME,
+                        WORK,
+                        EMPTY_STRING,
+                        END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
+                )
                 .clickSaveButton()
                 .startDateInvalidLabelDisplayed()
         );
@@ -762,12 +727,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterWork(WORK)
-                .enterStartDate(START_DATE)
-                .selectStatusByText(STATUS_IN_PROCESS)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        NAME,
+                        WORK,
+                        START_DATE,
+                        EMPTY_STRING,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
+                )
                 .clickSaveButton()
                 .endDateInvalidLabelDisplayed()
         );
@@ -779,12 +749,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterWork(WORK)
-                .enterStartDate(START_DATE)
-                .enterEndDate(END_DATE)
-                .selectExecutorByIndex(FIRST_INDEX)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        NAME,
+                        WORK,
+                        START_DATE,
+                        END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        null
+                    )
+                )
                 .clickSaveButton()
                 .statusInvalidLabelDisplayed()
         );
@@ -796,12 +771,17 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterWork(WORK)
-                .enterStartDate(START_DATE)
-                .enterEndDate(END_DATE)
-                .selectStatusByText(STATUS_IN_PROCESS)
-                .selectProjectByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        NAME,
+                        WORK,
+                        START_DATE,
+                        END_DATE,
+                        Collections.emptyList(),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
+                )
                 .clickSaveButton()
                 .executorInvalidLabelDisplayed()
         );
@@ -813,15 +793,36 @@ public class AddTaskTest {
             mainPage
                 .clickTasksButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterWork(WORK)
-                .enterStartDate(START_DATE)
-                .enterEndDate(END_DATE)
-                .selectStatusByText(STATUS_IN_PROCESS)
-                .selectExecutorByIndex(FIRST_INDEX)
+                .enterTask(
+                    new Task(
+                        null,
+                        NAME,
+                        WORK,
+                        START_DATE,
+                        END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
+                )
                 .clickSaveButton()
                 .projectInvalidLabelDisplayed()
         );
+    }
+
+    private Person getPerson(int index) {
+        driver.get(PersonListPage.URL);
+        PersonListPage persons = new PersonListPage(driver);
+        Person person = persons.getPersonByIndex(index);
+        driver.navigate().back();
+        return person;
+    }
+
+    private Project getProject(int index) {
+        driver.get(ProjectListPage.URL);
+        ProjectListPage projects = new ProjectListPage(driver);
+        Project project = projects.getProjectByIndex(index);
+        driver.navigate().back();
+        return project;
     }
 
     @AfterAll

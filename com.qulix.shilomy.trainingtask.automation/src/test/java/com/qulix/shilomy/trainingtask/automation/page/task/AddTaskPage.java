@@ -1,12 +1,16 @@
 package com.qulix.shilomy.trainingtask.automation.page.task;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+
+import com.qulix.shilomy.trainingtask.automation.model.Person;
+import com.qulix.shilomy.trainingtask.automation.model.Task;
 
 public class AddTaskPage {
 
@@ -175,50 +179,25 @@ public class AddTaskPage {
     }
 
     /**
-     * Ввод названия
+     * Ввод данных из модели задачи
      *
-     * @param name название
+     * @param task задача
      * @return текущее состояние страницы
      */
-    public AddTaskPage enterName(String name) {
+    public AddTaskPage enterTask(Task task) {
         nameInput.clear();
-        nameInput.sendKeys(name);
-        return this;
-    }
-
-    /**
-     * Ввод работы
-     *
-     * @param work работа
-     * @return текущее состояние страницы
-     */
-    public AddTaskPage enterWork(String work) {
         workInput.clear();
-        workInput.sendKeys(work);
-        return this;
-    }
-
-    /**
-     * Ввод даты начала
-     *
-     * @param startDate дата начала
-     * @return текущее состояние страницы
-     */
-    public AddTaskPage enterStartDate(String startDate) {
         startDateInput.clear();
-        startDateInput.sendKeys(startDate);
-        return this;
-    }
-
-    /**
-     * Ввод даты окончания
-     *
-     * @param endDate дата окончания
-     * @return текущее состояние страницы
-     */
-    public AddTaskPage enterEndDate(String endDate) {
         endDateInput.clear();
-        endDateInput.sendKeys(endDate);
+
+        nameInput.sendKeys(task.getName());
+        workInput.sendKeys(task.getWork());
+        startDateInput.sendKeys(task.getStartDate());
+        endDateInput.sendKeys(task.getEndDate());
+        Optional.ofNullable(task.getStatus()).ifPresentOrElse(status -> selectStatusByText(status.getStatus()), () -> selectStatusByIndex(0));
+        selectExecutorsFromList(task.getExecutors());
+        Optional.ofNullable(task.getProject()).ifPresentOrElse(project -> selectProjectById(project.getId()), () -> selectProjectByIndex(0));
+
         return this;
     }
 
@@ -235,6 +214,18 @@ public class AddTaskPage {
     }
 
     /**
+     * Выбор статуса по индексу
+     *
+     * @param index индекс
+     * @return текущее состояние страницы
+     */
+    public AddTaskPage selectStatusByIndex(int index) {
+        Select statusChoice = new Select(statusSelect);
+        statusChoice.selectByIndex(index);
+        return this;
+    }
+
+    /**
      * Получение выбранного статуса
      *
      * @return статус
@@ -245,13 +236,17 @@ public class AddTaskPage {
     }
 
     /**
-     * Выбор исполнителя по индексу
+     * Выбор исполнителей из списка
      *
-     * @param index индекс
+     * @param executors список исполнителей
      * @return текущее состояние страницы
      */
-    public AddTaskPage selectExecutorByIndex(int index) {
-        executorCheckboxes.get(index - 1).click();
+    public AddTaskPage selectExecutorsFromList(List<Person> executors) {
+        executorCheckboxes.forEach(c -> executors.forEach(e -> {
+            if (c.getAttribute("value").equals(e.getId().toString())) {
+                c.click();
+            }
+        }));
         return this;
     }
 
@@ -274,6 +269,18 @@ public class AddTaskPage {
     public AddTaskPage selectProjectByIndex(int index) {
         Select projectChoice = new Select(projectSelect);
         projectChoice.selectByIndex(index);
+        return this;
+    }
+
+    /**
+     * Выбор проекта по идентификатору
+     *
+     * @param id идентификатор
+     * @return текущее состояние страницы
+     */
+    public AddTaskPage selectProjectById(Long id) {
+        Select projects = new Select(projectSelect);
+        projects.selectByValue(id.toString());
         return this;
     }
 

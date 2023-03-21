@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
@@ -62,16 +63,18 @@ public class TaskListTest {
 
     @Test
     public void deleteTask() {
-        int lastId = mainPage
+        Long lastId = mainPage
             .clickTasksButton()
-            .getLastId();
+            .getLastTask()
+            .getId();
 
-        int newLastId = mainPage
+        Long newLastId = mainPage
             .clickTasksButton()
             .clickDeleteButton()
-            .getFirstId();
+            .getLastTask()
+            .getId();
 
-        assertTrue(lastId != newLastId);
+        assertNotSame(lastId, newLastId);
     }
 
     @AfterAll

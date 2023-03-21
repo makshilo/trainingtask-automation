@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
@@ -62,16 +63,16 @@ public class PersonListTest {
 
     @Test
     public void deletePerson() {
-        int lastId = mainPage
+        Long lastId = mainPage
             .clickPersonsButton()
             .getFirstId();
 
-        int newLastId = mainPage
+        Long newLastId = mainPage
             .clickPersonsButton()
             .clickDeleteButton()
             .getFirstId();
 
-        assertTrue(lastId != newLastId);
+        assertNotSame(lastId, newLastId);
     }
 
     @AfterAll

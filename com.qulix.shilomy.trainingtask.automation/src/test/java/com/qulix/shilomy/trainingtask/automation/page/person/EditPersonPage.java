@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.qulix.shilomy.trainingtask.automation.model.Person;
+
 /**
  * Объектная модель страницы редактирования персоны
  */
@@ -135,50 +137,22 @@ public class EditPersonPage {
     }
 
     /**
-     * Ввод фамилии
+     * Ввод данных из модели персоны
      *
-     * @param surname фамилия
+     * @param person персона
      * @return текущее состояние страницы
      */
-    public EditPersonPage enterSurname(String surname) {
+    public EditPersonPage enterPerson(Person person) {
         surnameInput.clear();
-        surnameInput.sendKeys(surname);
-        return this;
-    }
-
-    /**
-     * Ввод имени
-     *
-     * @param name имя
-     * @return текущее состояние страницы
-     */
-    public EditPersonPage enterName(String name) {
         nameInput.clear();
-        nameInput.sendKeys(name);
-        return this;
-    }
-
-    /**
-     * Ввод отчества
-     *
-     * @param patronymic отчество
-     * @return текущее состояние страницы
-     */
-    public EditPersonPage enterPatronymic(String patronymic) {
         patronymicInput.clear();
-        patronymicInput.sendKeys(patronymic);
-        return this;
-    }
-
-    /**
-     * Ввод должности
-     *
-     * @param position должность
-     * @return текущее состояние страницы
-     */
-    public EditPersonPage enterPosition(String position) {
         positionInput.clear();
-        positionInput.sendKeys(position);
+
+        surnameInput.sendKeys(person.getSurname());
+        nameInput.sendKeys(person.getName());
+        patronymicInput.sendKeys(person.getPatronymic());
+        positionInput.sendKeys(person.getPosition());
+
         return this;
     }
 

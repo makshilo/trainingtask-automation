@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
@@ -14,6 +15,7 @@ import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 public class ProjectListTest {
 
+    public static final int FIRST_INDEX = 1;
     private static WebDriver driver;
 
     /**
@@ -61,16 +63,18 @@ public class ProjectListTest {
 
     @Test
     public void deleteProject() {
-        int lastId = mainPage
+        Long lastId = mainPage
             .clickProjectsButton()
-            .getFirstId();
+            .getProjectByIndex(FIRST_INDEX)
+            .getId();
 
-        int newLastId = mainPage
+        Long newLastId = mainPage
             .clickProjectsButton()
             .clickDeleteButton()
-            .getFirstId();
+            .getProjectByIndex(FIRST_INDEX)
+            .getId();
 
-        assertTrue(lastId != newLastId);
+        assertNotSame(lastId, newLastId);
     }
 
     @AfterAll

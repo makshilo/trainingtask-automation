@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.automation.page.person;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import org.openqa.selenium.By;
@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import com.qulix.shilomy.trainingtask.automation.model.Person;
 
 /**
  * Объектная модель страницы списка персон
@@ -86,12 +88,11 @@ public class PersonListPage {
 
     private static final String TABLE_CELL = "//tbody/tr[%d]/td[%d]";
 
-    private static final int INDEX_FIRST = 1;
-    private static final int INDEX_SECOND = 2;
-    private static final int INDEX_THIRD = 3;
-    private static final int INDEX_FOURTH = 4;
-    private static final String LINE_END_SIGN = "\n";
-    private static final String SPACE_SIGN = " ";
+    private static final int FIRST_INDEX = 1;
+    private static final int SECOND_INDEX = 2;
+    private static final int THIRD_INDEX = 3;
+    private static final int FOURTH_INDEX = 4;
+    private static final int FIFTH_INDEX = 5;
 
     private final WebDriver driver;
 
@@ -162,24 +163,32 @@ public class PersonListPage {
     }
 
     /**
-     * Получение полного имени сотрудника по индексу
+     * Получение персоны по индексу
+     *
      * @param index индекс
-     * @return полное имя
+     * @return объект Person
      */
-    public String getRowNameByIndex(int index) {
-        return String.join(SPACE_SIGN,
-            getTableCell(index, INDEX_SECOND).getText(),
-            getTableCell(index, INDEX_THIRD).getText(),
-            getTableCell(index, INDEX_FOURTH).getText()
+    public Person getPersonByIndex(int index) {
+        return new Person(
+            Long.parseLong(getTableCell(index, FIRST_INDEX).getText()),
+            getTableCell(index, SECOND_INDEX).getText(),
+            getTableCell(index, THIRD_INDEX).getText(),
+            getTableCell(index, FOURTH_INDEX).getText(),
+            getTableCell(index, FIFTH_INDEX).getText()
         );
     }
 
     /**
-     * Получение всех полных имён в таблице
-     * @return строка со всеми полными именами
+     * Получение персоны по идентификатору
+     *
+     * @param id идентификатор
+     * @return персона
      */
-    public String getAllNames() {
-        return IntStream.range(INDEX_FIRST, tableRows.size()).mapToObj(this::getRowNameByIndex).collect(Collectors.joining(LINE_END_SIGN));
+    public Optional<Person> getPersonById(Long id) {
+        return IntStream.rangeClosed(FIRST_INDEX, tableRows.size())
+            .mapToObj(this::getPersonByIndex)
+            .filter(person -> person.getId().equals(id))
+            .findFirst();
     }
 
     /**
@@ -187,24 +196,16 @@ public class PersonListPage {
      *
      * @return идентификатор
      */
-    public int getFirstId() {
-        return Integer.parseInt(getTableCell(INDEX_FIRST, INDEX_FIRST).getText());
-    }
-
-    /**
-     * Получение последнего идентификатора персоны
-     *
-     * @return идентификатор
-     */
-    public int getLastId() {
-        return Integer.parseInt(getTableCell(tableRows.size(), INDEX_FIRST).getText());
+    public Long getFirstId() {
+        return getPersonByIndex(FIRST_INDEX).getId();
     }
 
     /**
      * Получение последней строки таблицы
+     *
      * @return текст последней строки таблицы
      */
-    public String getLastRow() {
-        return tableRows.get(tableRows.size() - INDEX_FIRST).getText();
+    public Person getLastPerson() {
+        return getPersonByIndex(tableRows.size());
     }
 }

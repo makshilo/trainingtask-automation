@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.qulix.shilomy.trainingtask.automation.model.Person;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
@@ -71,6 +72,7 @@ public class AddPersonTest {
     private static final String OVER_MAX_POSITION = "вовноИаоИввнИИнонвноавааИИоИвнапап";
 
     private static final String SPACE_SIGN = " ";
+    private static final String EMPTY_STRING = "";
 
     private static WebDriver driver;
 
@@ -102,95 +104,92 @@ public class AddPersonTest {
 
     @Test
     public void addPersonCancel() {
-        String lastRow = mainPage.clickPersonsButton().getLastRow();
+        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
 
-        String newLastRow = mainPage
+        Person newLastPerson = mainPage
             .clickPersonsButton()
             .clickAddButton()
-            .enterSurname(SURNAME)
-            .enterName(NAME)
-            .enterPatronymic(PATRONYMIC)
-            .enterPosition(POSITION)
+            .enterPerson(
+                new Person(
+                    SURNAME,
+                    NAME,
+                    PATRONYMIC,
+                    POSITION
+                )
+            )
             .clickCancelButton()
-            .getLastRow();
+            .getLastPerson();
 
-        assertEquals(lastRow, newLastRow);
+        assertEquals(lastPerson, newLastPerson);
     }
 
     @Test
     public void idFormation() {
-        int maxId = mainPage.clickPersonsButton().getLastId();
+        Long maxId = mainPage.clickPersonsButton().getLastPerson().getId();
 
         mainPage
             .clickPersonsButton()
             .clickAddButton()
-            .enterSurname(SURNAME)
-            .enterName(NAME)
-            .enterPatronymic(PATRONYMIC)
-            .enterPosition(POSITION)
+            .enterPerson(new Person(SURNAME, NAME, PATRONYMIC, POSITION))
             .clickSaveButton();
 
         driver.get(MainPage.URL);
-        int newMaxId = mainPage.clickPersonsButton().getLastId();
+        Long newMaxId = mainPage.clickPersonsButton().getLastPerson().getId();
 
         assertEquals(newMaxId, maxId + 1);
     }
 
     @Test
     public void lettersSpecials() {
+        Person person = new Person(SPECIAL_SURNAME, SPECIAL_NAME, SPECIAL_PATRONYMIC, SPECIAL_POSITION);
+
         mainPage
             .clickPersonsButton()
             .clickAddButton()
-            .enterSurname(SPECIAL_SURNAME)
-            .enterName(SPECIAL_NAME)
-            .enterPatronymic(SPECIAL_PATRONYMIC)
-            .enterPosition(SPECIAL_POSITION)
+            .enterPerson(person)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickPersonsButton().getLastRow();
-        String person = String.join(SPACE_SIGN, SPECIAL_SURNAME, SPECIAL_NAME, SPECIAL_PATRONYMIC, SPECIAL_POSITION);
+        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
+        person.setId(lastPerson.getId());
 
-        assertTrue(lastRow.contains(person));
+        assertEquals(lastPerson, person);
     }
 
     @Test
     public void minLength() {
+        Person person = new Person(MIN_SURNAME, MIN_NAME, MIN_PATRONYMIC, MIN_POSITION);
+
         mainPage
             .clickPersonsButton()
             .clickAddButton()
-            .enterSurname(MIN_SURNAME)
-            .enterName(MIN_NAME)
-            .enterPatronymic(MIN_PATRONYMIC)
-            .enterPosition(MIN_POSITION)
+            .enterPerson(person)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickPersonsButton().getLastRow();
-        String person = String.join(SPACE_SIGN, MIN_SURNAME, MIN_NAME, MIN_PATRONYMIC, MIN_POSITION);
+        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
+        person.setId(lastPerson.getId());
 
-        assertTrue(lastRow.contains(person));
+        assertEquals(lastPerson, person);
     }
 
     @Test
     public void maxLength() {
+        Person person = new Person(MAX_SURNAME, MAX_NAME, MAX_PATRONYMIC, MAX_POSITION);
+
         mainPage
             .clickPersonsButton()
             .clickAddButton()
-            .enterSurname(MAX_SURNAME)
-            .enterName(MAX_NAME)
-            .enterPatronymic(MAX_PATRONYMIC)
-            .enterPosition(MAX_POSITION)
+            .enterPerson(person)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickPersonsButton().getLastRow();
-        String person = String.join(SPACE_SIGN, MAX_SURNAME, MAX_NAME, MAX_PATRONYMIC, MAX_POSITION);
-
-        assertTrue(lastRow.contains(person));
+        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
+        person.setId(lastPerson.getId());
+        assertEquals(lastPerson, person);
     }
 
     @Test
@@ -199,9 +198,14 @@ public class AddPersonTest {
             mainPage
                 .clickPersonsButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterPatronymic(PATRONYMIC)
-                .enterPosition(POSITION)
+                .enterPerson(
+                    new Person(
+                        EMPTY_STRING,
+                        NAME,
+                        PATRONYMIC,
+                        POSITION
+                    )
+                )
                 .clickSaveButton()
                 .surnameLengthLabelDisplayed()
         );
@@ -213,9 +217,14 @@ public class AddPersonTest {
             mainPage
                 .clickPersonsButton()
                 .clickAddButton()
-                .enterSurname(SURNAME)
-                .enterPatronymic(PATRONYMIC)
-                .enterPosition(POSITION)
+                .enterPerson(
+                    new Person(
+                        SURNAME,
+                        EMPTY_STRING,
+                        PATRONYMIC,
+                        POSITION
+                    )
+                )
                 .clickSaveButton()
                 .nameLengthLabelDisplayed()
         );
@@ -227,9 +236,14 @@ public class AddPersonTest {
             mainPage
                 .clickPersonsButton()
                 .clickAddButton()
-                .enterSurname(SURNAME)
-                .enterName(NAME)
-                .enterPosition(POSITION)
+                .enterPerson(
+                    new Person(
+                        SURNAME,
+                        NAME,
+                        EMPTY_STRING,
+                        POSITION
+                    )
+                )
                 .clickSaveButton()
                 .patronymicLengthLabelDisplayed()
         );
@@ -241,9 +255,14 @@ public class AddPersonTest {
             mainPage
                 .clickPersonsButton()
                 .clickAddButton()
-                .enterSurname(SURNAME)
-                .enterName(NAME)
-                .enterPatronymic(PATRONYMIC)
+                .enterPerson(
+                    new Person(
+                        SURNAME,
+                        NAME,
+                        PATRONYMIC,
+                        EMPTY_STRING
+                    )
+                )
                 .clickSaveButton()
                 .positionLengthLabelDisplayed()
         );
@@ -251,16 +270,20 @@ public class AddPersonTest {
 
     @Test
     public void whitespaceValidation() {
-        String whitespaceString = SPACE_SIGN + SPACE_SIGN + SPACE_SIGN;
+        String whitespaceString = SPACE_SIGN.repeat(3);
 
         assertTrue(
             mainPage
                 .clickPersonsButton()
                 .clickAddButton()
-                .enterSurname(whitespaceString)
-                .enterName(whitespaceString)
-                .enterPatronymic(whitespaceString)
-                .enterPosition(whitespaceString)
+                .enterPerson(
+                    new Person(
+                        whitespaceString,
+                        whitespaceString,
+                        whitespaceString,
+                        whitespaceString
+                    )
+                )
                 .clickSaveButton()
                 .allInvalidLabelsDisplayed()
         );
@@ -272,10 +295,14 @@ public class AddPersonTest {
             mainPage
                 .clickPersonsButton()
                 .clickAddButton()
-                .enterSurname(INVALID_SPECIAL_SURNAME)
-                .enterName(INVALID_SPECIAL_NAME)
-                .enterPatronymic(INVALID_SPECIAL_PATRONYMIC)
-                .enterPosition(INVALID_SPECIAL_POSITION)
+                .enterPerson(
+                    new Person(
+                        INVALID_SPECIAL_SURNAME,
+                        INVALID_SPECIAL_NAME,
+                        INVALID_SPECIAL_PATRONYMIC,
+                        INVALID_SPECIAL_POSITION
+                    )
+                )
                 .clickSaveButton()
                 .allInvalidLabelsDisplayed()
         );
@@ -287,10 +314,14 @@ public class AddPersonTest {
             mainPage
                 .clickPersonsButton()
                 .clickAddButton()
-                .enterSurname(BELOW_MIN_SURNAME)
-                .enterName(BELOW_MIN_NAME)
-                .enterPatronymic(BELOW_MIN_PATRONYMIC)
-                .enterPosition(BELOW_MIN_POSITION)
+                .enterPerson(
+                    new Person(
+                        BELOW_MIN_SURNAME,
+                        BELOW_MIN_NAME,
+                        BELOW_MIN_PATRONYMIC,
+                        BELOW_MIN_POSITION
+                    )
+                )
                 .clickSaveButton()
                 .allLengthLabelsDisplayed()
         );
@@ -302,10 +333,14 @@ public class AddPersonTest {
             mainPage
                 .clickPersonsButton()
                 .clickAddButton()
-                .enterSurname(OVER_MAX_SURNAME)
-                .enterName(OVER_MAX_NAME)
-                .enterPatronymic(OVER_MAX_PATRONYMIC)
-                .enterPosition(OVER_MAX_POSITION)
+                .enterPerson(
+                    new Person(
+                        OVER_MAX_SURNAME,
+                        OVER_MAX_NAME,
+                        OVER_MAX_PATRONYMIC,
+                        OVER_MAX_POSITION
+                    )
+                )
                 .clickSaveButton()
                 .allLengthLabelsDisplayed()
         );

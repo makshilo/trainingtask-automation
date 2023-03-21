@@ -1,11 +1,14 @@
 package com.qulix.shilomy.trainingtask.automation.page.task;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
+import com.qulix.shilomy.trainingtask.automation.model.Task;
 
 public class TaskListPage {
 
@@ -85,16 +88,12 @@ public class TaskListPage {
     private WebElement deleteButton;
 
     /**
-     * Последний идентификатор задачи
+     * Строка таблицы
      */
-    @FindBy(xpath = "//tbody/tr[last()]/td")
-    private WebElement lastId;
-
-    /**
-     * Последняя строка таблицы
-     */
-    @FindBy(xpath = "//tbody/tr[last()]")
-    private WebElement lastRow;
+    @FindBy(xpath = "//tbody/tr")
+    private List<WebElement> tableRows;
+    
+    private static final String EDIT_BUTTON = "//tbody/tr[%d]//button[contains(text(), 'Изменить')]";
 
     private final WebDriver driver;
 
@@ -149,11 +148,25 @@ public class TaskListPage {
     /**
      * Клик по кнопке Удалить
      *
-     * @return объект ProjectListPage
+     * @return объект TaskListPage
      */
-    public ProjectListPage clickDeleteButton() {
+    public TaskListPage clickDeleteButton() {
         deleteButton.click();
-        return new ProjectListPage(driver);
+        return new TaskListPage(driver);
+    }
+
+    /**
+     * Получение задачи по индексу
+     *
+     * @param index индекс
+     * @return задача
+     */
+    public Task getTaskByIndex(int index) {
+        driver.findElement(By.xpath(String.format(EDIT_BUTTON, index))).click();
+        EditTaskPage editTaskPage = new EditTaskPage(driver);
+        Task task = editTaskPage.getTask();
+        driver.navigate().back();
+        return task;
     }
 
     /**
@@ -161,15 +174,7 @@ public class TaskListPage {
      *
      * @return идентификатор
      */
-    public int getLastId() {
-        return Integer.parseInt(lastId.getText());
-    }
-
-    /**
-     * Получение последней строки таблицы
-     * @return текст последней строки таблицы
-     */
-    public String getLastRow() {
-        return lastRow.getText();
+    public Task getLastTask() {
+        return getTaskByIndex(tableRows.size());
     }
 }

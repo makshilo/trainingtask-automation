@@ -1,12 +1,16 @@
 package com.qulix.shilomy.trainingtask.automation.page.project;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import com.qulix.shilomy.trainingtask.automation.model.Project;
 
 /**
  * Объектная модель страницы списка проектов
@@ -78,8 +82,10 @@ public class ProjectListPage {
 
     private static final String TABLE_CELL = "//tbody/tr[%d]/td[%d]";
 
-    private static final int INDEX_FIRST = 1;
-    private static final int INDEX_THIRD = 3;
+    private static final int FIRST_INDEX = 1;
+    private static final int SECOND_INDEX = 2;
+    private static final int THIRD_INDEX = 3;
+    private static final int FOURTH_INDEX = 4;
 
     private final WebDriver driver;
 
@@ -150,22 +156,31 @@ public class ProjectListPage {
     }
 
     /**
-     * Получение сокращённого имени по индексу
+     * Получение проекта по индексу
      *
      * @param index индекс
-     * @return сокращённое имя
+     * @return проект
      */
-    public String getShortNameByIndex(int index) {
-        return getTableCell(index, INDEX_THIRD).getText();
+    public Project getProjectByIndex(int index) {
+        return new Project(
+            Long.parseLong(getTableCell(index, FIRST_INDEX).getText()),
+            getTableCell(index, SECOND_INDEX).getText(),
+            getTableCell(index, THIRD_INDEX).getText(),
+            getTableCell(index, FOURTH_INDEX).getText()
+        );
     }
 
     /**
-     * Получение первого идентификатора проекта
+     * Получение проекта по идентификатору
      *
-     * @return идентификатор
+     * @param id идентификатор
+     * @return проект
      */
-    public int getFirstId() {
-        return Integer.parseInt(getTableCell(INDEX_FIRST, INDEX_FIRST).getText());
+    public Optional<Project> getProjectById(Long id) {
+        return IntStream.rangeClosed(FIRST_INDEX, tableRows.size())
+            .mapToObj(this::getProjectByIndex)
+            .filter(project -> project.getId().equals(id))
+            .findFirst();
     }
 
     /**
@@ -173,7 +188,7 @@ public class ProjectListPage {
      *
      * @return текст последней строки таблицы
      */
-    public String getLastRow() {
-        return tableRows.get(tableRows.size() - INDEX_FIRST).getText();
+    public Project getLastProject() {
+        return getProjectByIndex(tableRows.size());
     }
 }

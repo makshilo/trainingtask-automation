@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.qulix.shilomy.trainingtask.automation.model.Project;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
@@ -74,6 +75,7 @@ public class AddProjectTest {
         "ПторекрП1П11отккр11ПоеПте1ктктокеррее1кекерркр1ете1еертррерППоретППкрко1р999";
 
     private static final String SPACE_SIGN = " ";
+    private static final String EMPTY_STRING = "";
 
     private static WebDriver driver;
 
@@ -105,107 +107,116 @@ public class AddProjectTest {
 
     @Test
     public void addProjectCancel() {
-        String lastRow = mainPage.clickProjectsButton().getLastRow();
+        Project project = mainPage.clickProjectsButton().getLastProject();
 
-        String newLastRow = mainPage
+        Project newProject = mainPage
             .clickProjectsButton()
             .clickAddButton()
-            .enterName(NAME)
-            .enterShortName(SHORTNAME)
-            .enterDescription(DESCRIPTION)
+            .enterProject(
+                new Project(
+                    NAME,
+                    SHORTNAME,
+                    DESCRIPTION
+                )
+            )
             .clickCancelButton()
-            .getLastRow();
+            .getLastProject();
 
-        assertEquals(lastRow, newLastRow);
+        assertEquals(project, newProject);
     }
 
     @Test
     public void idFormation() {
-        int maxId = mainPage.clickProjectsButton().getFirstId();
+        Long maxId = mainPage.clickProjectsButton().getLastProject().getId();
 
         mainPage
             .clickProjectsButton()
             .clickAddButton()
-            .enterName(NAME)
-            .enterShortName(SHORTNAME)
-            .enterDescription(DESCRIPTION)
+            .enterProject(
+                new Project(
+                    NAME,
+                    SHORTNAME,
+                    DESCRIPTION
+                )
+            )
             .clickSaveButton();
 
         driver.get(MainPage.URL);
-        int newMaxId = mainPage.clickProjectsButton().getFirstId();
+        Long newMaxId = mainPage.clickProjectsButton().getLastProject().getId();
 
-        assertEquals(newMaxId, maxId + 1);
+        assertEquals(maxId + 1, newMaxId);
     }
 
     @Test
     public void lettersDigitsSpecials() {
+        Project project = new Project(DIGIT_SPECIAL_NAME, DIGIT_SPECIAL_SHORTNAME, DIGIT_SPECIAL_DESCRIPTION);
+
         mainPage
             .clickProjectsButton()
             .clickAddButton()
-            .enterName(DIGIT_SPECIAL_NAME)
-            .enterShortName(DIGIT_SPECIAL_SHORTNAME)
-            .enterDescription(DIGIT_SPECIAL_DESCRIPTION)
+            .enterProject(project)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickProjectsButton().getLastRow();
-        String project = String.join(SPACE_SIGN, DIGIT_SPECIAL_NAME, DIGIT_SPECIAL_SHORTNAME, DIGIT_SPECIAL_DESCRIPTION);
+        Project lastProject = mainPage.clickProjectsButton().getLastProject();
+        project.setId(lastProject.getId());
 
-        assertTrue(lastRow.contains(project));
+        assertEquals(project, lastProject);
     }
 
     @Test
     public void digitsOnly() {
+        Project project = new Project(DIGIT_NAME, DIGIT_SHORTNAME, DIGIT_DESCRIPTION);
+
         mainPage
             .clickProjectsButton()
             .clickAddButton()
-            .enterName(DIGIT_NAME)
-            .enterShortName(DIGIT_SHORTNAME)
-            .enterDescription(DIGIT_DESCRIPTION)
+            .enterProject(project)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickProjectsButton().getLastRow();
-        String project = String.join(SPACE_SIGN, DIGIT_NAME, DIGIT_SHORTNAME, DIGIT_DESCRIPTION);
+        Project lastProject = mainPage.clickProjectsButton().getLastProject();
+        project.setId(lastProject.getId());
 
-        assertTrue(lastRow.contains(project));
+        assertEquals(project, lastProject);
     }
 
     @Test
     public void minLength() {
+        Project project = new Project(MIN_NAME, MIN_SHORTNAME, EMPTY_STRING);
+
         mainPage
             .clickProjectsButton()
             .clickAddButton()
-            .enterName(MIN_NAME)
-            .enterShortName(MIN_SHORTNAME)
+            .enterProject(project)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickProjectsButton().getLastRow();
-        String project = String.join(SPACE_SIGN, MIN_NAME, MIN_SHORTNAME);
+        Project lastProject = mainPage.clickProjectsButton().getLastProject();
+        project.setId(lastProject.getId());
 
-        assertTrue(lastRow.contains(project));
+        assertEquals(project, lastProject);
     }
 
     @Test
     public void maxLength() {
+        Project project = new Project(MAX_NAME, MAX_SHORTNAME, MAX_DESCRIPTION);
+
         mainPage
             .clickProjectsButton()
             .clickAddButton()
-            .enterName(MAX_NAME)
-            .enterShortName(MAX_SHORTNAME)
-            .enterDescription(MAX_DESCRIPTION)
+            .enterProject(project)
             .clickSaveButton();
 
         driver.get(MainPage.URL);
 
-        String lastRow = mainPage.clickProjectsButton().getLastRow();
-        String project = String.join(SPACE_SIGN, MAX_NAME, MAX_SHORTNAME, MAX_DESCRIPTION);
+        Project lastProject = mainPage.clickProjectsButton().getLastProject();
+        project.setId(lastProject.getId());
 
-        assertTrue(lastRow.contains(project));
+        assertEquals(project, lastProject);
     }
 
     @Test
@@ -214,8 +225,13 @@ public class AddProjectTest {
             mainPage
                 .clickProjectsButton()
                 .clickAddButton()
-                .enterShortName(SHORTNAME)
-                .enterDescription(DESCRIPTION)
+                .enterProject(
+                    new Project(
+                        EMPTY_STRING,
+                        SHORTNAME,
+                        DESCRIPTION
+                    )
+                )
                 .clickSaveButton()
                 .nameLengthLabelDisplayed()
         );
@@ -227,8 +243,13 @@ public class AddProjectTest {
             mainPage
                 .clickProjectsButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterDescription(DESCRIPTION)
+                .enterProject(
+                    new Project(
+                        NAME,
+                        EMPTY_STRING,
+                        DESCRIPTION
+                    )
+                )
                 .clickSaveButton()
                 .shortNameLengthLabelDisplayed()
         );
@@ -240,9 +261,13 @@ public class AddProjectTest {
             mainPage
                 .clickProjectsButton()
                 .clickAddButton()
-                .enterName(NAME)
-                .enterShortName(SHORTNAME)
-                .enterDescription(DESCRIPTION)
+                .enterProject(
+                    new Project(
+                        NAME,
+                        SHORTNAME,
+                        DESCRIPTION
+                    )
+                )
                 .clickSaveButton()
                 .nameExistsLabelDisplayed()
         );
@@ -254,9 +279,13 @@ public class AddProjectTest {
             mainPage
                 .clickProjectsButton()
                 .clickAddButton()
-                .enterName(UNIQUE_NAME)
-                .enterShortName(SHORTNAME)
-                .enterDescription(DESCRIPTION)
+                .enterProject(
+                    new Project(
+                        UNIQUE_NAME,
+                        SHORTNAME,
+                        DESCRIPTION
+                    )
+                )
                 .clickSaveButton()
                 .shortNameExistsLabelDisplayed()
         );
@@ -268,9 +297,13 @@ public class AddProjectTest {
             mainPage.
                 clickProjectsButton()
                 .clickAddButton()
-                .enterName(SPACE_SIGN.repeat(5))
-                .enterShortName(SPACE_SIGN.repeat(5))
-                .enterDescription(SPACE_SIGN.repeat(10))
+                .enterProject(
+                    new Project(
+                        SPACE_SIGN.repeat(5),
+                        SPACE_SIGN.repeat(5),
+                        SPACE_SIGN.repeat(10)
+                    )
+                )
                 .clickSaveButton()
                 .allInvalidLabelsDisplayed()
         );
@@ -282,9 +315,13 @@ public class AddProjectTest {
             mainPage
                 .clickProjectsButton()
                 .clickAddButton()
-                .enterName(INVALID_SPECIAL_NAME)
-                .enterShortName(INVALID_SPECIAL_SHORTNAME)
-                .enterDescription(INVALID_SPECIAL_DESCRIPTION)
+                .enterProject(
+                    new Project(
+                        INVALID_SPECIAL_NAME,
+                        INVALID_SPECIAL_SHORTNAME,
+                        INVALID_SPECIAL_DESCRIPTION
+                    )
+                )
                 .clickSaveButton()
                 .allInvalidLabelsDisplayed()
         );
@@ -296,8 +333,13 @@ public class AddProjectTest {
             mainPage
                 .clickProjectsButton()
                 .clickAddButton()
-                .enterName(BELOW_MIN_NAME)
-                .enterShortName(BELOW_MIN_SHORTNAME)
+                .enterProject(
+                    new Project(
+                        BELOW_MIN_NAME,
+                        BELOW_MIN_SHORTNAME,
+                        EMPTY_STRING
+                    )
+                )
                 .clickSaveButton()
                 .minLengthLabelsDisplayed()
         );
@@ -309,9 +351,13 @@ public class AddProjectTest {
             mainPage
                 .clickProjectsButton()
                 .clickAddButton()
-                .enterName(OVER_MAX_NAME)
-                .enterShortName(OVER_MAX_SHORTNAME)
-                .enterDescription(OVER_MAX_DESCRIPTION)
+                .enterProject(
+                    new Project(
+                        OVER_MAX_NAME,
+                        OVER_MAX_SHORTNAME,
+                        OVER_MAX_DESCRIPTION
+                    )
+                )
                 .clickSaveButton()
                 .allLengthLabelsDisplayed()
         );

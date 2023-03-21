@@ -1,12 +1,23 @@
 package com.qulix.shilomy.trainingtask.automation.page.task;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+
+import com.qulix.shilomy.trainingtask.automation.model.Person;
+import com.qulix.shilomy.trainingtask.automation.model.Project;
+import com.qulix.shilomy.trainingtask.automation.model.Task;
+import com.qulix.shilomy.trainingtask.automation.model.TaskStatus;
+import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 
 public class EditTaskPage {
 
@@ -24,6 +35,10 @@ public class EditTaskPage {
      * Url страницы изменения задачи
      */
     public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
+
+    private static final String VALUE = "value";
+    private static final String INITIAL_DATE_FORMAT = "yyyy-MM-dd";
+    private static final String TARGET_DATE_FORMAT = "dd.MM.yyyy";
 
     /**
      * Лейбл формы добавления задач
@@ -172,50 +187,25 @@ public class EditTaskPage {
     }
 
     /**
-     * Ввод названия
+     * Ввод данных из модели задачи
      *
-     * @param name название
+     * @param task задача
      * @return текущее состояние страницы
      */
-    public EditTaskPage enterName(String name) {
+    public EditTaskPage enterTask(Task task) {
         nameInput.clear();
-        nameInput.sendKeys(name);
-        return this;
-    }
-
-    /**
-     * Ввод работы
-     *
-     * @param work работа
-     * @return текущее состояние страницы
-     */
-    public EditTaskPage enterWork(String work) {
         workInput.clear();
-        workInput.sendKeys(work);
-        return this;
-    }
-
-    /**
-     * Ввод даты начала
-     *
-     * @param startDate дата начала
-     * @return текущее состояние страницы
-     */
-    public EditTaskPage enterStartDate(String startDate) {
         startDateInput.clear();
-        startDateInput.sendKeys(startDate);
-        return this;
-    }
-
-    /**
-     * Ввод даты окончания
-     *
-     * @param endDate дата окончания
-     * @return текущее состояние страницы
-     */
-    public EditTaskPage enterEndDate(String endDate) {
         endDateInput.clear();
-        endDateInput.sendKeys(endDate);
+
+        nameInput.sendKeys(task.getName());
+        workInput.sendKeys(task.getWork());
+        startDateInput.sendKeys(task.getStartDate());
+        endDateInput.sendKeys(task.getEndDate());
+        Optional.ofNullable(task.getStatus()).ifPresentOrElse(status -> selectStatusByText(status.getStatus()), () -> selectStatusByIndex(0));
+        selectExecutorsFromList(task.getExecutors());
+        Optional.ofNullable(task.getProject()).ifPresentOrElse(project -> selectProjectById(project.getId()), () -> selectProjectByIndex(0));
+
         return this;
     }
 
@@ -232,13 +222,29 @@ public class EditTaskPage {
     }
 
     /**
-     * Выбор исполнителя по индексу
+     * Выбор статуса по индексу
      *
      * @param index индекс
      * @return текущее состояние страницы
      */
-    public EditTaskPage selectExecutorByIndex(int index) {
-        executorCheckboxes.get(index).click();
+    public EditTaskPage selectStatusByIndex(int index) {
+        Select statusChoice = new Select(statusSelect);
+        statusChoice.selectByIndex(index);
+        return this;
+    }
+
+    /**
+     * Выбор исполнителей из списка
+     *
+     * @param executors список исполнителей
+     * @return текущее состояние страницы
+     */
+    public EditTaskPage selectExecutorsFromList(List<Person> executors) {
+        executorCheckboxes.forEach(c -> executors.forEach(e -> {
+            if (c.getAttribute("value").equals(e.getId().toString())) {
+                c.click();
+            }
+        }));
         return this;
     }
 
@@ -251,6 +257,18 @@ public class EditTaskPage {
     public EditTaskPage selectProjectByIndex(int index) {
         Select projectChoice = new Select(projectSelect);
         projectChoice.selectByIndex(index);
+        return this;
+    }
+
+    /**
+     * Выбор проекта по идентификатору
+     *
+     * @param id идентификатор
+     * @return текущее состояние страницы
+     */
+    public EditTaskPage selectProjectById(Long id) {
+        Select projects = new Select(projectSelect);
+        projects.selectByValue(id.toString());
         return this;
     }
 
@@ -305,5 +323,68 @@ public class EditTaskPage {
             && endDateInvalidLabel.isDisplayed()
             && statusInvalidLabel.isDisplayed()
             && executorInvalidLabel.isDisplayed();
+    }
+
+    /**
+     * Получение выбранного проекта
+     *
+     * @return проект
+     */
+    public Project getSelectedProject() {
+        Select select = new Select(projectSelect);
+        Long projectId = Long.parseLong(select.getFirstSelectedOption().getAttribute(VALUE));
+
+        driver.get(ProjectListPage.URL);
+        ProjectListPage projectListPage = new ProjectListPage(driver);
+
+        Project project = projectListPage.getProjectById(projectId).orElseThrow();
+
+        driver.navigate().back();
+        return project;
+    }
+
+    /**
+     * Получение выбранных исполнителей
+     *
+     * @return список исполнителей
+     */
+    public List<Person> getSelectedExecutors() {
+        List<Long> executorIds = executorCheckboxes
+            .stream()
+            .filter(WebElement::isSelected)
+            .map(e -> Long.parseLong(e.getAttribute(VALUE)))
+            .collect(Collectors.toList());
+
+        driver.get(PersonListPage.URL);
+        PersonListPage personListPage = new PersonListPage(driver);
+
+        List<Person> selectedPersons = executorIds
+            .stream()
+            .map(e -> personListPage.getPersonById(e).orElseThrow())
+            .collect(Collectors.toList());
+
+        driver.navigate().back();
+        return selectedPersons;
+    }
+
+    /**
+     * Получение задачи
+     *
+     * @return задача с данными со страницы
+     */
+    public Task getTask() {
+        Select status = new Select(statusSelect);
+
+        return new Task(
+            Long.parseLong(idInput.getAttribute(VALUE)),
+            getSelectedProject(),
+            nameInput.getAttribute(VALUE),
+            workInput.getAttribute(VALUE),
+            LocalDate.parse(startDateInput.getAttribute(VALUE), DateTimeFormatter.ofPattern(INITIAL_DATE_FORMAT))
+                .format(DateTimeFormatter.ofPattern(TARGET_DATE_FORMAT)),
+            LocalDate.parse(endDateInput.getAttribute(VALUE), DateTimeFormatter.ofPattern(INITIAL_DATE_FORMAT))
+                .format(DateTimeFormatter.ofPattern(TARGET_DATE_FORMAT)),
+            getSelectedExecutors(),
+            TaskStatus.of(status.getFirstSelectedOption().getText()));
     }
 }

@@ -1,5 +1,7 @@
 package com.qulix.shilomy.trainingtask.automation.test.task;
 
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.qulix.shilomy.trainingtask.automation.model.Person;
+import com.qulix.shilomy.trainingtask.automation.model.Project;
+import com.qulix.shilomy.trainingtask.automation.model.Task;
+import com.qulix.shilomy.trainingtask.automation.model.TaskStatus;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 public class EditTaskTest {
@@ -56,22 +64,26 @@ public class EditTaskTest {
 
     @Test
     public void editTaskCancel() {
-        String lastRow = mainPage.clickTasksButton().getLastRow();
+        Task task = mainPage.clickTasksButton().getLastTask();
 
-        String newLastRow = mainPage
+        Task newLastTask = mainPage
             .clickTasksButton()
             .clickEditButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(START_DATE)
-            .enterEndDate(END_DATE)
-            .selectStatusByText(STATUS_NOT_STARTED)
-            .selectExecutorByIndex(FIRST_INDEX)
-            .selectProjectByIndex(FIRST_INDEX)
+            .enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    START_DATE,
+                    END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_NOT_STARTED)
+                )
+            )
             .clickCancelButton()
-            .getLastRow();
+            .getLastTask();
 
-        assertEquals(lastRow, newLastRow);
+        assertEquals(task, newLastTask);
     }
 
     @Test
@@ -86,21 +98,25 @@ public class EditTaskTest {
 
     @Test
     public void editAllowed() {
-        String task = mainPage.clickTasksButton().getLastRow();
+        Task task = mainPage.clickTasksButton().getLastTask();
 
         mainPage
             .clickTasksButton()
             .clickEditButton()
-            .enterName(NAME)
-            .enterWork(WORK)
-            .enterStartDate(START_DATE)
-            .enterEndDate(END_DATE)
-            .selectStatusByText(STATUS_NOT_STARTED)
-            .selectExecutorByIndex(SECOND_INDEX)
-            .selectProjectByIndex(SECOND_INDEX)
+            .enterTask(
+                new Task(
+                    getProject(SECOND_INDEX),
+                    NAME,
+                    WORK,
+                    START_DATE,
+                    END_DATE,
+                    List.of(getPerson(SECOND_INDEX)),
+                    TaskStatus.of(STATUS_NOT_STARTED)
+                )
+            )
             .clickSaveButton();
 
-        String updatedTask = mainPage.clickTasksButton().getLastRow();
+        Task updatedTask = mainPage.clickTasksButton().getLastTask();
 
         assertNotEquals(task, updatedTask);
     }
@@ -115,6 +131,22 @@ public class EditTaskTest {
                 .clickSaveButton()
                 .allValidationMessagesDisplayed()
         );
+    }
+
+    private Person getPerson(int index) {
+        driver.get(PersonListPage.URL);
+        PersonListPage persons = new PersonListPage(driver);
+        Person person = persons.getPersonByIndex(index);
+        driver.navigate().back();
+        return person;
+    }
+
+    private Project getProject(int index) {
+        driver.get(ProjectListPage.URL);
+        ProjectListPage projects = new ProjectListPage(driver);
+        Project project = projects.getProjectByIndex(index);
+        driver.navigate().back();
+        return project;
     }
 
     @AfterAll

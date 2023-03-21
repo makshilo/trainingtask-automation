@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.qulix.shilomy.trainingtask.automation.model.Person;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
@@ -53,16 +54,16 @@ public class EditPersonTest {
 
     @Test
     public void editPersonCancel() {
-        String lastRow = mainPage.clickPersonsButton().getLastRow();
+        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
 
-        String newLastRow =
+        Person newLastPerson =
             mainPage
                 .clickPersonsButton()
                 .clickEditButton()
                 .clickCancelButton()
-                .getLastRow();
+                .getLastPerson();
 
-        assertEquals(lastRow, newLastRow);
+        assertEquals(lastPerson, newLastPerson);
     }
 
     @Test
@@ -77,18 +78,22 @@ public class EditPersonTest {
 
     @Test
     public void editAllowed() {
-        String person = mainPage.clickPersonsButton().getLastRow();
+        Person person = mainPage.clickPersonsButton().getLastPerson();
 
         mainPage
             .clickPersonsButton()
             .clickEditButton()
-            .enterSurname(SURNAME)
-            .enterName(NAME)
-            .enterPatronymic(PATRONYMIC)
-            .enterPosition(POSITION)
+            .enterPerson(
+                new Person(
+                    SURNAME,
+                    NAME,
+                    PATRONYMIC,
+                    POSITION
+                )
+            )
             .clickSaveButton();
 
-        String updatedPerson = mainPage.clickPersonsButton().getLastRow();
+        Person updatedPerson = mainPage.clickPersonsButton().getLastPerson();
 
         assertNotEquals(person, updatedPerson);
     }
