@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +22,9 @@ import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
+/**
+ * Тесты формы редактирования задачи
+ */
 public class EditTaskTest {
 
     /**
@@ -41,11 +45,17 @@ public class EditTaskTest {
      */
     private MainPage mainPage;
 
+    /**
+     * Перед всеми тестами
+     */
     @BeforeAll
     public static void init() {
         driver = DriverManager.getInstance().getDriver();
     }
 
+    /**
+     * Перед каждым тестом
+     */
     @BeforeEach
     public void setUp() {
         driver.get(MainPage.URL);
@@ -53,6 +63,7 @@ public class EditTaskTest {
     }
 
     @Test
+    @DisplayName("Отображение элементов формы редактирования задачи")
     public void elementsDisplayed() {
         assertTrue(
             mainPage
@@ -63,6 +74,7 @@ public class EditTaskTest {
     }
 
     @Test
+    @DisplayName("Отмена редактирования задачи")
     public void editTaskCancel() {
         Task task = mainPage.clickTasksButton().getLastTask();
 
@@ -87,6 +99,7 @@ public class EditTaskTest {
     }
 
     @Test
+    @DisplayName("Недоступность для редактирования поля \"Идентификатор\"")
     public void idInputDisabled() {
         assertFalse(
             mainPage
@@ -97,6 +110,7 @@ public class EditTaskTest {
     }
 
     @Test
+    @DisplayName("Возможность редактировать поля \"Название\", \"Работа\", \"Дата начала\", \"Дата окончания\", \"Статус\", \"Исполнитель\"")
     public void editAllowed() {
         Task task = mainPage.clickTasksButton().getLastTask();
 
@@ -122,6 +136,7 @@ public class EditTaskTest {
     }
 
     @Test
+    @DisplayName("Отсутствие возможности сохранения при удалении данных из полей \"Название\", \"Работа\", \"Дата начала\", \"Дата окончания\", \"Статус\", \"Исполнитель\"")
     public void emptyValidation() {
         assertTrue(
             mainPage
@@ -133,6 +148,12 @@ public class EditTaskTest {
         );
     }
 
+    /**
+     * Получение персоны по индексу
+     *
+     * @param index индекс
+     * @return персона
+     */
     private Person getPerson(int index) {
         driver.get(PersonListPage.URL);
         PersonListPage persons = new PersonListPage(driver);
@@ -141,6 +162,12 @@ public class EditTaskTest {
         return person;
     }
 
+    /**
+     * Получение проекта по индексу
+     *
+     * @param index индекс
+     * @return проект
+     */
     private Project getProject(int index) {
         driver.get(ProjectListPage.URL);
         ProjectListPage projects = new ProjectListPage(driver);
@@ -149,6 +176,9 @@ public class EditTaskTest {
         return project;
     }
 
+    /**
+     * После всех тестов
+     */
     @AfterAll
     public static void tearDown() {
         driver.quit();

@@ -3,6 +3,7 @@ package com.qulix.shilomy.trainingtask.automation.test.project;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,6 +13,9 @@ import com.qulix.shilomy.trainingtask.automation.model.Project;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
+/**
+ * Тесты формы добавления проекта
+ */
 public class AddProjectTest {
 
     /**
@@ -84,11 +88,17 @@ public class AddProjectTest {
      */
     private MainPage mainPage;
 
+    /**
+     * Перед всеми тестами
+     */
     @BeforeAll
     public static void init() {
         driver = DriverManager.getInstance().getDriver();
     }
 
+    /**
+     * Перед каждым тестом
+     */
     @BeforeEach
     public void setUp() {
         driver.get(MainPage.URL);
@@ -96,6 +106,7 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Отображение элементов формы добавления проекта")
     public void elementsDisplayed() {
         assertTrue(
             mainPage
@@ -106,9 +117,12 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Отмена создания проекта")
     public void addProjectCancel() {
+        //Ролучение последнего проекта
         Project project = mainPage.clickProjectsButton().getLastProject();
 
+        //Получение последнего проекта после отмены
         Project newProject = mainPage
             .clickProjectsButton()
             .clickAddButton()
@@ -126,7 +140,9 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Соответствие идентификатора порядковому номеру проекта")
     public void idFormation() {
+        //Получение последнего идентификатора
         Long maxId = mainPage.clickProjectsButton().getLastProject().getId();
 
         mainPage
@@ -141,6 +157,7 @@ public class AddProjectTest {
             )
             .clickSaveButton();
 
+        //Получение нового последнего идентификатора
         driver.get(MainPage.URL);
         Long newMaxId = mainPage.clickProjectsButton().getLastProject().getId();
 
@@ -148,17 +165,17 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Сохранение проекта при заполнении полей допустимыми буквами, цифрами и спецсимволами")
     public void lettersDigitsSpecials() {
         Project project = new Project(DIGIT_SPECIAL_NAME, DIGIT_SPECIAL_SHORTNAME, DIGIT_SPECIAL_DESCRIPTION);
-
         mainPage
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(project)
             .clickSaveButton();
 
+        //Получение добавленного проекта
         driver.get(MainPage.URL);
-
         Project lastProject = mainPage.clickProjectsButton().getLastProject();
         project.setId(lastProject.getId());
 
@@ -166,17 +183,17 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Сохранение проекта при заполнении полей  цифрами")
     public void digitsOnly() {
         Project project = new Project(DIGIT_NAME, DIGIT_SHORTNAME, DIGIT_DESCRIPTION);
-
         mainPage
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(project)
             .clickSaveButton();
 
+        //Получение добавленного проекта
         driver.get(MainPage.URL);
-
         Project lastProject = mainPage.clickProjectsButton().getLastProject();
         project.setId(lastProject.getId());
 
@@ -184,17 +201,17 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Сохранение проекта при заполнении полей минимальным количеством символов")
     public void minLength() {
         Project project = new Project(MIN_NAME, MIN_SHORTNAME, EMPTY_STRING);
-
         mainPage
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(project)
             .clickSaveButton();
 
+        //Получение добавленного проекта
         driver.get(MainPage.URL);
-
         Project lastProject = mainPage.clickProjectsButton().getLastProject();
         project.setId(lastProject.getId());
 
@@ -202,17 +219,17 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Сохранение проекта при заполнении полей максимальным количеством символов")
     public void maxLength() {
         Project project = new Project(MAX_NAME, MAX_SHORTNAME, MAX_DESCRIPTION);
-
         mainPage
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(project)
             .clickSaveButton();
 
+        //Получение добавленного проекта
         driver.get(MainPage.URL);
-
         Project lastProject = mainPage.clickProjectsButton().getLastProject();
         project.setId(lastProject.getId());
 
@@ -220,6 +237,7 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Обязательность заполнения поля \"Название\"")
     public void nameObligation() {
         assertTrue(
             mainPage
@@ -238,6 +256,7 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Обязательность заполнения поля \"Сокращенное название\"")
     public void shortNameObligation() {
         assertTrue(
             mainPage
@@ -256,6 +275,7 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при попытке сохранения неуникальных данных в поле \"Название\"")
     public void nameUniqueness() {
         assertTrue(
             mainPage
@@ -274,6 +294,7 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при попытке сохранения неуникальных данных в поле \"Сокращённое название\"")
     public void shortNameUniqueness() {
         assertTrue(
             mainPage
@@ -292,6 +313,7 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при  заполнении полей пробелами")
     public void whitespaceValidation() {
         assertTrue(
             mainPage.
@@ -310,6 +332,7 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при  заполнении полей недопустимыми спецсимволами")
     public void specialSymbolValidation() {
         assertTrue(
             mainPage
@@ -328,6 +351,7 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при заполнении полей  количеством символов, меньше минимального")
     public void belowMinLength() {
         assertTrue(
             mainPage
@@ -346,6 +370,7 @@ public class AddProjectTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при заполнении полей количеством символов, больше максимального")
     public void overMaxLength() {
         assertTrue(
             mainPage
@@ -363,6 +388,9 @@ public class AddProjectTest {
         );
     }
 
+    /**
+     * После всех тестов
+     */
     @AfterAll
     public static void tearDown() {
         driver.quit();

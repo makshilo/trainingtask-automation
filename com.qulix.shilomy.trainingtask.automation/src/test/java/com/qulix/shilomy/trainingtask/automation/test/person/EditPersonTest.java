@@ -3,6 +3,7 @@ package com.qulix.shilomy.trainingtask.automation.test.person;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,6 +15,9 @@ import com.qulix.shilomy.trainingtask.automation.model.Person;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
+/**
+ * Тесты формы редактирования персон
+ */
 public class EditPersonTest {
 
     /**
@@ -31,11 +35,17 @@ public class EditPersonTest {
      */
     private MainPage mainPage;
 
+    /**
+     * Перед всеми тестами
+     */
     @BeforeAll
     public static void init() {
         driver = DriverManager.getInstance().getDriver();
     }
 
+    /**
+     * Перед каждым тестом
+     */
     @BeforeEach
     public void setUp() {
         driver.get(MainPage.URL);
@@ -43,6 +53,7 @@ public class EditPersonTest {
     }
 
     @Test
+    @DisplayName("Отображение элементов формы редактирования персоны")
     public void elementsDisplayed() {
         assertTrue(
             mainPage
@@ -53,9 +64,12 @@ public class EditPersonTest {
     }
 
     @Test
+    @DisplayName("Отмена редактирования персоны")
     public void editPersonCancel() {
+        //Получение последней персоны
         Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
 
+        //Получение последней персоны после отмены
         Person newLastPerson =
             mainPage
                 .clickPersonsButton()
@@ -67,6 +81,7 @@ public class EditPersonTest {
     }
 
     @Test
+    @DisplayName("Недоступность для редактирования поля \"Идентификатор\"")
     public void idInputDisabled() {
         assertFalse(
             mainPage
@@ -77,7 +92,9 @@ public class EditPersonTest {
     }
 
     @Test
+    @DisplayName("Возможность редактировать поля \"Фамилия\", \"Имя\", \"Отчество\", \"Должность\"")
     public void editAllowed() {
+        //Получение последней персоны
         Person person = mainPage.clickPersonsButton().getLastPerson();
 
         mainPage
@@ -93,12 +110,14 @@ public class EditPersonTest {
             )
             .clickSaveButton();
 
+        //Получение новой последней персоны
         Person updatedPerson = mainPage.clickPersonsButton().getLastPerson();
 
         assertNotEquals(person, updatedPerson);
     }
 
     @Test
+    @DisplayName("Отсутствие возможности сохранения, при удалении данных из полей \"Фамилия\", \"Имя\", \"Отчество\", \"Должность\"")
     public void emptyValidation() {
         assertTrue(
             mainPage
@@ -110,6 +129,9 @@ public class EditPersonTest {
         );
     }
 
+    /**
+     * После всех тестов
+     */
     @AfterAll
     public static void tearDown() {
         driver.quit();

@@ -3,6 +3,7 @@ package com.qulix.shilomy.trainingtask.automation.test.project;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,6 +15,9 @@ import com.qulix.shilomy.trainingtask.automation.model.Project;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
+/**
+ * Тест формы редактирования проекта
+ */
 public class EditProjectTest {
 
     /**
@@ -30,11 +34,17 @@ public class EditProjectTest {
      */
     private MainPage mainPage;
 
+    /**
+     * Перед всеми тестами
+     */
     @BeforeAll
     public static void init() {
         driver = DriverManager.getInstance().getDriver();
     }
 
+    /**
+     * Перед каждым тестом
+     */
     @BeforeEach
     public void setUp() {
         driver.get(MainPage.URL);
@@ -42,6 +52,7 @@ public class EditProjectTest {
     }
 
     @Test
+    @DisplayName("Отображение элементов формы редактирования проекта")
     public void elementsDisplayed() {
         assertTrue(
             mainPage
@@ -52,9 +63,12 @@ public class EditProjectTest {
     }
 
     @Test
+    @DisplayName("Отмена редактирования проекта")
     public void editProjectCancel() {
+        //Получение последнего проекта
         Project project = mainPage.clickProjectsButton().getLastProject();
 
+        //Получение проекта после отмены
         Project newProject = mainPage
             .clickProjectsButton()
             .clickEditButton()
@@ -70,6 +84,7 @@ public class EditProjectTest {
     }
 
     @Test
+    @DisplayName("Недоступность для редактирования поля \"Идентификатор\"")
     public void idInputDisabled() {
         assertFalse(
             mainPage
@@ -80,9 +95,10 @@ public class EditProjectTest {
     }
 
     @Test
+    @DisplayName("Возможность редактировать поля \"Название\", \"Сокращенное название\", \"Описание\"")
     public void editAllowed() {
+        //Получение последнего проекта
         Project project = mainPage.clickProjectsButton().getLastProject();
-
         mainPage
             .clickProjectsButton()
             .clickEditButton()
@@ -93,6 +109,7 @@ public class EditProjectTest {
                     DESCRIPTION))
             .clickSaveButton();
 
+        //Получение обновлённого проекта
         Project updatedProject = mainPage.clickProjectsButton().getLastProject();
         project.setId(updatedProject.getId());
 
@@ -100,6 +117,7 @@ public class EditProjectTest {
     }
 
     @Test
+    @DisplayName("Отсутвие возможности сохранения при удалении данных из полей \"Название\", \"Сокращенное название\"")
     public void emptyValidation() {
         assertTrue(
             mainPage
@@ -111,6 +129,9 @@ public class EditProjectTest {
         );
     }
 
+    /**
+     * После всех тестов
+     */
     @AfterAll
     public static void tearDown() {
         driver.quit();

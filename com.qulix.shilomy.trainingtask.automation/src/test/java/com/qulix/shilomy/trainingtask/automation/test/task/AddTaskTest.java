@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +21,9 @@ import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
+/**
+ * Тесты формы добавления задачи
+ */
 public class AddTaskTest {
 
     /**
@@ -105,11 +109,17 @@ public class AddTaskTest {
      */
     private MainPage mainPage;
 
+    /**
+     * Перед всеми тестами
+     */
     @BeforeAll
     public static void init() {
         driver = DriverManager.getInstance().getDriver();
     }
 
+    /**
+     * Перед каждым тестом
+     */
     @BeforeEach
     public void setUp() {
         driver.get(MainPage.URL);
@@ -117,6 +127,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отображение элементов формы добавления задачи")
     public void elementsDisplayed() {
         assertTrue(
             mainPage
@@ -127,9 +138,12 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отмена создания задачи")
     public void addTaskCancel() {
+        //Получение последней задачи
         Task lastRow = mainPage.clickTasksButton().getLastTask();
 
+        //Получение задачи после отмены
         Task newLastRow = mainPage
             .clickTasksButton()
             .clickAddButton()
@@ -151,6 +165,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи")
     public void addTask() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -168,8 +183,8 @@ public class AddTaskTest {
             .enterTask(task)
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -177,7 +192,9 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Соответствие идентификатора порядковому номеру задачи")
     public void idFormation() {
+        //Получение последнего идентификатора
         Long maxId = mainPage.clickTasksButton().getLastTask().getId();
 
         mainPage
@@ -196,6 +213,7 @@ public class AddTaskTest {
             )
             .clickSaveButton();
 
+        //Получение нового последнего идентификатора
         driver.get(MainPage.URL);
         Long newMaxId = mainPage.clickTasksButton().getLastTask().getId();
 
@@ -203,6 +221,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи при заполнении поля \"Название\" цифрами")
     public void digitsName() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -222,8 +241,8 @@ public class AddTaskTest {
             )
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -231,6 +250,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи при заполнении поля \"Название\" значениями с буквами, цифрами и допустимыми спецсимволами")
     public void lettersDigitsSpecialsName() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -248,8 +268,8 @@ public class AddTaskTest {
             .enterTask(task)
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -257,6 +277,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи при заполнении полей \"Название\" и \"Работа\" минимальным количеством символов")
     public void minLength() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -276,8 +297,8 @@ public class AddTaskTest {
             )
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -285,6 +306,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи при заполнении полей \"Название\" и \"Работа\" максимальным количеством символов")
     public void maxLength() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -302,8 +324,8 @@ public class AddTaskTest {
             .enterTask(task)
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -311,6 +333,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи при заполнении полей \"Дата начала\" и \"Дата окончания\" минимальными датами")
     public void minDate() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -328,8 +351,8 @@ public class AddTaskTest {
             .enterTask(task)
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -337,6 +360,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи при заполнении полей \"Дата начала\" и \"Дата окончания\" максимальными датами")
     public void maxDate() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -354,8 +378,8 @@ public class AddTaskTest {
             .enterTask(task)
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -363,6 +387,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи со статусом \"Не начата\"")
     public void statusNotStarted() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -380,8 +405,8 @@ public class AddTaskTest {
             .enterTask(task)
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -389,6 +414,34 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи со статусом \"Завершена\"")
+    public void statusCompleted() {
+        Task task = new Task(
+            getProject(FIRST_INDEX),
+            NAME,
+            WORK,
+            MID_START_DATE,
+            MID_END_DATE,
+            List.of(getPerson(FIRST_INDEX)),
+            TaskStatus.of(STATUS_COMPLETED)
+        );
+
+        mainPage
+            .clickTasksButton()
+            .clickAddButton()
+            .enterTask(task)
+            .clickSaveButton();
+
+        //Получение последней задачи
+        driver.get(MainPage.URL);
+        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        task.setId(lastTask.getId());
+
+        assertEquals(task, lastTask);
+    }
+
+    @Test
+    @DisplayName("Сохранение задачи со статусом \"Отложена\"")
     public void statusPostponed() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -406,8 +459,8 @@ public class AddTaskTest {
             .enterTask(task)
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -415,6 +468,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи с выбором нескольких исполнителей из списка")
     public void multipleExecutors() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -432,8 +486,8 @@ public class AddTaskTest {
             .enterTask(task)
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
 
@@ -441,6 +495,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи с выбором всех исполнителей из списка")
     public void allExecutors() {
         Task task = new Task(
             getProject(FIRST_INDEX),
@@ -459,8 +514,8 @@ public class AddTaskTest {
             .selectAllExecutors()
             .clickSaveButton();
 
+        //Получение последней задачи
         driver.get(MainPage.URL);
-
         Task lastTask = mainPage.clickTasksButton().getLastTask();
         task.setId(lastTask.getId());
         task.setExecutors(lastTask.getExecutors());
@@ -469,6 +524,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при  заполнении полей \"Название\" и \"Работа\" недопустимыми спецсимволами")
     public void specialSymbolValidation() {
         assertTrue(
             mainPage.
@@ -491,6 +547,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при  заполнении полей \"Название\" и \"Работа\" пробелами")
     public void whitespaceValidation() {
         assertTrue(
             mainPage.
@@ -513,6 +570,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при заполнении полей \"Название\" количеством символов, меньше минимального")
     public void belowMinLength() {
         assertTrue(
             mainPage
@@ -535,6 +593,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при заполнении полей \"Название\" и \"Работа\" количеством символов, больше максимального")
     public void overMaxLength() {
         assertTrue(
             mainPage
@@ -557,6 +616,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при сохранении задачи с датой окончания раньше даты начала")
     public void dateCollision() {
         assertTrue(
             mainPage
@@ -579,6 +639,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при заполнении полей \"Дата начала\" и \"Дата окончания\" датами, раньше минимальной")
     public void belowMinDate() {
         assertTrue(
             mainPage
@@ -601,6 +662,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при заполнении полей \"Дата начала\" и \"Дата окончания\" датами, позже максимальной")
     public void overMaxDate() {
         assertTrue(
             mainPage
@@ -623,6 +685,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отсутствие возможности выбрать несколько статусов")
     public void severalStatuses() {
         assertEquals(
             mainPage
@@ -636,6 +699,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Отсутствие возможности выбрать несколько проектов")
     public void severalProjects() {
         String choice = mainPage
             .clickTasksButton()
@@ -656,6 +720,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Обязательность поля \"Название\"")
     public void nameObligation() {
         assertTrue(
             mainPage
@@ -678,6 +743,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Обязательность поля \"Работа\"")
     public void workObligation() {
         assertTrue(
             mainPage
@@ -700,6 +766,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Обязательность поля \"Дата начала\"")
     public void startDateObligation() {
         assertTrue(
             mainPage
@@ -722,6 +789,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Обязательность поля \"Дата окончания\"")
     public void endDateObligation() {
         assertTrue(
             mainPage
@@ -744,6 +812,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Обязательность поля \"Статус\"")
     public void statusObligation() {
         assertTrue(
             mainPage
@@ -766,6 +835,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Обязательность поля \"Исполнитель\"")
     public void executorObligation() {
         assertTrue(
             mainPage
@@ -788,6 +858,7 @@ public class AddTaskTest {
     }
 
     @Test
+    @DisplayName("Обязательность поля \"Проект\"")
     public void projectObligation() {
         assertTrue(
             mainPage
@@ -809,6 +880,12 @@ public class AddTaskTest {
         );
     }
 
+    /**
+     * Получение персоны по индексу
+     *
+     * @param index индекс
+     * @return персона
+     */
     private Person getPerson(int index) {
         driver.get(PersonListPage.URL);
         PersonListPage persons = new PersonListPage(driver);
@@ -817,6 +894,12 @@ public class AddTaskTest {
         return person;
     }
 
+    /**
+     * Получение проекта по индексу
+     *
+     * @param index индекс
+     * @return проект
+     */
     private Project getProject(int index) {
         driver.get(ProjectListPage.URL);
         ProjectListPage projects = new ProjectListPage(driver);
@@ -825,6 +908,9 @@ public class AddTaskTest {
         return project;
     }
 
+    /**
+     * После всех тестов
+     */
     @AfterAll
     public static void tearDown() {
         driver.quit();

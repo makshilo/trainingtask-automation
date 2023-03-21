@@ -89,7 +89,11 @@ public class MainPage {
         return new PersonListPage(driver);
     }
 
-
+    /**
+     * Проверка отображения элементов формы
+     *
+     * @return true если все элементы отображены, иначе false
+     */
     public boolean elementsDisplayed() {
         return projectsButton.isDisplayed()
             && tasksButton.isDisplayed()

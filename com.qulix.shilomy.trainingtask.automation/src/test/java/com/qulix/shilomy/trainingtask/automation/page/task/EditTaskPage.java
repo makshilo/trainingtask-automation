@@ -19,6 +19,9 @@ import com.qulix.shilomy.trainingtask.automation.model.TaskStatus;
 import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 
+/**
+ * Объектная модель страницы редактирования задачи
+ */
 public class EditTaskPage {
 
     /**
@@ -331,12 +334,15 @@ public class EditTaskPage {
      * @return проект
      */
     public Project getSelectedProject() {
+        //Получение идентификатора выбранного проекта
         Select select = new Select(projectSelect);
         Long projectId = Long.parseLong(select.getFirstSelectedOption().getAttribute(VALUE));
 
+        //Переход на страницу списка проектов
         driver.get(ProjectListPage.URL);
         ProjectListPage projectListPage = new ProjectListPage(driver);
 
+        //Проект по идентификатору
         Project project = projectListPage.getProjectById(projectId).orElseThrow();
 
         driver.navigate().back();
@@ -349,15 +355,18 @@ public class EditTaskPage {
      * @return список исполнителей
      */
     public List<Person> getSelectedExecutors() {
+        //Список идентификаторов выбранных персон
         List<Long> executorIds = executorCheckboxes
             .stream()
             .filter(WebElement::isSelected)
             .map(e -> Long.parseLong(e.getAttribute(VALUE)))
             .collect(Collectors.toList());
 
+        //Переход на страницу списка персон
         driver.get(PersonListPage.URL);
         PersonListPage personListPage = new PersonListPage(driver);
 
+        //Список персон по идентификаторам
         List<Person> selectedPersons = executorIds
             .stream()
             .map(e -> personListPage.getPersonById(e).orElseThrow())

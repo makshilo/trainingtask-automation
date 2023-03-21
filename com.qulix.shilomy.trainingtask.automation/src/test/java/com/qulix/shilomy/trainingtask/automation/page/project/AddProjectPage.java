@@ -7,6 +7,9 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.qulix.shilomy.trainingtask.automation.model.Project;
 
+/**
+ * Объектная модель страницы добавления проекта
+ */
 public class AddProjectPage {
 
     /**

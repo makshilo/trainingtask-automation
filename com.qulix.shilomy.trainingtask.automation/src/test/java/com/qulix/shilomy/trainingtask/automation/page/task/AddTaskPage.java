@@ -12,6 +12,9 @@ import org.openqa.selenium.support.ui.Select;
 import com.qulix.shilomy.trainingtask.automation.model.Person;
 import com.qulix.shilomy.trainingtask.automation.model.Task;
 
+/**
+ * Объектная модель страницы добавления задачи
+ */
 public class AddTaskPage {
 
     /**

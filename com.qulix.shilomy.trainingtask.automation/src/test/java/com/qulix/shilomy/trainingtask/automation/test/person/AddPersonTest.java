@@ -3,6 +3,7 @@ package com.qulix.shilomy.trainingtask.automation.test.person;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,6 +14,9 @@ import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 
+/**
+ * Тесты формы добавления персон
+ */
 public class AddPersonTest {
 
     /**
@@ -81,11 +85,17 @@ public class AddPersonTest {
      */
     private MainPage mainPage;
 
+    /**
+     * Перед всеми тестами
+     */
     @BeforeAll
     public static void init() {
         driver = DriverManager.getInstance().getDriver();
     }
 
+    /**
+     * Перед каждым тестом
+     */
     @BeforeEach
     public void setUp() {
         driver.get(MainPage.URL);
@@ -93,6 +103,7 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Отображение элементов формы добавления персоны")
     public void elementsDisplayed() {
         assertTrue(
             mainPage
@@ -103,9 +114,12 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Отмена добавления персоны")
     public void addPersonCancel() {
+        //Получение последней персоны
         Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
 
+        //Отмена добавления персоны
         Person newLastPerson = mainPage
             .clickPersonsButton()
             .clickAddButton()
@@ -124,15 +138,19 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Соответствие идентификатора порядковому номеру персоны")
     public void idFormation() {
+        //Получение последнего идентификатора
         Long maxId = mainPage.clickPersonsButton().getLastPerson().getId();
 
+        //Добавление новой персоны
         mainPage
             .clickPersonsButton()
             .clickAddButton()
             .enterPerson(new Person(SURNAME, NAME, PATRONYMIC, POSITION))
             .clickSaveButton();
 
+        //Получение нового последнего идентификатора
         driver.get(MainPage.URL);
         Long newMaxId = mainPage.clickPersonsButton().getLastPerson().getId();
 
@@ -140,17 +158,17 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Сохранение персоны с допустимыми буквами и спецсимволами")
     public void lettersSpecials() {
         Person person = new Person(SPECIAL_SURNAME, SPECIAL_NAME, SPECIAL_PATRONYMIC, SPECIAL_POSITION);
-
         mainPage
             .clickPersonsButton()
             .clickAddButton()
             .enterPerson(person)
             .clickSaveButton();
 
+        //Получение добавленной персоны
         driver.get(MainPage.URL);
-
         Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
         person.setId(lastPerson.getId());
 
@@ -158,17 +176,17 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Сохранение персоны c минимальным количеством символов")
     public void minLength() {
         Person person = new Person(MIN_SURNAME, MIN_NAME, MIN_PATRONYMIC, MIN_POSITION);
-
         mainPage
             .clickPersonsButton()
             .clickAddButton()
             .enterPerson(person)
             .clickSaveButton();
 
+        //Получение добавленной персоны
         driver.get(MainPage.URL);
-
         Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
         person.setId(lastPerson.getId());
 
@@ -176,23 +194,25 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Сохранение персоны c максимальным количеством символов")
     public void maxLength() {
         Person person = new Person(MAX_SURNAME, MAX_NAME, MAX_PATRONYMIC, MAX_POSITION);
-
         mainPage
             .clickPersonsButton()
             .clickAddButton()
             .enterPerson(person)
             .clickSaveButton();
 
+        //Получение добавленной персоны
         driver.get(MainPage.URL);
-
         Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
         person.setId(lastPerson.getId());
+
         assertEquals(lastPerson, person);
     }
 
     @Test
+    @DisplayName("Обязательность заполнения поля \"Фамилия\"")
     public void surnameObligation() {
         assertTrue(
             mainPage
@@ -212,6 +232,7 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Обязательность заполнения поля \"Имя\"")
     public void nameObligation() {
         assertTrue(
             mainPage
@@ -231,6 +252,7 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Обязательность заполнения поля \"Отчество\"")
     public void patronymicObligation() {
         assertTrue(
             mainPage
@@ -250,6 +272,7 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Обязательность заполнения поля \"Должность\"")
     public void positionObligation() {
         assertTrue(
             mainPage
@@ -269,6 +292,7 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при заполнении полей пробелами")
     public void whitespaceValidation() {
         String whitespaceString = SPACE_SIGN.repeat(3);
 
@@ -290,6 +314,7 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения заполнении полей недопустимыми спецсимволами")
     public void specialSymbolValidation() {
         assertTrue(
             mainPage
@@ -309,6 +334,7 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при заполнении полей количеством символов, меньше минимального")
     public void belowMinLength() {
         assertTrue(
             mainPage
@@ -328,6 +354,7 @@ public class AddPersonTest {
     }
 
     @Test
+    @DisplayName("Отображение валидационного сообщения при заполнении полей количеством символов, больше максимального")
     public void overMaxLength() {
         assertTrue(
             mainPage
@@ -346,6 +373,9 @@ public class AddPersonTest {
         );
     }
 
+    /**
+     * После всех тестов
+     */
     @AfterAll
     public static void tearDown() {
         driver.quit();

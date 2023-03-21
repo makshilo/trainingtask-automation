@@ -10,6 +10,9 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.qulix.shilomy.trainingtask.automation.model.Task;
 
+/**
+ * Объектная модель страницы списка задач
+ */
 public class TaskListPage {
 
     /**
@@ -92,7 +95,7 @@ public class TaskListPage {
      */
     @FindBy(xpath = "//tbody/tr")
     private List<WebElement> tableRows;
-    
+
     private static final String EDIT_BUTTON = "//tbody/tr[%d]//button[contains(text(), 'Изменить')]";
 
     private final WebDriver driver;
