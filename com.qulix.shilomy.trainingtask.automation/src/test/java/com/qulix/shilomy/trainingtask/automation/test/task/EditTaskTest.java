@@ -20,6 +20,8 @@ import com.qulix.shilomy.trainingtask.automation.model.TaskStatus;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
+import com.qulix.shilomy.trainingtask.automation.page.task.EditTaskPage;
+import com.qulix.shilomy.trainingtask.automation.page.task.TaskListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 /**
@@ -67,6 +69,7 @@ public class EditTaskTest {
     public void elementsDisplayed() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickEditButton()
                 .elementsDisplayed()
@@ -76,9 +79,10 @@ public class EditTaskTest {
     @Test
     @DisplayName("Отмена редактирования задачи")
     public void editTaskCancel() {
-        Task task = mainPage.clickTasksButton().getLastTask();
+        Task task = mainPage.header.clickTasksButton().getLastTask();
 
         Task newLastTask = mainPage
+            .header
             .clickTasksButton()
             .clickEditButton()
             .enterTask(
@@ -92,7 +96,7 @@ public class EditTaskTest {
                     TaskStatus.of(STATUS_NOT_STARTED)
                 )
             )
-            .clickCancelButton()
+            .cancelButton.click(new TaskListPage(driver))
             .getLastTask();
 
         assertEquals(task, newLastTask);
@@ -103,6 +107,7 @@ public class EditTaskTest {
     public void idInputDisabled() {
         assertFalse(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickEditButton()
                 .isIdInputEnabled()
@@ -112,9 +117,10 @@ public class EditTaskTest {
     @Test
     @DisplayName("Возможность редактировать поля \"Название\", \"Работа\", \"Дата начала\", \"Дата окончания\", \"Статус\", \"Исполнитель\"")
     public void editAllowed() {
-        Task task = mainPage.clickTasksButton().getLastTask();
+        Task task = mainPage.header.clickTasksButton().getLastTask();
 
-        mainPage
+        Task updatedTask = mainPage
+            .header
             .clickTasksButton()
             .clickEditButton()
             .enterTask(
@@ -128,9 +134,8 @@ public class EditTaskTest {
                     TaskStatus.of(STATUS_NOT_STARTED)
                 )
             )
-            .clickSaveButton();
-
-        Task updatedTask = mainPage.clickTasksButton().getLastTask();
+            .saveButton.click(new TaskListPage(driver))
+            .getLastTask();
 
         assertNotEquals(task, updatedTask);
     }
@@ -140,10 +145,11 @@ public class EditTaskTest {
     public void emptyValidation() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickEditButton()
                 .clearInputs()
-                .clickSaveButton()
+                .saveButton.click(new EditTaskPage(driver))
                 .allValidationMessagesDisplayed()
         );
     }

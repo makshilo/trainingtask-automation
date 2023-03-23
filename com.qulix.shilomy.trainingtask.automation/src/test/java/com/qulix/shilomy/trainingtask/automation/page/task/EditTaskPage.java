@@ -12,22 +12,20 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.CancelButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.SaveButton;
 import com.qulix.shilomy.trainingtask.automation.model.Person;
 import com.qulix.shilomy.trainingtask.automation.model.Project;
 import com.qulix.shilomy.trainingtask.automation.model.Task;
 import com.qulix.shilomy.trainingtask.automation.model.TaskStatus;
+import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 
 /**
  * Объектная модель страницы редактирования задачи
  */
-public class EditTaskPage {
-
-    /**
-     * Корневой url приложения
-     */
-    private static final String ROOT_URL_PROPERTY = "rootUrl";
+public class EditTaskPage extends BasePage {
 
     /**
      * Путь страницы изменения задачи
@@ -37,7 +35,7 @@ public class EditTaskPage {
     /**
      * Url страницы изменения задачи
      */
-    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
+    public static final String URL = ROOT_URL + PATH;
 
     private static final String VALUE = "value";
     private static final String INITIAL_DATE_FORMAT = "yyyy-MM-dd";
@@ -140,18 +138,14 @@ public class EditTaskPage {
     private WebElement executorInvalidLabel;
 
     /**
-     * Кнопка Сохранить
+     * Кнопка сохранить
      */
-    @FindBy(xpath = "//input[@value='Сохранить']")
-    private WebElement saveButton;
+    public final SaveButton saveButton = new SaveButton(driver);
 
     /**
      * Кнопка Отмена
      */
-    @FindBy(xpath = "//button[contains(text(), 'Отмена')]")
-    private WebElement cancelButton;
-
-    private final WebDriver driver;
+    public final CancelButton cancelButton = new CancelButton(driver);
 
     /**
      * Конструктор, инициализирующий веб-драйвер и элементы страницы
@@ -159,7 +153,7 @@ public class EditTaskPage {
      * @param driver веб-драйвер
      */
     public EditTaskPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -292,26 +286,6 @@ public class EditTaskPage {
         executorCheckboxes.stream().filter(WebElement::isSelected).forEach(WebElement::click);
         projectChoice.selectByIndex(0);
         return this;
-    }
-
-    /**
-     * Клик по кнопке сохранить
-     *
-     * @return текущее состояние страницы
-     */
-    public EditTaskPage clickSaveButton() {
-        saveButton.click();
-        return this;
-    }
-
-    /**
-     * Клик по кнопке отмена
-     *
-     * @return страница списка задач
-     */
-    public TaskListPage clickCancelButton() {
-        cancelButton.click();
-        return new TaskListPage(driver);
     }
 
     /**

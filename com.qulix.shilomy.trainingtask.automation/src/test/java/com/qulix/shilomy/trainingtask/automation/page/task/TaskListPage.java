@@ -9,16 +9,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.qulix.shilomy.trainingtask.automation.model.Task;
+import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 
 /**
  * Объектная модель страницы списка задач
  */
-public class TaskListPage {
-
-    /**
-     * Корневой url приложения
-     */
-    private static final String ROOT_URL_PROPERTY = "rootUrl";
+public class TaskListPage extends BasePage {
 
     /**
      * Путь списка задач
@@ -28,7 +24,7 @@ public class TaskListPage {
     /**
      * Url списка задач
      */
-    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
+    public static final String URL = ROOT_URL + PATH;
 
     /**
      * Колонка Идентификатор
@@ -98,15 +94,13 @@ public class TaskListPage {
 
     private static final String EDIT_BUTTON = "//tbody/tr[%d]//button[contains(text(), 'Изменить')]";
 
-    private final WebDriver driver;
-
     /**
      * Конструктор, инициализирующий веб-драйвер и элементы страницы
      *
      * @param driver веб-драйвер
      */
     public TaskListPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 

@@ -49,6 +49,7 @@ public class PersonListTest {
     public void elementsDisplayed() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .isPageElementsDisplayed()
         );
@@ -58,6 +59,7 @@ public class PersonListTest {
     @DisplayName("Переход на форму добавления персоны")
     public void toAddPersonForm() {
         mainPage
+            .header
             .clickPersonsButton()
             .clickAddButton();
 
@@ -68,6 +70,7 @@ public class PersonListTest {
     @DisplayName("Переход на форму редактирования персоны")
     public void toEditPersonForm() {
         mainPage
+            .header
             .clickPersonsButton()
             .clickEditButton();
 
@@ -78,10 +81,12 @@ public class PersonListTest {
     @DisplayName("Удаление персоны")
     public void deletePerson() {
         Long lastId = mainPage
+            .header
             .clickPersonsButton()
             .getFirstId();
 
         Long newLastId = mainPage
+            .header
             .clickPersonsButton()
             .clickDeleteButton()
             .getFirstId();

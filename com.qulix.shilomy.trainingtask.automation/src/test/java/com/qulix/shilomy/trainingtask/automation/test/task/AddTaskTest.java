@@ -19,6 +19,8 @@ import com.qulix.shilomy.trainingtask.automation.model.TaskStatus;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
+import com.qulix.shilomy.trainingtask.automation.page.task.AddTaskPage;
+import com.qulix.shilomy.trainingtask.automation.page.task.TaskListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 /**
@@ -131,6 +133,7 @@ public class AddTaskTest {
     public void elementsDisplayed() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .elementsDisplayed()
@@ -141,10 +144,11 @@ public class AddTaskTest {
     @DisplayName("Отмена создания задачи")
     public void addTaskCancel() {
         //Получение последней задачи
-        Task lastRow = mainPage.clickTasksButton().getLastTask();
+        Task lastRow = mainPage.header.clickTasksButton().getLastTask();
 
         //Получение задачи после отмены
         Task newLastRow = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(
@@ -158,7 +162,7 @@ public class AddTaskTest {
                     TaskStatus.of(STATUS_IN_PROCESS)
                 )
             )
-            .clickCancelButton()
+            .cancelButton.click(new TaskListPage(driver))
             .getLastTask();
 
         assertEquals(lastRow, newLastRow);
@@ -177,15 +181,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -195,9 +198,10 @@ public class AddTaskTest {
     @DisplayName("Соответствие идентификатора порядковому номеру задачи")
     public void idFormation() {
         //Получение последнего идентификатора
-        Long maxId = mainPage.clickTasksButton().getLastTask().getId();
+        Long maxId = mainPage.header.clickTasksButton().getLastTask().getId();
 
-        mainPage
+        Long newMaxId = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(
@@ -211,11 +215,8 @@ public class AddTaskTest {
                     TaskStatus.of(STATUS_IN_PROCESS)
                 )
             )
-            .clickSaveButton();
-
-        //Получение нового последнего идентификатора
-        driver.get(MainPage.URL);
-        Long newMaxId = mainPage.clickTasksButton().getLastTask().getId();
+            .saveButton.click(new TaskListPage(driver))
+            .getLastTask().getId();
 
         assertEquals(newMaxId, maxId + 1);
     }
@@ -233,17 +234,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
-            .enterTask(
-                task
-            )
-            .clickSaveButton();
+            .enterTask(task)
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -262,15 +260,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -289,17 +286,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
-            .enterTask(
-                task
-            )
-            .clickSaveButton();
+            .enterTask(task)
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -318,15 +312,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -345,15 +338,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -372,15 +364,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -399,15 +390,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_NOT_STARTED)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -426,15 +416,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_COMPLETED)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -453,15 +442,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_POSTPONED)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -480,15 +468,14 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_POSTPONED)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver)).getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
+        //Запись идентификатора
         task.setId(lastTask.getId());
 
         assertEquals(task, lastTask);
@@ -507,17 +494,16 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_POSTPONED)
         );
 
-        mainPage
+        Task lastTask = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .enterTask(task)
             .selectAllExecutors()
-            .clickSaveButton();
+            .saveButton.click(new TaskListPage(driver))
+            .getLastTask();
 
-        //Получение последней задачи
-        driver.get(MainPage.URL);
-        Task lastTask = mainPage.clickTasksButton().getLastTask();
-        task.setId(lastTask.getId());
+        //Запись идентификатора
         task.setExecutors(lastTask.getExecutors());
 
         assertEquals(task, lastTask);
@@ -527,8 +513,9 @@ public class AddTaskTest {
     @DisplayName("Отображение валидационного сообщения при  заполнении полей \"Название\" и \"Работа\" недопустимыми спецсимволами")
     public void specialSymbolValidation() {
         assertTrue(
-            mainPage.
-                clickTasksButton()
+            mainPage
+                .header
+                .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
                     new Task(
@@ -541,7 +528,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_POSTPONED)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .nameWorkInvalidLabelDisplayed()
         );
     }
@@ -550,8 +537,9 @@ public class AddTaskTest {
     @DisplayName("Отображение валидационного сообщения при  заполнении полей \"Название\" и \"Работа\" пробелами")
     public void whitespaceValidation() {
         assertTrue(
-            mainPage.
-                clickTasksButton()
+            mainPage
+                .header
+                .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
                     new Task(
@@ -564,7 +552,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_POSTPONED)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .nameWorkInvalidLabelDisplayed()
         );
     }
@@ -574,6 +562,7 @@ public class AddTaskTest {
     public void belowMinLength() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -587,7 +576,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_POSTPONED)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .nameLengthLabelDisplayed()
         );
     }
@@ -597,6 +586,7 @@ public class AddTaskTest {
     public void overMaxLength() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -610,7 +600,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_POSTPONED)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .nameWorkLengthLabelDisplayed()
         );
     }
@@ -620,6 +610,7 @@ public class AddTaskTest {
     public void dateCollision() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -633,7 +624,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .dateCollisionLabelDisplayed()
         );
     }
@@ -643,6 +634,7 @@ public class AddTaskTest {
     public void belowMinDate() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -656,7 +648,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .allDateInvalidLabelsDisplayed()
         );
     }
@@ -666,6 +658,7 @@ public class AddTaskTest {
     public void overMaxDate() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -679,7 +672,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .allDateInvalidLabelsDisplayed()
         );
     }
@@ -689,6 +682,7 @@ public class AddTaskTest {
     public void severalStatuses() {
         assertEquals(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .selectStatusByText(STATUS_POSTPONED)
@@ -702,6 +696,7 @@ public class AddTaskTest {
     @DisplayName("Отсутствие возможности выбрать несколько проектов")
     public void severalProjects() {
         String choice = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .selectProjectByIndex(FIRST_INDEX)
@@ -711,6 +706,7 @@ public class AddTaskTest {
         driver.get(MainPage.URL);
 
         String project = mainPage
+            .header
             .clickTasksButton()
             .clickAddButton()
             .selectProjectByIndex(SECOND_INDEX)
@@ -724,6 +720,7 @@ public class AddTaskTest {
     public void nameObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -737,7 +734,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .nameLengthLabelDisplayed()
         );
     }
@@ -747,6 +744,7 @@ public class AddTaskTest {
     public void workObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -760,7 +758,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .workLengthLabelDisplayed()
         );
     }
@@ -770,6 +768,7 @@ public class AddTaskTest {
     public void startDateObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -783,7 +782,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .startDateInvalidLabelDisplayed()
         );
     }
@@ -793,6 +792,7 @@ public class AddTaskTest {
     public void endDateObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -806,7 +806,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .endDateInvalidLabelDisplayed()
         );
     }
@@ -816,6 +816,7 @@ public class AddTaskTest {
     public void statusObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -829,7 +830,7 @@ public class AddTaskTest {
                         null
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .statusInvalidLabelDisplayed()
         );
     }
@@ -839,6 +840,7 @@ public class AddTaskTest {
     public void executorObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -852,7 +854,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .executorInvalidLabelDisplayed()
         );
     }
@@ -862,6 +864,7 @@ public class AddTaskTest {
     public void projectObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .clickAddButton()
                 .enterTask(
@@ -875,7 +878,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddTaskPage(driver))
                 .projectInvalidLabelDisplayed()
         );
     }

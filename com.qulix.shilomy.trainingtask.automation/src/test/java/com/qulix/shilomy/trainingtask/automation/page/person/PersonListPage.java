@@ -11,16 +11,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.qulix.shilomy.trainingtask.automation.model.Person;
+import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 
 /**
  * Объектная модель страницы списка персон
  */
-public class PersonListPage {
-
-    /**
-     * Корневой url приложения
-     */
-    private static final String ROOT_URL_PROPERTY = "rootUrl";
+public class PersonListPage extends BasePage {
 
     /**
      * Путь списка персон
@@ -30,7 +26,7 @@ public class PersonListPage {
     /**
      * Url списка персон
      */
-    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
+    public static final String URL = ROOT_URL + PATH;
 
     /**
      * Колонка Идентификатор
@@ -94,15 +90,13 @@ public class PersonListPage {
     private static final int FOURTH_INDEX = 4;
     private static final int FIFTH_INDEX = 5;
 
-    private final WebDriver driver;
-
     /**
      * Конструктор, инициализирующий веб-драйвер и элементы страницы
      *
      * @param driver веб-драйвер
      */
     public PersonListPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 

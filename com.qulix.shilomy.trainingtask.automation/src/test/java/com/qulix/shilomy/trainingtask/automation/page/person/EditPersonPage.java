@@ -5,17 +5,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.CancelButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.SaveButton;
 import com.qulix.shilomy.trainingtask.automation.model.Person;
+import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 
 /**
  * Объектная модель страницы редактирования персоны
  */
-public class EditPersonPage {
-
-    /**
-     * Корневой url приложения
-     */
-    private static final String ROOT_URL_PROPERTY = "rootUrl";
+public class EditPersonPage extends BasePage {
 
     /**
      * Путь страницы изменения персоны
@@ -25,7 +23,7 @@ public class EditPersonPage {
     /**
      * Url страницы изменения персоны
      */
-    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
+    public static final String URL = ROOT_URL + PATH;
 
     /**
      * Заголовочный лейбл формы редактирования
@@ -88,18 +86,14 @@ public class EditPersonPage {
     private WebElement positionLengthLabel;
 
     /**
-     * Кнопка сохранения персоны
+     * Кнопка сохранить
      */
-    @FindBy(xpath = "//input[@value='Сохранить']")
-    private WebElement saveButton;
+    public final SaveButton saveButton = new SaveButton(driver);
 
     /**
-     * Кнопка отмены сохранения персоны
+     * Кнопка Отмена
      */
-    @FindBy(xpath = "//button[contains(text(), 'Отмена')]")
-    private WebElement cancelButton;
-
-    private final WebDriver driver;
+    public final CancelButton cancelButton = new CancelButton(driver);
 
     /**
      * Конструктор, инициализирующий веб-драйвер и элементы страницы
@@ -107,7 +101,7 @@ public class EditPersonPage {
      * @param driver веб-драйвер
      */
     public EditPersonPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -154,26 +148,6 @@ public class EditPersonPage {
         positionInput.sendKeys(person.getPosition());
 
         return this;
-    }
-
-    /**
-     * Клик по кнопке сохранения персоны
-     *
-     * @return текущее состояние страницы
-     */
-    public EditPersonPage clickSaveButton() {
-        saveButton.click();
-        return this;
-    }
-
-    /**
-     * Клик по кнопке отмены
-     *
-     * @return страница списка персон
-     */
-    public PersonListPage clickCancelButton() {
-        cancelButton.click();
-        return new PersonListPage(driver);
     }
 
     /**

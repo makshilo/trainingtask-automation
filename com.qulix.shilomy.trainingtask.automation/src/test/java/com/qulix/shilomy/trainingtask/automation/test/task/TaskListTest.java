@@ -49,6 +49,7 @@ public class TaskListTest {
     public void elementsDisplayed() {
         assertTrue(
             mainPage
+                .header
                 .clickTasksButton()
                 .elementsDisplayed()
         );
@@ -58,6 +59,7 @@ public class TaskListTest {
     @DisplayName("Переход на форму добавления задачи")
     public void toAddTaskForm() {
         mainPage
+            .header
             .clickTasksButton()
             .clickAddButton();
 
@@ -68,6 +70,7 @@ public class TaskListTest {
     @DisplayName("Переход на форму редактирования задачи")
     public void toEditTaskForm() {
         mainPage
+            .header
             .clickTasksButton()
             .clickEditButton();
 
@@ -78,11 +81,13 @@ public class TaskListTest {
     @DisplayName("Удаление задачи")
     public void deleteTask() {
         Long lastId = mainPage
+            .header
             .clickTasksButton()
             .getLastTask()
             .getId();
 
         Long newLastId = mainPage
+            .header
             .clickTasksButton()
             .clickDeleteButton()
             .getLastTask()

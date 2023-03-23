@@ -49,6 +49,7 @@ public class ProjectListTest {
     public void elementsDisplayed() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .elementsDisplayed()
         );
@@ -58,6 +59,7 @@ public class ProjectListTest {
     @DisplayName("Переход на форму добавления проекта")
     public void toAddProjectForm() {
         mainPage
+            .header
             .clickProjectsButton()
             .clickAddButton();
 
@@ -68,6 +70,7 @@ public class ProjectListTest {
     @DisplayName("Переход на форму редактирования проекта")
     public void toEditProjectForm() {
         mainPage
+            .header
             .clickProjectsButton()
             .clickEditButton();
 
@@ -78,11 +81,13 @@ public class ProjectListTest {
     @DisplayName("Удаление проекта")
     public void deleteProject() {
         Long lastId = mainPage
+            .header
             .clickProjectsButton()
             .getProjectByIndex(FIRST_INDEX)
             .getId();
 
         Long newLastId = mainPage
+            .header
             .clickProjectsButton()
             .clickDeleteButton()
             .getProjectByIndex(FIRST_INDEX)

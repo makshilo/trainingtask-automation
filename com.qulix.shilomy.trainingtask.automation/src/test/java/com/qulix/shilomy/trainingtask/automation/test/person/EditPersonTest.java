@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.model.Person;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.EditPersonPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 /**
@@ -57,6 +59,7 @@ public class EditPersonTest {
     public void elementsDisplayed() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickEditButton()
                 .elementsDisplayed()
@@ -67,14 +70,15 @@ public class EditPersonTest {
     @DisplayName("Отмена редактирования персоны")
     public void editPersonCancel() {
         //Получение последней персоны
-        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
+        Person lastPerson = mainPage.header.clickPersonsButton().getLastPerson();
 
         //Получение последней персоны после отмены
         Person newLastPerson =
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickEditButton()
-                .clickCancelButton()
+                .cancelButton.click(new PersonListPage(driver))
                 .getLastPerson();
 
         assertEquals(lastPerson, newLastPerson);
@@ -85,6 +89,7 @@ public class EditPersonTest {
     public void idInputDisabled() {
         assertFalse(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickEditButton()
                 .isIdInputEnabled()
@@ -95,9 +100,10 @@ public class EditPersonTest {
     @DisplayName("Возможность редактировать поля \"Фамилия\", \"Имя\", \"Отчество\", \"Должность\"")
     public void editAllowed() {
         //Получение последней персоны
-        Person person = mainPage.clickPersonsButton().getLastPerson();
+        Person person = mainPage.header.clickPersonsButton().getLastPerson();
 
-        mainPage
+        Person updatedPerson = mainPage
+            .header
             .clickPersonsButton()
             .clickEditButton()
             .enterPerson(
@@ -108,10 +114,8 @@ public class EditPersonTest {
                     POSITION
                 )
             )
-            .clickSaveButton();
-
-        //Получение новой последней персоны
-        Person updatedPerson = mainPage.clickPersonsButton().getLastPerson();
+            .saveButton.click(new PersonListPage(driver))
+            .getLastPerson();
 
         assertNotEquals(person, updatedPerson);
     }
@@ -121,10 +125,11 @@ public class EditPersonTest {
     public void emptyValidation() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickEditButton()
                 .clearInputs()
-                .clickSaveButton()
+                .saveButton.click(new EditPersonPage(driver))
                 .allLengthLabelsDisplayed()
         );
     }

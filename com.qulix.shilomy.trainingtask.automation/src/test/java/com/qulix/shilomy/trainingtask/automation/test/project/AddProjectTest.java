@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.model.Project;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.AddProjectPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 /**
@@ -110,7 +112,7 @@ public class AddProjectTest {
     public void elementsDisplayed() {
         assertTrue(
             mainPage
-                .clickProjectsButton()
+                .header.clickProjectsButton()
                 .clickAddButton()
                 .elementsDisplayed()
         );
@@ -120,10 +122,11 @@ public class AddProjectTest {
     @DisplayName("Отмена создания проекта")
     public void addProjectCancel() {
         //Ролучение последнего проекта
-        Project project = mainPage.clickProjectsButton().getLastProject();
+        Project project = mainPage.header.clickProjectsButton().getLastProject();
 
         //Получение последнего проекта после отмены
         Project newProject = mainPage
+            .header
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(
@@ -133,7 +136,7 @@ public class AddProjectTest {
                     DESCRIPTION
                 )
             )
-            .clickCancelButton()
+            .cancelButton.click(new ProjectListPage(driver))
             .getLastProject();
 
         assertEquals(project, newProject);
@@ -143,9 +146,10 @@ public class AddProjectTest {
     @DisplayName("Соответствие идентификатора порядковому номеру проекта")
     public void idFormation() {
         //Получение последнего идентификатора
-        Long maxId = mainPage.clickProjectsButton().getLastProject().getId();
+        Long maxId = mainPage.header.clickProjectsButton().getLastProject().getId();
 
-        mainPage
+        Long newMaxId = mainPage
+            .header
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(
@@ -155,11 +159,9 @@ public class AddProjectTest {
                     DESCRIPTION
                 )
             )
-            .clickSaveButton();
-
-        //Получение нового последнего идентификатора
-        driver.get(MainPage.URL);
-        Long newMaxId = mainPage.clickProjectsButton().getLastProject().getId();
+            .saveButton.click(new ProjectListPage(driver))
+            .getLastProject()
+            .getId();
 
         assertEquals(maxId + 1, newMaxId);
     }
@@ -168,15 +170,15 @@ public class AddProjectTest {
     @DisplayName("Сохранение проекта при заполнении полей допустимыми буквами, цифрами и спецсимволами")
     public void lettersDigitsSpecials() {
         Project project = new Project(DIGIT_SPECIAL_NAME, DIGIT_SPECIAL_SHORTNAME, DIGIT_SPECIAL_DESCRIPTION);
-        mainPage
+        Project lastProject = mainPage
+            .header
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(project)
-            .clickSaveButton();
+            .saveButton.click(new ProjectListPage(driver))
+            .getLastProject();
 
-        //Получение добавленного проекта
-        driver.get(MainPage.URL);
-        Project lastProject = mainPage.clickProjectsButton().getLastProject();
+        //Запись идентификатора
         project.setId(lastProject.getId());
 
         assertEquals(project, lastProject);
@@ -186,15 +188,15 @@ public class AddProjectTest {
     @DisplayName("Сохранение проекта при заполнении полей  цифрами")
     public void digitsOnly() {
         Project project = new Project(DIGIT_NAME, DIGIT_SHORTNAME, DIGIT_DESCRIPTION);
-        mainPage
+        Project lastProject = mainPage
+            .header
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(project)
-            .clickSaveButton();
+            .saveButton.click(new ProjectListPage(driver))
+            .getLastProject();
 
-        //Получение добавленного проекта
-        driver.get(MainPage.URL);
-        Project lastProject = mainPage.clickProjectsButton().getLastProject();
+        //Запись идентификатора
         project.setId(lastProject.getId());
 
         assertEquals(project, lastProject);
@@ -204,15 +206,15 @@ public class AddProjectTest {
     @DisplayName("Сохранение проекта при заполнении полей минимальным количеством символов")
     public void minLength() {
         Project project = new Project(MIN_NAME, MIN_SHORTNAME, EMPTY_STRING);
-        mainPage
+        Project lastProject = mainPage
+            .header
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(project)
-            .clickSaveButton();
+            .saveButton.click(new ProjectListPage(driver))
+            .getLastProject();
 
-        //Получение добавленного проекта
-        driver.get(MainPage.URL);
-        Project lastProject = mainPage.clickProjectsButton().getLastProject();
+        //Запись идентификатора
         project.setId(lastProject.getId());
 
         assertEquals(project, lastProject);
@@ -222,15 +224,15 @@ public class AddProjectTest {
     @DisplayName("Сохранение проекта при заполнении полей максимальным количеством символов")
     public void maxLength() {
         Project project = new Project(MAX_NAME, MAX_SHORTNAME, MAX_DESCRIPTION);
-        mainPage
+        Project lastProject = mainPage
+            .header
             .clickProjectsButton()
             .clickAddButton()
             .enterProject(project)
-            .clickSaveButton();
+            .saveButton.click(new ProjectListPage(driver))
+            .getLastProject();
 
-        //Получение добавленного проекта
-        driver.get(MainPage.URL);
-        Project lastProject = mainPage.clickProjectsButton().getLastProject();
+        //Запись идентификатора
         project.setId(lastProject.getId());
 
         assertEquals(project, lastProject);
@@ -241,6 +243,7 @@ public class AddProjectTest {
     public void nameObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickAddButton()
                 .enterProject(
@@ -250,7 +253,7 @@ public class AddProjectTest {
                         DESCRIPTION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddProjectPage(driver))
                 .nameLengthLabelDisplayed()
         );
     }
@@ -260,6 +263,7 @@ public class AddProjectTest {
     public void shortNameObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickAddButton()
                 .enterProject(
@@ -269,7 +273,7 @@ public class AddProjectTest {
                         DESCRIPTION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddProjectPage(driver))
                 .shortNameLengthLabelDisplayed()
         );
     }
@@ -279,6 +283,7 @@ public class AddProjectTest {
     public void nameUniqueness() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickAddButton()
                 .enterProject(
@@ -288,7 +293,7 @@ public class AddProjectTest {
                         DESCRIPTION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddProjectPage(driver))
                 .nameExistsLabelDisplayed()
         );
     }
@@ -298,6 +303,7 @@ public class AddProjectTest {
     public void shortNameUniqueness() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickAddButton()
                 .enterProject(
@@ -307,7 +313,7 @@ public class AddProjectTest {
                         DESCRIPTION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddProjectPage(driver))
                 .shortNameExistsLabelDisplayed()
         );
     }
@@ -316,8 +322,9 @@ public class AddProjectTest {
     @DisplayName("Отображение валидационного сообщения при  заполнении полей пробелами")
     public void whitespaceValidation() {
         assertTrue(
-            mainPage.
-                clickProjectsButton()
+            mainPage
+                .header
+                .clickProjectsButton()
                 .clickAddButton()
                 .enterProject(
                     new Project(
@@ -326,7 +333,7 @@ public class AddProjectTest {
                         SPACE_SIGN.repeat(10)
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddProjectPage(driver))
                 .allInvalidLabelsDisplayed()
         );
     }
@@ -336,6 +343,7 @@ public class AddProjectTest {
     public void specialSymbolValidation() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickAddButton()
                 .enterProject(
@@ -345,7 +353,7 @@ public class AddProjectTest {
                         INVALID_SPECIAL_DESCRIPTION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddProjectPage(driver))
                 .allInvalidLabelsDisplayed()
         );
     }
@@ -355,6 +363,7 @@ public class AddProjectTest {
     public void belowMinLength() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickAddButton()
                 .enterProject(
@@ -364,7 +373,7 @@ public class AddProjectTest {
                         EMPTY_STRING
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddProjectPage(driver))
                 .minLengthLabelsDisplayed()
         );
     }
@@ -374,6 +383,7 @@ public class AddProjectTest {
     public void overMaxLength() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickAddButton()
                 .enterProject(
@@ -383,7 +393,7 @@ public class AddProjectTest {
                         OVER_MAX_DESCRIPTION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddProjectPage(driver))
                 .allLengthLabelsDisplayed()
         );
     }

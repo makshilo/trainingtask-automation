@@ -11,16 +11,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.qulix.shilomy.trainingtask.automation.model.Project;
+import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 
 /**
  * Объектная модель страницы списка проектов
  */
-public class ProjectListPage {
-
-    /**
-     * Корневой url приложения
-     */
-    private static final String ROOT_URL_PROPERTY = "rootUrl";
+public class ProjectListPage extends BasePage {
 
     /**
      * Путь списка проектов
@@ -30,7 +26,7 @@ public class ProjectListPage {
     /**
      * Url списка проектов
      */
-    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
+    public static final String URL = ROOT_URL + PATH;
 
     /**
      * Колонка Идентификатор
@@ -87,15 +83,13 @@ public class ProjectListPage {
     private static final int THIRD_INDEX = 3;
     private static final int FOURTH_INDEX = 4;
 
-    private final WebDriver driver;
-
     /**
      * Конструктор, инициализирующий веб-драйвер и элементы страницы
      *
      * @param driver веб-драйвер
      */
     public ProjectListPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 

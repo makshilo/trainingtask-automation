@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.model.Project;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.EditProjectPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 /**
@@ -56,6 +58,7 @@ public class EditProjectTest {
     public void elementsDisplayed() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickEditButton()
                 .elementsDisplayed()
@@ -66,10 +69,11 @@ public class EditProjectTest {
     @DisplayName("Отмена редактирования проекта")
     public void editProjectCancel() {
         //Получение последнего проекта
-        Project project = mainPage.clickProjectsButton().getLastProject();
+        Project project = mainPage.header.clickProjectsButton().getLastProject();
 
         //Получение проекта после отмены
         Project newProject = mainPage
+            .header
             .clickProjectsButton()
             .clickEditButton()
             .enterProject(
@@ -77,7 +81,7 @@ public class EditProjectTest {
                     NAME,
                     SHORTNAME,
                     DESCRIPTION))
-            .clickCancelButton()
+            .cancelButton.click(new ProjectListPage(driver))
             .getLastProject();
 
         assertEquals(project, newProject);
@@ -88,6 +92,7 @@ public class EditProjectTest {
     public void idInputDisabled() {
         assertFalse(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickEditButton()
                 .isIdInputEnabled()
@@ -98,8 +103,9 @@ public class EditProjectTest {
     @DisplayName("Возможность редактировать поля \"Название\", \"Сокращенное название\", \"Описание\"")
     public void editAllowed() {
         //Получение последнего проекта
-        Project project = mainPage.clickProjectsButton().getLastProject();
-        mainPage
+        Project project = mainPage.header.clickProjectsButton().getLastProject();
+        Project updatedProject = mainPage
+            .header
             .clickProjectsButton()
             .clickEditButton()
             .enterProject(
@@ -107,10 +113,10 @@ public class EditProjectTest {
                     NAME,
                     SHORTNAME,
                     DESCRIPTION))
-            .clickSaveButton();
+            .saveButton.click(new ProjectListPage(driver))
+            .getLastProject();
 
-        //Получение обновлённого проекта
-        Project updatedProject = mainPage.clickProjectsButton().getLastProject();
+        //Запись идентификатора
         project.setId(updatedProject.getId());
 
         assertNotEquals(updatedProject, project);
@@ -121,10 +127,11 @@ public class EditProjectTest {
     public void emptyValidation() {
         assertTrue(
             mainPage
+                .header
                 .clickProjectsButton()
                 .clickEditButton()
                 .clearInputs()
-                .clickSaveButton()
+                .saveButton.click(new EditProjectPage(driver))
                 .minLengthLabelsDisplayed()
         );
     }

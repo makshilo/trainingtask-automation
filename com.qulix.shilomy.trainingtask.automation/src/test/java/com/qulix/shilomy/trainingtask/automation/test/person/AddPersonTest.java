@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.model.Person;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.AddPersonPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 
@@ -107,6 +109,7 @@ public class AddPersonTest {
     public void elementsDisplayed() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickAddButton()
                 .elementsDisplayed()
@@ -117,10 +120,11 @@ public class AddPersonTest {
     @DisplayName("Отмена добавления персоны")
     public void addPersonCancel() {
         //Получение последней персоны
-        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
+        Person lastPerson = mainPage.header.clickPersonsButton().getLastPerson();
 
         //Отмена добавления персоны
         Person newLastPerson = mainPage
+            .header
             .clickPersonsButton()
             .clickAddButton()
             .enterPerson(
@@ -131,7 +135,7 @@ public class AddPersonTest {
                     POSITION
                 )
             )
-            .clickCancelButton()
+            .cancelButton.click(new PersonListPage(driver))
             .getLastPerson();
 
         assertEquals(lastPerson, newLastPerson);
@@ -141,18 +145,17 @@ public class AddPersonTest {
     @DisplayName("Соответствие идентификатора порядковому номеру персоны")
     public void idFormation() {
         //Получение последнего идентификатора
-        Long maxId = mainPage.clickPersonsButton().getLastPerson().getId();
+        Long maxId = mainPage.header.clickPersonsButton().getLastPerson().getId();
 
         //Добавление новой персоны
-        mainPage
+        Long newMaxId = mainPage
+            .header
             .clickPersonsButton()
             .clickAddButton()
             .enterPerson(new Person(SURNAME, NAME, PATRONYMIC, POSITION))
-            .clickSaveButton();
-
-        //Получение нового последнего идентификатора
-        driver.get(MainPage.URL);
-        Long newMaxId = mainPage.clickPersonsButton().getLastPerson().getId();
+            .saveButton.click(new PersonListPage(driver))
+            .getLastPerson()
+            .getId();
 
         assertEquals(newMaxId, maxId + 1);
     }
@@ -161,15 +164,16 @@ public class AddPersonTest {
     @DisplayName("Сохранение персоны с допустимыми буквами и спецсимволами")
     public void lettersSpecials() {
         Person person = new Person(SPECIAL_SURNAME, SPECIAL_NAME, SPECIAL_PATRONYMIC, SPECIAL_POSITION);
-        mainPage
+
+        Person lastPerson = mainPage
+            .header
             .clickPersonsButton()
             .clickAddButton()
             .enterPerson(person)
-            .clickSaveButton();
+            .saveButton.click(new PersonListPage(driver))
+            .getLastPerson();
 
-        //Получение добавленной персоны
-        driver.get(MainPage.URL);
-        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
+        //Запись идентификатора
         person.setId(lastPerson.getId());
 
         assertEquals(lastPerson, person);
@@ -179,15 +183,15 @@ public class AddPersonTest {
     @DisplayName("Сохранение персоны c минимальным количеством символов")
     public void minLength() {
         Person person = new Person(MIN_SURNAME, MIN_NAME, MIN_PATRONYMIC, MIN_POSITION);
-        mainPage
+        Person lastPerson = mainPage
+            .header
             .clickPersonsButton()
             .clickAddButton()
             .enterPerson(person)
-            .clickSaveButton();
+            .saveButton.click(new PersonListPage(driver))
+            .getLastPerson();
 
-        //Получение добавленной персоны
-        driver.get(MainPage.URL);
-        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
+        //Запись идентификатора
         person.setId(lastPerson.getId());
 
         assertEquals(lastPerson, person);
@@ -197,15 +201,15 @@ public class AddPersonTest {
     @DisplayName("Сохранение персоны c максимальным количеством символов")
     public void maxLength() {
         Person person = new Person(MAX_SURNAME, MAX_NAME, MAX_PATRONYMIC, MAX_POSITION);
-        mainPage
+        Person lastPerson = mainPage
+            .header
             .clickPersonsButton()
             .clickAddButton()
             .enterPerson(person)
-            .clickSaveButton();
+            .saveButton.click(new PersonListPage(driver))
+            .getLastPerson();
 
-        //Получение добавленной персоны
-        driver.get(MainPage.URL);
-        Person lastPerson = mainPage.clickPersonsButton().getLastPerson();
+        //Запись идентификатора
         person.setId(lastPerson.getId());
 
         assertEquals(lastPerson, person);
@@ -216,6 +220,7 @@ public class AddPersonTest {
     public void surnameObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickAddButton()
                 .enterPerson(
@@ -226,7 +231,7 @@ public class AddPersonTest {
                         POSITION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddPersonPage(driver))
                 .surnameLengthLabelDisplayed()
         );
     }
@@ -236,6 +241,7 @@ public class AddPersonTest {
     public void nameObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickAddButton()
                 .enterPerson(
@@ -246,7 +252,7 @@ public class AddPersonTest {
                         POSITION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddPersonPage(driver))
                 .nameLengthLabelDisplayed()
         );
     }
@@ -256,6 +262,7 @@ public class AddPersonTest {
     public void patronymicObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickAddButton()
                 .enterPerson(
@@ -266,7 +273,7 @@ public class AddPersonTest {
                         POSITION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddPersonPage(driver))
                 .patronymicLengthLabelDisplayed()
         );
     }
@@ -276,6 +283,7 @@ public class AddPersonTest {
     public void positionObligation() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickAddButton()
                 .enterPerson(
@@ -286,7 +294,7 @@ public class AddPersonTest {
                         EMPTY_STRING
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddPersonPage(driver))
                 .positionLengthLabelDisplayed()
         );
     }
@@ -298,6 +306,7 @@ public class AddPersonTest {
 
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickAddButton()
                 .enterPerson(
@@ -308,7 +317,7 @@ public class AddPersonTest {
                         whitespaceString
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddPersonPage(driver))
                 .allInvalidLabelsDisplayed()
         );
     }
@@ -318,6 +327,7 @@ public class AddPersonTest {
     public void specialSymbolValidation() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickAddButton()
                 .enterPerson(
@@ -328,7 +338,7 @@ public class AddPersonTest {
                         INVALID_SPECIAL_POSITION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddPersonPage(driver))
                 .allInvalidLabelsDisplayed()
         );
     }
@@ -338,6 +348,7 @@ public class AddPersonTest {
     public void belowMinLength() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickAddButton()
                 .enterPerson(
@@ -348,7 +359,7 @@ public class AddPersonTest {
                         BELOW_MIN_POSITION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddPersonPage(driver))
                 .allLengthLabelsDisplayed()
         );
     }
@@ -358,6 +369,7 @@ public class AddPersonTest {
     public void overMaxLength() {
         assertTrue(
             mainPage
+                .header
                 .clickPersonsButton()
                 .clickAddButton()
                 .enterPerson(
@@ -368,7 +380,7 @@ public class AddPersonTest {
                         OVER_MAX_POSITION
                     )
                 )
-                .clickSaveButton()
+                .saveButton.click(new AddPersonPage(driver))
                 .allLengthLabelsDisplayed()
         );
     }

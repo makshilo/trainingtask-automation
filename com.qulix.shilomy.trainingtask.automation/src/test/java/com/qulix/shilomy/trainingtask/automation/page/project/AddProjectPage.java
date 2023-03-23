@@ -5,17 +5,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.CancelButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.SaveButton;
 import com.qulix.shilomy.trainingtask.automation.model.Project;
+import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 
 /**
  * Объектная модель страницы добавления проекта
  */
-public class AddProjectPage {
-
-    /**
-     * Корневой url приложения
-     */
-    private static final String ROOT_URL_PROPERTY = "rootUrl";
+public class AddProjectPage extends BasePage {
 
     /**
      * Путь страницы добавления проекта
@@ -25,7 +23,7 @@ public class AddProjectPage {
     /**
      * Url страницы добавления проекта
      */
-    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
+    public static final String URL = ROOT_URL + PATH;
 
     /**
      * Лейбл формы добавления проектов
@@ -102,16 +100,12 @@ public class AddProjectPage {
     /**
      * Кнопка сохранить
      */
-    @FindBy(xpath = "//input[@value='Сохранить']")
-    private WebElement saveButton;
+    public final SaveButton saveButton = new SaveButton(driver);
 
     /**
-     * Кнопка отмена
+     * Кнопка Отмена
      */
-    @FindBy(xpath = "//button[contains(text(), 'Отмена')]")
-    private WebElement cancelButton;
-
-    private final WebDriver driver;
+    public final CancelButton cancelButton = new CancelButton(driver);
 
     /**
      * Конструктор, инициализирующий веб-драйвер и элементы страницы
@@ -119,7 +113,7 @@ public class AddProjectPage {
      * @param driver веб-драйвер
      */
     public AddProjectPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -153,26 +147,6 @@ public class AddProjectPage {
         descriptionInput.sendKeys(project.getDescription());
 
         return this;
-    }
-
-    /**
-     * Клик по кнопке сохранить
-     *
-     * @return текущее состояние страницы
-     */
-    public AddProjectPage clickSaveButton() {
-        saveButton.click();
-        return this;
-    }
-
-    /**
-     * Клик по кнопке отмена
-     *
-     * @return текущее состояние страницы
-     */
-    public ProjectListPage clickCancelButton() {
-        cancelButton.click();
-        return new ProjectListPage(driver);
     }
 
     /**

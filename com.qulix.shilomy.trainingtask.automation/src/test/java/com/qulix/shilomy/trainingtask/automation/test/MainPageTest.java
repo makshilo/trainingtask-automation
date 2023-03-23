@@ -61,21 +61,21 @@ public class MainPageTest {
     @Test
     @DisplayName("Переход на форму \"Список проектов\"")
     public void toProjectList() {
-        mainPage.clickProjectsButton();
+        mainPage.header.clickProjectsButton();
         assertEquals(ProjectListPage.URL, driver.getCurrentUrl());
     }
 
     @Test
     @DisplayName("Переход на форму \"Список задач\"")
     public void toTaskList() {
-        mainPage.clickTasksButton();
+        mainPage.header.clickTasksButton();
         assertEquals(TaskListPage.URL, driver.getCurrentUrl());
     }
 
     @Test
     @DisplayName("Переход на форму \"Список персон\"")
     public void toPersonList() {
-        mainPage.clickPersonsButton();
+        mainPage.header.clickPersonsButton();
         assertEquals(PersonListPage.URL, driver.getCurrentUrl());
     }
 

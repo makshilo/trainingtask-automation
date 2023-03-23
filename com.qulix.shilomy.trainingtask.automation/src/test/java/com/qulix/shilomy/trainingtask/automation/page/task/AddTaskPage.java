@@ -9,18 +9,16 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.CancelButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.SaveButton;
 import com.qulix.shilomy.trainingtask.automation.model.Person;
 import com.qulix.shilomy.trainingtask.automation.model.Task;
+import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 
 /**
  * Объектная модель страницы добавления задачи
  */
-public class AddTaskPage {
-
-    /**
-     * Корневой url приложения
-     */
-    private static final String ROOT_URL_PROPERTY = "rootUrl";
+public class AddTaskPage extends BasePage {
 
     /**
      * Путь страницы добавления задачи
@@ -30,7 +28,7 @@ public class AddTaskPage {
     /**
      * Url страницы добавления задачи
      */
-    public static final String URL = System.getenv(ROOT_URL_PROPERTY) + PATH;
+    public static final String URL = ROOT_URL + PATH;
 
     /**
      * Лейбл формы добавления задач
@@ -147,21 +145,19 @@ public class AddTaskPage {
     private WebElement projectInvalidLabel;
 
     /**
-     * Кнопка Сохранить
+     * Кнопка сохранить
      */
-    @FindBy(xpath = "//input[@value='Сохранить']")
-    private WebElement saveButton;
+    public final SaveButton saveButton = new SaveButton(driver);
 
     /**
      * Кнопка Отмена
      */
-    @FindBy(xpath = "//button[contains(text(), 'Отмена')]")
-    private WebElement cancelButton;
+    public final CancelButton cancelButton = new CancelButton(driver);
 
-    private final WebDriver driver;
+    private static final String VALUE = "value";
 
     public AddTaskPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -246,7 +242,7 @@ public class AddTaskPage {
      */
     public AddTaskPage selectExecutorsFromList(List<Person> executors) {
         executorCheckboxes.forEach(c -> executors.forEach(e -> {
-            if (c.getAttribute("value").equals(e.getId().toString())) {
+            if (c.getAttribute(VALUE).equals(e.getId().toString())) {
                 c.click();
             }
         }));
@@ -295,26 +291,6 @@ public class AddTaskPage {
     public String getSelectedProject() {
         Select projectChoice = new Select(projectSelect);
         return projectChoice.getFirstSelectedOption().getText();
-    }
-
-    /**
-     * Клик по кнопке сохранить
-     *
-     * @return текущее состояние страницы
-     */
-    public AddTaskPage clickSaveButton() {
-        saveButton.click();
-        return this;
-    }
-
-    /**
-     * Клик по кнопке отмена
-     *
-     * @return страница списка задач
-     */
-    public TaskListPage clickCancelButton() {
-        cancelButton.click();
-        return new TaskListPage(driver);
     }
 
     /**
