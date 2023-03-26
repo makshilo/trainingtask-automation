@@ -135,7 +135,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .elementsDisplayed()
         );
     }
@@ -150,7 +150,7 @@ public class AddTaskTest {
         Task newLastRow = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(
                 new Task(
                     getProject(FIRST_INDEX),
@@ -162,7 +162,7 @@ public class AddTaskTest {
                     TaskStatus.of(STATUS_IN_PROCESS)
                 )
             )
-            .cancelButton.click(new TaskListPage(driver))
+            .cancelButton.click(TaskListPage.class)
             .getLastTask();
 
         assertEquals(lastRow, newLastRow);
@@ -184,9 +184,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -203,7 +204,7 @@ public class AddTaskTest {
         Long newMaxId = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(
                 new Task(
                     getProject(FIRST_INDEX),
@@ -215,7 +216,7 @@ public class AddTaskTest {
                     TaskStatus.of(STATUS_IN_PROCESS)
                 )
             )
-            .saveButton.click(new TaskListPage(driver))
+            .saveButton.click(TaskListPage.class)
             .getLastTask().getId();
 
         assertEquals(newMaxId, maxId + 1);
@@ -237,9 +238,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -263,9 +265,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -289,9 +292,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -315,9 +319,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -341,9 +346,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -367,9 +373,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -393,9 +400,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -419,9 +427,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -445,9 +454,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -471,9 +481,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
-            .saveButton.click(new TaskListPage(driver)).getLastTask();
+            .saveButton.click(TaskListPage.class)
+            .getLastTask();
 
         //Запись идентификатора
         task.setId(lastTask.getId());
@@ -497,10 +508,10 @@ public class AddTaskTest {
         Task lastTask = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .enterTask(task)
             .selectAllExecutors()
-            .saveButton.click(new TaskListPage(driver))
+            .saveButton.click(TaskListPage.class)
             .getLastTask();
 
         //Запись идентификатора
@@ -516,7 +527,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -528,7 +539,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_POSTPONED)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .nameWorkInvalidLabelDisplayed()
         );
     }
@@ -540,7 +551,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -552,7 +563,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_POSTPONED)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .nameWorkInvalidLabelDisplayed()
         );
     }
@@ -564,7 +575,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -576,7 +587,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_POSTPONED)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .nameLengthLabelDisplayed()
         );
     }
@@ -588,7 +599,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -600,7 +611,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_POSTPONED)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .nameWorkLengthLabelDisplayed()
         );
     }
@@ -612,7 +623,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -624,7 +635,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .dateCollisionLabelDisplayed()
         );
     }
@@ -636,7 +647,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -648,7 +659,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .allDateInvalidLabelsDisplayed()
         );
     }
@@ -660,7 +671,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -672,7 +683,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .allDateInvalidLabelsDisplayed()
         );
     }
@@ -684,7 +695,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .selectStatusByText(STATUS_POSTPONED)
                 .selectStatusByText(STATUS_COMPLETED)
                 .getSelectedStatus(),
@@ -698,7 +709,7 @@ public class AddTaskTest {
         String choice = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .selectProjectByIndex(FIRST_INDEX)
             .selectProjectByIndex(SECOND_INDEX)
             .getSelectedProject();
@@ -708,7 +719,7 @@ public class AddTaskTest {
         String project = mainPage
             .header
             .clickTasksButton()
-            .clickAddButton()
+            .addButton.click(AddTaskPage.class)
             .selectProjectByIndex(SECOND_INDEX)
             .getSelectedProject();
 
@@ -722,7 +733,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -734,7 +745,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .nameLengthLabelDisplayed()
         );
     }
@@ -746,7 +757,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -758,7 +769,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .workLengthLabelDisplayed()
         );
     }
@@ -770,7 +781,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -782,7 +793,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .startDateInvalidLabelDisplayed()
         );
     }
@@ -794,7 +805,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -806,7 +817,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .endDateInvalidLabelDisplayed()
         );
     }
@@ -818,7 +829,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -830,7 +841,7 @@ public class AddTaskTest {
                         null
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .statusInvalidLabelDisplayed()
         );
     }
@@ -842,7 +853,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         getProject(FIRST_INDEX),
@@ -854,7 +865,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .executorInvalidLabelDisplayed()
         );
     }
@@ -866,7 +877,7 @@ public class AddTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickAddButton()
+                .addButton.click(AddTaskPage.class)
                 .enterTask(
                     new Task(
                         null,
@@ -878,7 +889,7 @@ public class AddTaskTest {
                         TaskStatus.of(STATUS_IN_PROCESS)
                     )
                 )
-                .saveButton.click(new AddTaskPage(driver))
+                .saveButton.click(AddTaskPage.class)
                 .projectInvalidLabelDisplayed()
         );
     }

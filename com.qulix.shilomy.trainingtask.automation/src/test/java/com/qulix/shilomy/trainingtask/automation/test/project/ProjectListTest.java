@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.page.project.AddProjectPage;
 import com.qulix.shilomy.trainingtask.automation.page.project.EditProjectPage;
+import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 /**
@@ -61,7 +62,7 @@ public class ProjectListTest {
         mainPage
             .header
             .clickProjectsButton()
-            .clickAddButton();
+            .addButton.click(AddProjectPage.class);
 
         assertTrue(driver.getCurrentUrl().contains(AddProjectPage.URL));
     }
@@ -72,7 +73,7 @@ public class ProjectListTest {
         mainPage
             .header
             .clickProjectsButton()
-            .clickEditButton();
+            .editButton.click(EditProjectPage.class);
 
         assertTrue(driver.getCurrentUrl().contains(EditProjectPage.URL));
     }
@@ -89,7 +90,7 @@ public class ProjectListTest {
         Long newLastId = mainPage
             .header
             .clickProjectsButton()
-            .clickDeleteButton()
+            .deleteButton.click(ProjectListPage.class)
             .getProjectByIndex(FIRST_INDEX)
             .getId();
 

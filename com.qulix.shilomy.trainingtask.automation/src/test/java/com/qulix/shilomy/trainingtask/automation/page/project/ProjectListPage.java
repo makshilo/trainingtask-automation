@@ -10,6 +10,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.AddButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.DeleteButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.EditButton;
 import com.qulix.shilomy.trainingtask.automation.model.Project;
 import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 
@@ -53,28 +56,25 @@ public class ProjectListPage extends BasePage {
     private WebElement descriptionColumn;
 
     /**
-     * Кнопка Добавить
+     * Кнопка добавления проекта
      */
-    @FindBy(xpath = "//button[contains(text(),'Добавить')]")
-    private WebElement addButton;
-
-    /**
-     * Последняя кнопка Изменить
-     */
-    @FindBy(xpath = "//tbody/tr[last()]//button[contains(text(), 'Изменить')]")
-    private WebElement editButton;
-
-    /**
-     * Первая кнопка Удалить
-     */
-    @FindBy(xpath = "//tbody//button[contains(text(), 'Удалить')]")
-    private WebElement deleteButton;
+    public AddButton addButton = new AddButton(driver);
 
     /**
      * Строка таблицы
      */
-    @FindBy(xpath = "//tbody/tr")
-    private List<WebElement> tableRows;
+    private final List<WebElement> tableRows = driver.findElements(By.xpath("//tbody/tr"));
+
+    /**
+     * Последняя кнопка Изменить
+     */
+    public EditButton editButton = new EditButton(tableRows.size(), driver);
+
+    /**
+     * Первая кнопка Удалить
+     */
+    public DeleteButton deleteButton = new DeleteButton(FIRST_INDEX, driver);
+
 
     private static final String TABLE_CELL = "//tbody/tr[%d]/td[%d]";
 
@@ -106,36 +106,6 @@ public class ProjectListPage extends BasePage {
             && addButton.isDisplayed()
             && editButton.isDisplayed()
             && deleteButton.isDisplayed();
-    }
-
-    /**
-     * Клик по кнопке Добавить
-     *
-     * @return объект AddEmployeePage
-     */
-    public AddProjectPage clickAddButton() {
-        addButton.click();
-        return new AddProjectPage(driver);
-    }
-
-    /**
-     * Клик по кнопке Изменить
-     *
-     * @return объект EditProjectPage
-     */
-    public EditProjectPage clickEditButton() {
-        editButton.click();
-        return new EditProjectPage(driver);
-    }
-
-    /**
-     * Клик по кнопке Удалить
-     *
-     * @return объект ProjectListPage
-     */
-    public ProjectListPage clickDeleteButton() {
-        deleteButton.click();
-        return new ProjectListPage(driver);
     }
 
     /**

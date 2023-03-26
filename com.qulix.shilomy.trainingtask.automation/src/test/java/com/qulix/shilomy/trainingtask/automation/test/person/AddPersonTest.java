@@ -111,7 +111,7 @@ public class AddPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickAddButton()
+                .addButton.click(AddPersonPage.class)
                 .elementsDisplayed()
         );
     }
@@ -126,7 +126,7 @@ public class AddPersonTest {
         Person newLastPerson = mainPage
             .header
             .clickPersonsButton()
-            .clickAddButton()
+            .addButton.click(AddPersonPage.class)
             .enterPerson(
                 new Person(
                     SURNAME,
@@ -135,7 +135,7 @@ public class AddPersonTest {
                     POSITION
                 )
             )
-            .cancelButton.click(new PersonListPage(driver))
+            .cancelButton.click(PersonListPage.class)
             .getLastPerson();
 
         assertEquals(lastPerson, newLastPerson);
@@ -151,9 +151,9 @@ public class AddPersonTest {
         Long newMaxId = mainPage
             .header
             .clickPersonsButton()
-            .clickAddButton()
+            .addButton.click(AddPersonPage.class)
             .enterPerson(new Person(SURNAME, NAME, PATRONYMIC, POSITION))
-            .saveButton.click(new PersonListPage(driver))
+            .saveButton.click(PersonListPage.class)
             .getLastPerson()
             .getId();
 
@@ -168,9 +168,9 @@ public class AddPersonTest {
         Person lastPerson = mainPage
             .header
             .clickPersonsButton()
-            .clickAddButton()
+            .addButton.click(AddPersonPage.class)
             .enterPerson(person)
-            .saveButton.click(new PersonListPage(driver))
+            .saveButton.click(PersonListPage.class)
             .getLastPerson();
 
         //Запись идентификатора
@@ -186,9 +186,9 @@ public class AddPersonTest {
         Person lastPerson = mainPage
             .header
             .clickPersonsButton()
-            .clickAddButton()
+            .addButton.click(AddPersonPage.class)
             .enterPerson(person)
-            .saveButton.click(new PersonListPage(driver))
+            .saveButton.click(PersonListPage.class)
             .getLastPerson();
 
         //Запись идентификатора
@@ -204,9 +204,9 @@ public class AddPersonTest {
         Person lastPerson = mainPage
             .header
             .clickPersonsButton()
-            .clickAddButton()
+            .addButton.click(AddPersonPage.class)
             .enterPerson(person)
-            .saveButton.click(new PersonListPage(driver))
+            .saveButton.click(PersonListPage.class)
             .getLastPerson();
 
         //Запись идентификатора
@@ -222,7 +222,7 @@ public class AddPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickAddButton()
+                .addButton.click(AddPersonPage.class)
                 .enterPerson(
                     new Person(
                         EMPTY_STRING,
@@ -231,7 +231,7 @@ public class AddPersonTest {
                         POSITION
                     )
                 )
-                .saveButton.click(new AddPersonPage(driver))
+                .saveButton.click(AddPersonPage.class)
                 .surnameLengthLabelDisplayed()
         );
     }
@@ -243,7 +243,7 @@ public class AddPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickAddButton()
+                .addButton.click(AddPersonPage.class)
                 .enterPerson(
                     new Person(
                         SURNAME,
@@ -252,7 +252,7 @@ public class AddPersonTest {
                         POSITION
                     )
                 )
-                .saveButton.click(new AddPersonPage(driver))
+                .saveButton.click(AddPersonPage.class)
                 .nameLengthLabelDisplayed()
         );
     }
@@ -264,7 +264,7 @@ public class AddPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickAddButton()
+                .addButton.click(AddPersonPage.class)
                 .enterPerson(
                     new Person(
                         SURNAME,
@@ -273,7 +273,7 @@ public class AddPersonTest {
                         POSITION
                     )
                 )
-                .saveButton.click(new AddPersonPage(driver))
+                .saveButton.click(AddPersonPage.class)
                 .patronymicLengthLabelDisplayed()
         );
     }
@@ -285,7 +285,7 @@ public class AddPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickAddButton()
+                .addButton.click(AddPersonPage.class)
                 .enterPerson(
                     new Person(
                         SURNAME,
@@ -294,7 +294,7 @@ public class AddPersonTest {
                         EMPTY_STRING
                     )
                 )
-                .saveButton.click(new AddPersonPage(driver))
+                .saveButton.click(AddPersonPage.class)
                 .positionLengthLabelDisplayed()
         );
     }
@@ -308,7 +308,7 @@ public class AddPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickAddButton()
+                .addButton.click(AddPersonPage.class)
                 .enterPerson(
                     new Person(
                         whitespaceString,
@@ -317,7 +317,7 @@ public class AddPersonTest {
                         whitespaceString
                     )
                 )
-                .saveButton.click(new AddPersonPage(driver))
+                .saveButton.click(AddPersonPage.class)
                 .allInvalidLabelsDisplayed()
         );
     }
@@ -329,7 +329,7 @@ public class AddPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickAddButton()
+                .addButton.click(AddPersonPage.class)
                 .enterPerson(
                     new Person(
                         INVALID_SPECIAL_SURNAME,
@@ -338,7 +338,7 @@ public class AddPersonTest {
                         INVALID_SPECIAL_POSITION
                     )
                 )
-                .saveButton.click(new AddPersonPage(driver))
+                .saveButton.click(AddPersonPage.class)
                 .allInvalidLabelsDisplayed()
         );
     }
@@ -350,7 +350,7 @@ public class AddPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickAddButton()
+                .addButton.click(AddPersonPage.class)
                 .enterPerson(
                     new Person(
                         BELOW_MIN_SURNAME,
@@ -359,7 +359,7 @@ public class AddPersonTest {
                         BELOW_MIN_POSITION
                     )
                 )
-                .saveButton.click(new AddPersonPage(driver))
+                .saveButton.click(AddPersonPage.class)
                 .allLengthLabelsDisplayed()
         );
     }
@@ -371,7 +371,7 @@ public class AddPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickAddButton()
+                .addButton.click(AddPersonPage.class)
                 .enterPerson(
                     new Person(
                         OVER_MAX_SURNAME,
@@ -380,7 +380,7 @@ public class AddPersonTest {
                         OVER_MAX_POSITION
                     )
                 )
-                .saveButton.click(new AddPersonPage(driver))
+                .saveButton.click(AddPersonPage.class)
                 .allLengthLabelsDisplayed()
         );
     }

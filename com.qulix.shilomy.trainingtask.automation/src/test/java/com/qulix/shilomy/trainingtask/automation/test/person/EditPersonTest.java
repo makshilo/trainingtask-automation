@@ -61,7 +61,7 @@ public class EditPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickEditButton()
+                .editButton.click(EditPersonPage.class)
                 .elementsDisplayed()
         );
     }
@@ -77,8 +77,8 @@ public class EditPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickEditButton()
-                .cancelButton.click(new PersonListPage(driver))
+                .editButton.click(EditPersonPage.class)
+                .cancelButton.click(PersonListPage.class)
                 .getLastPerson();
 
         assertEquals(lastPerson, newLastPerson);
@@ -91,7 +91,7 @@ public class EditPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickEditButton()
+                .editButton.click(EditPersonPage.class)
                 .isIdInputEnabled()
         );
     }
@@ -105,7 +105,7 @@ public class EditPersonTest {
         Person updatedPerson = mainPage
             .header
             .clickPersonsButton()
-            .clickEditButton()
+            .editButton.click(EditPersonPage.class)
             .enterPerson(
                 new Person(
                     SURNAME,
@@ -114,7 +114,7 @@ public class EditPersonTest {
                     POSITION
                 )
             )
-            .saveButton.click(new PersonListPage(driver))
+            .saveButton.click(PersonListPage.class)
             .getLastPerson();
 
         assertNotEquals(person, updatedPerson);
@@ -127,9 +127,9 @@ public class EditPersonTest {
             mainPage
                 .header
                 .clickPersonsButton()
-                .clickEditButton()
+                .editButton.click(EditPersonPage.class)
                 .clearInputs()
-                .saveButton.click(new EditPersonPage(driver))
+                .saveButton.click(EditPersonPage.class)
                 .allLengthLabelsDisplayed()
         );
     }

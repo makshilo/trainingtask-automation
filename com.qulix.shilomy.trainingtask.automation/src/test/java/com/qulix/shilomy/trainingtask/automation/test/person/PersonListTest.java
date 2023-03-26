@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.page.person.AddPersonPage;
 import com.qulix.shilomy.trainingtask.automation.page.person.EditPersonPage;
+import com.qulix.shilomy.trainingtask.automation.page.person.PersonListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 /**
@@ -61,7 +62,7 @@ public class PersonListTest {
         mainPage
             .header
             .clickPersonsButton()
-            .clickAddButton();
+            .addButton.click(AddPersonPage.class);
 
         assertEquals(AddPersonPage.URL, driver.getCurrentUrl());
     }
@@ -72,7 +73,7 @@ public class PersonListTest {
         mainPage
             .header
             .clickPersonsButton()
-            .clickEditButton();
+            .editButton.click(EditPersonPage.class);
 
         assertEquals(EditPersonPage.URL, driver.getCurrentUrl());
     }
@@ -80,18 +81,20 @@ public class PersonListTest {
     @Test
     @DisplayName("Удаление персоны")
     public void deletePerson() {
-        Long lastId = mainPage
+        Long firstId = mainPage
             .header
             .clickPersonsButton()
-            .getFirstId();
+            .getPersonByIndex(1)
+            .getId();
 
-        Long newLastId = mainPage
+        Long newFirstId = mainPage
             .header
             .clickPersonsButton()
-            .clickDeleteButton()
-            .getFirstId();
+            .deleteButton.click(PersonListPage.class)
+            .getPersonByIndex(1)
+            .getId();
 
-        assertNotSame(lastId, newLastId);
+        assertNotSame(firstId, newFirstId);
     }
 
     /**

@@ -71,7 +71,7 @@ public class EditTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickEditButton()
+                .editButton.click(EditTaskPage.class)
                 .elementsDisplayed()
         );
     }
@@ -84,7 +84,7 @@ public class EditTaskTest {
         Task newLastTask = mainPage
             .header
             .clickTasksButton()
-            .clickEditButton()
+            .editButton.click(EditTaskPage.class)
             .enterTask(
                 new Task(
                     getProject(FIRST_INDEX),
@@ -96,7 +96,7 @@ public class EditTaskTest {
                     TaskStatus.of(STATUS_NOT_STARTED)
                 )
             )
-            .cancelButton.click(new TaskListPage(driver))
+            .cancelButton.click(TaskListPage.class)
             .getLastTask();
 
         assertEquals(task, newLastTask);
@@ -109,7 +109,7 @@ public class EditTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickEditButton()
+                .editButton.click(EditTaskPage.class)
                 .isIdInputEnabled()
         );
     }
@@ -122,7 +122,7 @@ public class EditTaskTest {
         Task updatedTask = mainPage
             .header
             .clickTasksButton()
-            .clickEditButton()
+            .editButton.click(EditTaskPage.class)
             .enterTask(
                 new Task(
                     getProject(SECOND_INDEX),
@@ -134,7 +134,7 @@ public class EditTaskTest {
                     TaskStatus.of(STATUS_NOT_STARTED)
                 )
             )
-            .saveButton.click(new TaskListPage(driver))
+            .saveButton.click(TaskListPage.class)
             .getLastTask();
 
         assertNotEquals(task, updatedTask);
@@ -147,9 +147,9 @@ public class EditTaskTest {
             mainPage
                 .header
                 .clickTasksButton()
-                .clickEditButton()
+                .editButton.click(EditTaskPage.class)
                 .clearInputs()
-                .saveButton.click(new EditTaskPage(driver))
+                .saveButton.click(EditTaskPage.class)
                 .allValidationMessagesDisplayed()
         );
     }

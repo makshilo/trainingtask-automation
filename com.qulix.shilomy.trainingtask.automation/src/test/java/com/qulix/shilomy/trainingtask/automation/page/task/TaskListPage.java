@@ -8,6 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.AddButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.DeleteButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.EditButton;
 import com.qulix.shilomy.trainingtask.automation.model.Task;
 import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 
@@ -25,6 +28,7 @@ public class TaskListPage extends BasePage {
      * Url списка задач
      */
     public static final String URL = ROOT_URL + PATH;
+
 
     /**
      * Колонка Идентификатор
@@ -69,30 +73,28 @@ public class TaskListPage extends BasePage {
     private WebElement statusColumn;
 
     /**
-     * Кнопка Добавить
+     * Кнопка добавления задачи
      */
-    @FindBy(xpath = "//button[contains(text(),'Добавить')]")
-    private WebElement addButton;
+    public AddButton addButton = new AddButton(driver);
 
     /**
-     * Кнопка Изменить
+     * Список строк таблицы
      */
-    @FindBy(xpath = "//tbody/tr[last()]//button[contains(text(), 'Изменить')]")
-    private WebElement editButton;
+    private final List<WebElement> tableRows = driver.findElements(By.xpath("//tbody/tr"));
 
     /**
-     * Кнопка Удалить
+     * Последняя кнопка Изменить
      */
-    @FindBy(xpath = "//tbody/tr[last()]//button[contains(text(), 'Удалить')]")
-    private WebElement deleteButton;
+    public EditButton editButton = new EditButton(tableRows.size(), driver);
 
     /**
-     * Строка таблицы
+     * Первая кнопка Удалить
      */
-    @FindBy(xpath = "//tbody/tr")
-    private List<WebElement> tableRows;
+    public DeleteButton deleteButton = new DeleteButton(FIRST_INDEX, driver);
 
     private static final String EDIT_BUTTON = "//tbody/tr[%d]//button[contains(text(), 'Изменить')]";
+
+    private static final int FIRST_INDEX = 1;
 
     /**
      * Конструктор, инициализирующий веб-драйвер и элементы страницы
@@ -120,36 +122,6 @@ public class TaskListPage extends BasePage {
             && addButton.isDisplayed()
             && editButton.isDisplayed()
             && deleteButton.isDisplayed();
-    }
-
-    /**
-     * Клик по кнопке добавления задачи
-     *
-     * @return объект AddTaskPage
-     */
-    public AddTaskPage clickAddButton() {
-        addButton.click();
-        return new AddTaskPage(driver);
-    }
-
-    /**
-     * Клик по кнопке Изменить
-     *
-     * @return объект EditProjectPage
-     */
-    public EditTaskPage clickEditButton() {
-        editButton.click();
-        return new EditTaskPage(driver);
-    }
-
-    /**
-     * Клик по кнопке Удалить
-     *
-     * @return объект TaskListPage
-     */
-    public TaskListPage clickDeleteButton() {
-        deleteButton.click();
-        return new TaskListPage(driver);
     }
 
     /**

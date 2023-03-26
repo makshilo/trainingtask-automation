@@ -60,7 +60,7 @@ public class EditProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickEditButton()
+                .editButton.click(EditProjectPage.class)
                 .elementsDisplayed()
         );
     }
@@ -75,13 +75,13 @@ public class EditProjectTest {
         Project newProject = mainPage
             .header
             .clickProjectsButton()
-            .clickEditButton()
+            .editButton.click(EditProjectPage.class)
             .enterProject(
                 new Project(
                     NAME,
                     SHORTNAME,
                     DESCRIPTION))
-            .cancelButton.click(new ProjectListPage(driver))
+            .cancelButton.click(ProjectListPage.class)
             .getLastProject();
 
         assertEquals(project, newProject);
@@ -94,7 +94,7 @@ public class EditProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickEditButton()
+                .editButton.click(EditProjectPage.class)
                 .isIdInputEnabled()
         );
     }
@@ -107,13 +107,13 @@ public class EditProjectTest {
         Project updatedProject = mainPage
             .header
             .clickProjectsButton()
-            .clickEditButton()
+            .editButton.click(EditProjectPage.class)
             .enterProject(
                 new Project(
                     NAME,
                     SHORTNAME,
                     DESCRIPTION))
-            .saveButton.click(new ProjectListPage(driver))
+            .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
         //Запись идентификатора
@@ -129,9 +129,9 @@ public class EditProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickEditButton()
+                .editButton.click(EditProjectPage.class)
                 .clearInputs()
-                .saveButton.click(new EditProjectPage(driver))
+                .saveButton.click(EditProjectPage.class)
                 .minLengthLabelsDisplayed()
         );
     }

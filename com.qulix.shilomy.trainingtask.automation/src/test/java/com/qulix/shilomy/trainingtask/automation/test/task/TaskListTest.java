@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.qulix.shilomy.trainingtask.automation.page.MainPage;
 import com.qulix.shilomy.trainingtask.automation.page.task.AddTaskPage;
 import com.qulix.shilomy.trainingtask.automation.page.task.EditTaskPage;
+import com.qulix.shilomy.trainingtask.automation.page.task.TaskListPage;
 import com.qulix.shilomy.trainingtask.automation.utils.DriverManager;
 
 /**
@@ -61,7 +62,7 @@ public class TaskListTest {
         mainPage
             .header
             .clickTasksButton()
-            .clickAddButton();
+            .addButton.click(AddTaskPage.class);
 
         assertTrue(driver.getCurrentUrl().contains(AddTaskPage.URL));
     }
@@ -72,7 +73,7 @@ public class TaskListTest {
         mainPage
             .header
             .clickTasksButton()
-            .clickEditButton();
+            .editButton.click(EditTaskPage.class);
 
         assertEquals(driver.getCurrentUrl(), EditTaskPage.URL);
     }
@@ -89,7 +90,7 @@ public class TaskListTest {
         Long newLastId = mainPage
             .header
             .clickTasksButton()
-            .clickDeleteButton()
+            .deleteButton.click(TaskListPage.class)
             .getLastTask()
             .getId();
 

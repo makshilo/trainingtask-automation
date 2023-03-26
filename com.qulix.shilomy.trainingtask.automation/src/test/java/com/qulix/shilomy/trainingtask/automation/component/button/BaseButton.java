@@ -1,5 +1,7 @@
 package com.qulix.shilomy.trainingtask.automation.component.button;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -32,13 +34,18 @@ public abstract class BaseButton {
     /**
      * Метод нажатия по кнопке
      *
-     * @param nextPage следующая страница
+     * @param nextPage класс следующей страницы
      * @param <T> класс расширяющий базовую страницу
      * @return объект следующей страницы
      */
-    public <T extends BasePage> T click(T nextPage) {
+    public <T extends BasePage> T click(Class<T> nextPage) {
         button.click();
-        return nextPage;
+        try {
+            return nextPage.getDeclaredConstructor(WebDriver.class).newInstance(driver);
+        }
+        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e.getCause());
+        }
     }
 
     /**

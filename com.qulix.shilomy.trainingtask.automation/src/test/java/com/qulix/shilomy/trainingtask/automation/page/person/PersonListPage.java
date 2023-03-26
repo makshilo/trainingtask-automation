@@ -10,6 +10,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.AddButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.DeleteButton;
+import com.qulix.shilomy.trainingtask.automation.component.button.impl.EditButton;
 import com.qulix.shilomy.trainingtask.automation.model.Person;
 import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 
@@ -59,28 +62,24 @@ public class PersonListPage extends BasePage {
     private WebElement positionColumn;
 
     /**
+     * Список строк таблицы
+     */
+    private final List<WebElement> tableRows = driver.findElements(By.xpath("//tbody/tr"));
+
+    /**
      * Последняя кнопка Изменить
      */
-    @FindBy(xpath = "//tbody/tr[last()]//button[contains(text(), 'Изменить')]")
-    private WebElement editButton;
+    public EditButton editButton = new EditButton(tableRows.size(), driver);
 
     /**
      * Первая кнопка Удалить
      */
-    @FindBy(xpath = "//tbody//button[contains(text(), 'Удалить')]")
-    private WebElement deleteButton;
-
-    /**
-     * Строка таблицы
-     */
-    @FindBy(xpath = "//tbody/tr")
-    private List<WebElement> tableRows;
+    public DeleteButton deleteButton = new DeleteButton(FIRST_INDEX, driver);
 
     /**
      * Кнопка добавления персоны
      */
-    @FindBy(xpath = "//a[@href='/Trainingtask/addEmployee']")
-    private WebElement addButton;
+    public final AddButton addButton = new AddButton(driver);
 
     private static final String TABLE_CELL = "//tbody/tr[%d]/td[%d]";
 
@@ -114,36 +113,6 @@ public class PersonListPage extends BasePage {
             && addButton.isDisplayed()
             && editButton.isDisplayed()
             && deleteButton.isDisplayed();
-    }
-
-    /**
-     * Клик по кнопке добавления персоны
-     *
-     * @return объект AddEmployeePage
-     */
-    public AddPersonPage clickAddButton() {
-        addButton.click();
-        return new AddPersonPage(driver);
-    }
-
-    /**
-     * Клик по кнопке Изменить
-     *
-     * @return объект EditPersonPage
-     */
-    public EditPersonPage clickEditButton() {
-        editButton.click();
-        return new EditPersonPage(driver);
-    }
-
-    /**
-     * Клик по кнопке Удалить
-     *
-     * @return объект PersonListPage
-     */
-    public PersonListPage clickDeleteButton() {
-        deleteButton.click();
-        return new PersonListPage(driver);
     }
 
     /**
@@ -186,18 +155,9 @@ public class PersonListPage extends BasePage {
     }
 
     /**
-     * Получение первого идентификатора персоны
+     * Получение последней персоны
      *
-     * @return идентификатор
-     */
-    public Long getFirstId() {
-        return getPersonByIndex(FIRST_INDEX).getId();
-    }
-
-    /**
-     * Получение последней строки таблицы
-     *
-     * @return текст последней строки таблицы
+     * @return персона
      */
     public Person getLastPerson() {
         return getPersonByIndex(tableRows.size());

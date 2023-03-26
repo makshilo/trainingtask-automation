@@ -113,7 +113,7 @@ public class AddProjectTest {
         assertTrue(
             mainPage
                 .header.clickProjectsButton()
-                .clickAddButton()
+                .addButton.click(AddProjectPage.class)
                 .elementsDisplayed()
         );
     }
@@ -128,7 +128,7 @@ public class AddProjectTest {
         Project newProject = mainPage
             .header
             .clickProjectsButton()
-            .clickAddButton()
+            .addButton.click(AddProjectPage.class)
             .enterProject(
                 new Project(
                     NAME,
@@ -136,7 +136,7 @@ public class AddProjectTest {
                     DESCRIPTION
                 )
             )
-            .cancelButton.click(new ProjectListPage(driver))
+            .cancelButton.click(ProjectListPage.class)
             .getLastProject();
 
         assertEquals(project, newProject);
@@ -151,7 +151,7 @@ public class AddProjectTest {
         Long newMaxId = mainPage
             .header
             .clickProjectsButton()
-            .clickAddButton()
+            .addButton.click(AddProjectPage.class)
             .enterProject(
                 new Project(
                     NAME,
@@ -159,7 +159,7 @@ public class AddProjectTest {
                     DESCRIPTION
                 )
             )
-            .saveButton.click(new ProjectListPage(driver))
+            .saveButton.click(ProjectListPage.class)
             .getLastProject()
             .getId();
 
@@ -173,9 +173,9 @@ public class AddProjectTest {
         Project lastProject = mainPage
             .header
             .clickProjectsButton()
-            .clickAddButton()
+            .addButton.click(AddProjectPage.class)
             .enterProject(project)
-            .saveButton.click(new ProjectListPage(driver))
+            .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
         //Запись идентификатора
@@ -191,9 +191,9 @@ public class AddProjectTest {
         Project lastProject = mainPage
             .header
             .clickProjectsButton()
-            .clickAddButton()
+            .addButton.click(AddProjectPage.class)
             .enterProject(project)
-            .saveButton.click(new ProjectListPage(driver))
+            .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
         //Запись идентификатора
@@ -209,9 +209,9 @@ public class AddProjectTest {
         Project lastProject = mainPage
             .header
             .clickProjectsButton()
-            .clickAddButton()
+            .addButton.click(AddProjectPage.class)
             .enterProject(project)
-            .saveButton.click(new ProjectListPage(driver))
+            .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
         //Запись идентификатора
@@ -227,9 +227,9 @@ public class AddProjectTest {
         Project lastProject = mainPage
             .header
             .clickProjectsButton()
-            .clickAddButton()
+            .addButton.click(AddProjectPage.class)
             .enterProject(project)
-            .saveButton.click(new ProjectListPage(driver))
+            .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
         //Запись идентификатора
@@ -245,7 +245,7 @@ public class AddProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickAddButton()
+                .addButton.click(AddProjectPage.class)
                 .enterProject(
                     new Project(
                         EMPTY_STRING,
@@ -253,7 +253,7 @@ public class AddProjectTest {
                         DESCRIPTION
                     )
                 )
-                .saveButton.click(new AddProjectPage(driver))
+                .saveButton.click(AddProjectPage.class)
                 .nameLengthLabelDisplayed()
         );
     }
@@ -265,7 +265,7 @@ public class AddProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickAddButton()
+                .addButton.click(AddProjectPage.class)
                 .enterProject(
                     new Project(
                         NAME,
@@ -273,7 +273,7 @@ public class AddProjectTest {
                         DESCRIPTION
                     )
                 )
-                .saveButton.click(new AddProjectPage(driver))
+                .saveButton.click(AddProjectPage.class)
                 .shortNameLengthLabelDisplayed()
         );
     }
@@ -285,7 +285,7 @@ public class AddProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickAddButton()
+                .addButton.click(AddProjectPage.class)
                 .enterProject(
                     new Project(
                         NAME,
@@ -293,7 +293,7 @@ public class AddProjectTest {
                         DESCRIPTION
                     )
                 )
-                .saveButton.click(new AddProjectPage(driver))
+                .saveButton.click(AddProjectPage.class)
                 .nameExistsLabelDisplayed()
         );
     }
@@ -305,7 +305,7 @@ public class AddProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickAddButton()
+                .addButton.click(AddProjectPage.class)
                 .enterProject(
                     new Project(
                         UNIQUE_NAME,
@@ -313,7 +313,7 @@ public class AddProjectTest {
                         DESCRIPTION
                     )
                 )
-                .saveButton.click(new AddProjectPage(driver))
+                .saveButton.click(AddProjectPage.class)
                 .shortNameExistsLabelDisplayed()
         );
     }
@@ -325,7 +325,7 @@ public class AddProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickAddButton()
+                .addButton.click(AddProjectPage.class)
                 .enterProject(
                     new Project(
                         SPACE_SIGN.repeat(5),
@@ -333,7 +333,7 @@ public class AddProjectTest {
                         SPACE_SIGN.repeat(10)
                     )
                 )
-                .saveButton.click(new AddProjectPage(driver))
+                .saveButton.click(AddProjectPage.class)
                 .allInvalidLabelsDisplayed()
         );
     }
@@ -345,7 +345,7 @@ public class AddProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickAddButton()
+                .addButton.click(AddProjectPage.class)
                 .enterProject(
                     new Project(
                         INVALID_SPECIAL_NAME,
@@ -353,7 +353,7 @@ public class AddProjectTest {
                         INVALID_SPECIAL_DESCRIPTION
                     )
                 )
-                .saveButton.click(new AddProjectPage(driver))
+                .saveButton.click(AddProjectPage.class)
                 .allInvalidLabelsDisplayed()
         );
     }
@@ -365,7 +365,7 @@ public class AddProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickAddButton()
+                .addButton.click(AddProjectPage.class)
                 .enterProject(
                     new Project(
                         BELOW_MIN_NAME,
@@ -373,7 +373,7 @@ public class AddProjectTest {
                         EMPTY_STRING
                     )
                 )
-                .saveButton.click(new AddProjectPage(driver))
+                .saveButton.click(AddProjectPage.class)
                 .minLengthLabelsDisplayed()
         );
     }
@@ -385,7 +385,7 @@ public class AddProjectTest {
             mainPage
                 .header
                 .clickProjectsButton()
-                .clickAddButton()
+                .addButton.click(AddProjectPage.class)
                 .enterProject(
                     new Project(
                         OVER_MAX_NAME,
@@ -393,7 +393,7 @@ public class AddProjectTest {
                         OVER_MAX_DESCRIPTION
                     )
                 )
-                .saveButton.click(new AddProjectPage(driver))
+                .saveButton.click(AddProjectPage.class)
                 .allLengthLabelsDisplayed()
         );
     }
