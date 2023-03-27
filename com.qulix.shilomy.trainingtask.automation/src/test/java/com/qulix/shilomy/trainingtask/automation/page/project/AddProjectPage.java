@@ -13,7 +13,7 @@ import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 /**
  * Объектная модель страницы добавления проекта
  */
-public class AddProjectPage extends BasePage {
+public class AddProjectPage extends BasePage<AddProjectPage> {
 
     /**
      * Путь страницы добавления проекта
@@ -113,7 +113,7 @@ public class AddProjectPage extends BasePage {
      * @param driver веб-драйвер
      */
     public AddProjectPage(WebDriver driver) {
-        super(driver);
+        super(URL, driver);
         PageFactory.initElements(driver, this);
     }
 

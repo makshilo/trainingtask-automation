@@ -6,7 +6,7 @@ import org.openqa.selenium.support.PageFactory;
 /**
  * Объектная модель стартовой страницы приложения
  */
-public class MainPage extends BasePage {
+public class MainPage extends BasePage<MainPage> {
 
     /**
      * Путь главной страницы
@@ -24,7 +24,7 @@ public class MainPage extends BasePage {
      * @param driver веб-драйвер
      */
     public MainPage(WebDriver driver) {
-        super(driver);
+        super(URL, driver);
         PageFactory.initElements(driver, this);
     }
 

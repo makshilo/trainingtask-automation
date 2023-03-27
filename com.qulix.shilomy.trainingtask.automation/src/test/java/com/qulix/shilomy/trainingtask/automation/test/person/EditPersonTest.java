@@ -69,19 +69,14 @@ public class EditPersonTest {
     @Test
     @DisplayName("Отмена редактирования персоны")
     public void editPersonCancel() {
-        //Получение последней персоны
-        Person lastPerson = mainPage.header.clickPersonsButton().getLastPerson();
-
-        //Получение последней персоны после отмены
-        Person newLastPerson =
+        assertEquals(getLastPerson(),
             mainPage
                 .header
                 .clickPersonsButton()
                 .editButton.click(EditPersonPage.class)
                 .cancelButton.click(PersonListPage.class)
-                .getLastPerson();
-
-        assertEquals(lastPerson, newLastPerson);
+                .getLastPerson()
+        );
     }
 
     @Test
@@ -99,25 +94,10 @@ public class EditPersonTest {
     @Test
     @DisplayName("Возможность редактировать поля \"Фамилия\", \"Имя\", \"Отчество\", \"Должность\"")
     public void editAllowed() {
-        //Получение последней персоны
-        Person person = mainPage.header.clickPersonsButton().getLastPerson();
-
-        Person updatedPerson = mainPage
-            .header
-            .clickPersonsButton()
-            .editButton.click(EditPersonPage.class)
-            .enterPerson(
-                new Person(
-                    SURNAME,
-                    NAME,
-                    PATRONYMIC,
-                    POSITION
-                )
-            )
-            .saveButton.click(PersonListPage.class)
-            .getLastPerson();
-
-        assertNotEquals(person, updatedPerson);
+        assertNotEquals(getLastPerson(),
+            enterPerson(new Person(SURNAME, NAME, PATRONYMIC, POSITION))
+                .saveButton.click(PersonListPage.class)
+                .getLastPerson());
     }
 
     @Test
@@ -132,6 +112,27 @@ public class EditPersonTest {
                 .saveButton.click(EditPersonPage.class)
                 .allLengthLabelsDisplayed()
         );
+    }
+
+    /**
+     * Получение последней персоны в списке
+     *
+     * @return персона
+     */
+    private Person getLastPerson() {
+        Person lastPerson = mainPage.header.clickPersonsButton().getLastPerson();
+        mainPage.get();
+        return lastPerson;
+    }
+
+    /**
+     * Ввод персоны
+     *
+     * @param person персона
+     * @return страница изменения персоны
+     */
+    private EditPersonPage enterPerson(Person person) {
+        return mainPage.header.clickPersonsButton().addButton.click(EditPersonPage.class).enterPerson(person);
     }
 
     /**

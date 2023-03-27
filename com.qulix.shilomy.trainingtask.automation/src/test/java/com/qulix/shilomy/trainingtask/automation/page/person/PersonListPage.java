@@ -19,7 +19,7 @@ import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 /**
  * Объектная модель страницы списка персон
  */
-public class PersonListPage extends BasePage {
+public class PersonListPage extends BasePage<PersonListPage> {
 
     /**
      * Путь списка персон
@@ -62,6 +62,11 @@ public class PersonListPage extends BasePage {
     private WebElement positionColumn;
 
     /**
+     * Кнопка добавления персоны
+     */
+    public final AddButton addButton = new AddButton(driver);
+
+    /**
      * Список строк таблицы
      */
     private final List<WebElement> tableRows = driver.findElements(By.xpath("//tbody/tr"));
@@ -76,10 +81,6 @@ public class PersonListPage extends BasePage {
      */
     public DeleteButton deleteButton = new DeleteButton(FIRST_INDEX, driver);
 
-    /**
-     * Кнопка добавления персоны
-     */
-    public final AddButton addButton = new AddButton(driver);
 
     private static final String TABLE_CELL = "//tbody/tr[%d]/td[%d]";
 
@@ -95,7 +96,7 @@ public class PersonListPage extends BasePage {
      * @param driver веб-драйвер
      */
     public PersonListPage(WebDriver driver) {
-        super(driver);
+        super(URL, driver);
         PageFactory.initElements(driver, this);
     }
 

@@ -19,7 +19,7 @@ import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 /**
  * Объектная модель страницы списка проектов
  */
-public class ProjectListPage extends BasePage {
+public class ProjectListPage extends BasePage<ProjectListPage> {
 
     /**
      * Путь списка проектов
@@ -89,7 +89,7 @@ public class ProjectListPage extends BasePage {
      * @param driver веб-драйвер
      */
     public ProjectListPage(WebDriver driver) {
-        super(driver);
+        super(URL, driver);
         PageFactory.initElements(driver, this);
     }
 

@@ -119,45 +119,25 @@ public class AddPersonTest {
     @Test
     @DisplayName("Отмена добавления персоны")
     public void addPersonCancel() {
-        //Получение последней персоны
-        Person lastPerson = mainPage.header.clickPersonsButton().getLastPerson();
-
-        //Отмена добавления персоны
-        Person newLastPerson = mainPage
-            .header
-            .clickPersonsButton()
-            .addButton.click(AddPersonPage.class)
-            .enterPerson(
-                new Person(
-                    SURNAME,
-                    NAME,
-                    PATRONYMIC,
-                    POSITION
-                )
-            )
-            .cancelButton.click(PersonListPage.class)
-            .getLastPerson();
-
-        assertEquals(lastPerson, newLastPerson);
+        assertEquals(
+            getLastPerson(),
+            enterPerson(new Person(SURNAME, NAME, PATRONYMIC, POSITION))
+                .cancelButton.click(PersonListPage.class)
+                .getLastPerson()
+        );
     }
 
     @Test
     @DisplayName("Соответствие идентификатора порядковому номеру персоны")
     public void idFormation() {
-        //Получение последнего идентификатора
-        Long maxId = mainPage.header.clickPersonsButton().getLastPerson().getId();
-
-        //Добавление новой персоны
-        Long newMaxId = mainPage
-            .header
-            .clickPersonsButton()
-            .addButton.click(AddPersonPage.class)
-            .enterPerson(new Person(SURNAME, NAME, PATRONYMIC, POSITION))
-            .saveButton.click(PersonListPage.class)
-            .getLastPerson()
-            .getId();
-
-        assertEquals(newMaxId, maxId + 1);
+        assertEquals(
+            getLastPerson().getId() + 1,
+            enterPerson(
+                new Person(SURNAME, NAME, PATRONYMIC, POSITION))
+                .saveButton.click(PersonListPage.class)
+                .getLastPerson()
+                .getId()
+        );
     }
 
     @Test
@@ -165,11 +145,7 @@ public class AddPersonTest {
     public void lettersSpecials() {
         Person person = new Person(SPECIAL_SURNAME, SPECIAL_NAME, SPECIAL_PATRONYMIC, SPECIAL_POSITION);
 
-        Person lastPerson = mainPage
-            .header
-            .clickPersonsButton()
-            .addButton.click(AddPersonPage.class)
-            .enterPerson(person)
+        Person lastPerson = enterPerson(person)
             .saveButton.click(PersonListPage.class)
             .getLastPerson();
 
@@ -183,11 +159,8 @@ public class AddPersonTest {
     @DisplayName("Сохранение персоны c минимальным количеством символов")
     public void minLength() {
         Person person = new Person(MIN_SURNAME, MIN_NAME, MIN_PATRONYMIC, MIN_POSITION);
-        Person lastPerson = mainPage
-            .header
-            .clickPersonsButton()
-            .addButton.click(AddPersonPage.class)
-            .enterPerson(person)
+
+        Person lastPerson = enterPerson(person)
             .saveButton.click(PersonListPage.class)
             .getLastPerson();
 
@@ -201,11 +174,8 @@ public class AddPersonTest {
     @DisplayName("Сохранение персоны c максимальным количеством символов")
     public void maxLength() {
         Person person = new Person(MAX_SURNAME, MAX_NAME, MAX_PATRONYMIC, MAX_POSITION);
-        Person lastPerson = mainPage
-            .header
-            .clickPersonsButton()
-            .addButton.click(AddPersonPage.class)
-            .enterPerson(person)
+
+        Person lastPerson = enterPerson(person)
             .saveButton.click(PersonListPage.class)
             .getLastPerson();
 
@@ -219,18 +189,8 @@ public class AddPersonTest {
     @DisplayName("Обязательность заполнения поля \"Фамилия\"")
     public void surnameObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickPersonsButton()
-                .addButton.click(AddPersonPage.class)
-                .enterPerson(
-                    new Person(
-                        EMPTY_STRING,
-                        NAME,
-                        PATRONYMIC,
-                        POSITION
-                    )
-                )
+            enterPerson(
+                new Person(EMPTY_STRING, NAME, PATRONYMIC, POSITION))
                 .saveButton.click(AddPersonPage.class)
                 .surnameLengthLabelDisplayed()
         );
@@ -240,18 +200,7 @@ public class AddPersonTest {
     @DisplayName("Обязательность заполнения поля \"Имя\"")
     public void nameObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickPersonsButton()
-                .addButton.click(AddPersonPage.class)
-                .enterPerson(
-                    new Person(
-                        SURNAME,
-                        EMPTY_STRING,
-                        PATRONYMIC,
-                        POSITION
-                    )
-                )
+            enterPerson(new Person(SURNAME, EMPTY_STRING, PATRONYMIC, POSITION))
                 .saveButton.click(AddPersonPage.class)
                 .nameLengthLabelDisplayed()
         );
@@ -261,18 +210,7 @@ public class AddPersonTest {
     @DisplayName("Обязательность заполнения поля \"Отчество\"")
     public void patronymicObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickPersonsButton()
-                .addButton.click(AddPersonPage.class)
-                .enterPerson(
-                    new Person(
-                        SURNAME,
-                        NAME,
-                        EMPTY_STRING,
-                        POSITION
-                    )
-                )
+            enterPerson(new Person(SURNAME, NAME, EMPTY_STRING, POSITION))
                 .saveButton.click(AddPersonPage.class)
                 .patronymicLengthLabelDisplayed()
         );
@@ -282,18 +220,7 @@ public class AddPersonTest {
     @DisplayName("Обязательность заполнения поля \"Должность\"")
     public void positionObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickPersonsButton()
-                .addButton.click(AddPersonPage.class)
-                .enterPerson(
-                    new Person(
-                        SURNAME,
-                        NAME,
-                        PATRONYMIC,
-                        EMPTY_STRING
-                    )
-                )
+            enterPerson(new Person(SURNAME, NAME, PATRONYMIC, EMPTY_STRING))
                 .saveButton.click(AddPersonPage.class)
                 .positionLengthLabelDisplayed()
         );
@@ -305,18 +232,7 @@ public class AddPersonTest {
         String whitespaceString = SPACE_SIGN.repeat(3);
 
         assertTrue(
-            mainPage
-                .header
-                .clickPersonsButton()
-                .addButton.click(AddPersonPage.class)
-                .enterPerson(
-                    new Person(
-                        whitespaceString,
-                        whitespaceString,
-                        whitespaceString,
-                        whitespaceString
-                    )
-                )
+            enterPerson(new Person(whitespaceString, whitespaceString, whitespaceString, whitespaceString))
                 .saveButton.click(AddPersonPage.class)
                 .allInvalidLabelsDisplayed()
         );
@@ -326,18 +242,7 @@ public class AddPersonTest {
     @DisplayName("Отображение валидационного сообщения заполнении полей недопустимыми спецсимволами")
     public void specialSymbolValidation() {
         assertTrue(
-            mainPage
-                .header
-                .clickPersonsButton()
-                .addButton.click(AddPersonPage.class)
-                .enterPerson(
-                    new Person(
-                        INVALID_SPECIAL_SURNAME,
-                        INVALID_SPECIAL_NAME,
-                        INVALID_SPECIAL_PATRONYMIC,
-                        INVALID_SPECIAL_POSITION
-                    )
-                )
+            enterPerson(new Person(INVALID_SPECIAL_SURNAME, INVALID_SPECIAL_NAME, INVALID_SPECIAL_PATRONYMIC, INVALID_SPECIAL_POSITION))
                 .saveButton.click(AddPersonPage.class)
                 .allInvalidLabelsDisplayed()
         );
@@ -347,18 +252,7 @@ public class AddPersonTest {
     @DisplayName("Отображение валидационного сообщения при заполнении полей количеством символов, меньше минимального")
     public void belowMinLength() {
         assertTrue(
-            mainPage
-                .header
-                .clickPersonsButton()
-                .addButton.click(AddPersonPage.class)
-                .enterPerson(
-                    new Person(
-                        BELOW_MIN_SURNAME,
-                        BELOW_MIN_NAME,
-                        BELOW_MIN_PATRONYMIC,
-                        BELOW_MIN_POSITION
-                    )
-                )
+            enterPerson(new Person(BELOW_MIN_SURNAME, BELOW_MIN_NAME, BELOW_MIN_PATRONYMIC, BELOW_MIN_POSITION))
                 .saveButton.click(AddPersonPage.class)
                 .allLengthLabelsDisplayed()
         );
@@ -368,21 +262,31 @@ public class AddPersonTest {
     @DisplayName("Отображение валидационного сообщения при заполнении полей количеством символов, больше максимального")
     public void overMaxLength() {
         assertTrue(
-            mainPage
-                .header
-                .clickPersonsButton()
-                .addButton.click(AddPersonPage.class)
-                .enterPerson(
-                    new Person(
-                        OVER_MAX_SURNAME,
-                        OVER_MAX_NAME,
-                        OVER_MAX_PATRONYMIC,
-                        OVER_MAX_POSITION
-                    )
-                )
+            enterPerson(new Person(OVER_MAX_SURNAME, OVER_MAX_NAME, OVER_MAX_PATRONYMIC, OVER_MAX_POSITION))
                 .saveButton.click(AddPersonPage.class)
                 .allLengthLabelsDisplayed()
         );
+    }
+
+    /**
+     * Получение последней персоны в списке
+     *
+     * @return персона
+     */
+    private Person getLastPerson() {
+        Person lastPerson = mainPage.header.clickPersonsButton().getLastPerson();
+        mainPage.get();
+        return lastPerson;
+    }
+
+    /**
+     * Ввод персоны
+     *
+     * @param person персона
+     * @return страница добавления персоны
+     */
+    private AddPersonPage enterPerson(Person person) {
+        return mainPage.header.clickPersonsButton().addButton.click(AddPersonPage.class).enterPerson(person);
     }
 
     /**

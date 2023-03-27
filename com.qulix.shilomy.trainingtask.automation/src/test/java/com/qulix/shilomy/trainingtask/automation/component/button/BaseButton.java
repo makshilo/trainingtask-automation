@@ -38,13 +38,13 @@ public abstract class BaseButton {
      * @param <T> класс расширяющий базовую страницу
      * @return объект следующей страницы
      */
-    public <T extends BasePage> T click(Class<T> nextPage) {
+    public <T extends BasePage<T>> T click(Class<T> nextPage) {
         button.click();
         try {
             return nextPage.getDeclaredConstructor(WebDriver.class).newInstance(driver);
         }
         catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e.getCause());
+            throw new RuntimeException(e.getCause().getMessage());
         }
     }
 

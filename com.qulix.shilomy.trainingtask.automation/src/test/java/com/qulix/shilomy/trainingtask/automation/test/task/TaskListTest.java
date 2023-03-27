@@ -81,20 +81,18 @@ public class TaskListTest {
     @Test
     @DisplayName("Удаление задачи")
     public void deleteTask() {
-        Long lastId = mainPage
-            .header
-            .clickTasksButton()
-            .getLastTask()
-            .getId();
-
-        Long newLastId = mainPage
-            .header
-            .clickTasksButton()
-            .deleteButton.click(TaskListPage.class)
-            .getLastTask()
-            .getId();
-
-        assertNotSame(lastId, newLastId);
+        assertNotSame(
+            mainPage
+                .header
+                .clickTasksButton()
+                .getLastTask()
+                .getId(),
+            mainPage
+                .header
+                .clickTasksButton()
+                .deleteButton.click(TaskListPage.class)
+                .getLastTask()
+                .getId());
     }
 
     /**

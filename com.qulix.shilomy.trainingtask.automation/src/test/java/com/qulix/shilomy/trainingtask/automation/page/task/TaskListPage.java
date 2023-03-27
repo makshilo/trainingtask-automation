@@ -17,7 +17,7 @@ import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 /**
  * Объектная модель страницы списка задач
  */
-public class TaskListPage extends BasePage {
+public class TaskListPage extends BasePage<TaskListPage> {
 
     /**
      * Путь списка задач
@@ -102,7 +102,7 @@ public class TaskListPage extends BasePage {
      * @param driver веб-драйвер
      */
     public TaskListPage(WebDriver driver) {
-        super(driver);
+        super(URL, driver);
         PageFactory.initElements(driver, this);
     }
 

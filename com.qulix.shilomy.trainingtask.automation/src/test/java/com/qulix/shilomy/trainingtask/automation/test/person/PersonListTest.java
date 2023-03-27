@@ -28,6 +28,8 @@ public class PersonListTest {
      */
     private MainPage mainPage;
 
+    private static final int FIRST_INDEX = 1;
+
     /**
      * Перед всеми тестами
      */
@@ -81,20 +83,20 @@ public class PersonListTest {
     @Test
     @DisplayName("Удаление персоны")
     public void deletePerson() {
-        Long firstId = mainPage
-            .header
-            .clickPersonsButton()
-            .getPersonByIndex(1)
-            .getId();
+        assertNotSame(
+            mainPage
+                .header
+                .clickPersonsButton()
+                .getPersonByIndex(FIRST_INDEX)
+                .getId(),
 
-        Long newFirstId = mainPage
-            .header
-            .clickPersonsButton()
-            .deleteButton.click(PersonListPage.class)
-            .getPersonByIndex(1)
-            .getId();
-
-        assertNotSame(firstId, newFirstId);
+            mainPage
+                .header
+                .clickPersonsButton()
+                .deleteButton.click(PersonListPage.class)
+                .getPersonByIndex(FIRST_INDEX)
+                .getId()
+        );
     }
 
     /**

@@ -32,8 +32,16 @@ public class Header {
     @FindBy(xpath = "//a[@href='/Trainingtask/employees']")
     private WebElement personsButton;
 
+    /**
+     * Веб-драйвер
+     */
     private final WebDriver driver;
 
+    /**
+     * Конструктор с инициализацией веб-драйвера
+     *
+     * @param driver веб-драйвер
+     */
     public Header(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);

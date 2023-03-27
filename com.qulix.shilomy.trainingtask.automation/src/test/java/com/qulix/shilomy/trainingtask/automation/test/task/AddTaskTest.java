@@ -143,15 +143,9 @@ public class AddTaskTest {
     @Test
     @DisplayName("Отмена создания задачи")
     public void addTaskCancel() {
-        //Получение последней задачи
-        Task lastRow = mainPage.header.clickTasksButton().getLastTask();
-
-        //Получение задачи после отмены
-        Task newLastRow = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(
+        assertEquals(
+            getLastTask(),
+            enterTask(
                 new Task(
                     getProject(FIRST_INDEX),
                     NAME,
@@ -162,10 +156,9 @@ public class AddTaskTest {
                     TaskStatus.of(STATUS_IN_PROCESS)
                 )
             )
-            .cancelButton.click(TaskListPage.class)
-            .getLastTask();
-
-        assertEquals(lastRow, newLastRow);
+                .cancelButton.click(TaskListPage.class)
+                .getLastTask()
+        );
     }
 
     @Test
@@ -181,11 +174,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -198,28 +187,25 @@ public class AddTaskTest {
     @Test
     @DisplayName("Соответствие идентификатора порядковому номеру задачи")
     public void idFormation() {
-        //Получение последнего идентификатора
-        Long maxId = mainPage.header.clickTasksButton().getLastTask().getId();
-
-        Long newMaxId = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(
-                new Task(
-                    getProject(FIRST_INDEX),
-                    NAME,
-                    WORK,
-                    START_DATE,
-                    END_DATE,
-                    List.of(getPerson(FIRST_INDEX)),
-                    TaskStatus.of(STATUS_IN_PROCESS)
+        assertEquals(getLastTask().getId() + 1,
+            mainPage
+                .header
+                .clickTasksButton()
+                .addButton.click(AddTaskPage.class)
+                .enterTask(
+                    new Task(
+                        getProject(FIRST_INDEX),
+                        NAME,
+                        WORK,
+                        START_DATE,
+                        END_DATE,
+                        List.of(getPerson(FIRST_INDEX)),
+                        TaskStatus.of(STATUS_IN_PROCESS)
+                    )
                 )
-            )
-            .saveButton.click(TaskListPage.class)
-            .getLastTask().getId();
-
-        assertEquals(newMaxId, maxId + 1);
+                .saveButton.click(TaskListPage.class)
+                .getLastTask().getId()
+        );
     }
 
     @Test
@@ -235,11 +221,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -262,11 +244,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -289,11 +267,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -316,11 +290,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -343,11 +313,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -370,11 +336,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_IN_PROCESS)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -397,11 +359,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_NOT_STARTED)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -424,11 +382,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_COMPLETED)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -451,11 +405,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_POSTPONED)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -478,11 +428,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_POSTPONED)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .saveButton.click(TaskListPage.class)
             .getLastTask();
 
@@ -505,11 +451,7 @@ public class AddTaskTest {
             TaskStatus.of(STATUS_POSTPONED)
         );
 
-        Task lastTask = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .enterTask(task)
+        Task lastTask = enterTask(task)
             .selectAllExecutors()
             .saveButton.click(TaskListPage.class)
             .getLastTask();
@@ -524,21 +466,17 @@ public class AddTaskTest {
     @DisplayName("Отображение валидационного сообщения при  заполнении полей \"Название\" и \"Работа\" недопустимыми спецсимволами")
     public void specialSymbolValidation() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        INVALID_SPECIAL_NAME,
-                        INVALID_SPECIAL_WORK,
-                        MID_START_DATE,
-                        MID_END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_POSTPONED)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    INVALID_SPECIAL_NAME,
+                    INVALID_SPECIAL_WORK,
+                    MID_START_DATE,
+                    MID_END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_POSTPONED)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .nameWorkInvalidLabelDisplayed()
         );
@@ -548,21 +486,17 @@ public class AddTaskTest {
     @DisplayName("Отображение валидационного сообщения при  заполнении полей \"Название\" и \"Работа\" пробелами")
     public void whitespaceValidation() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        SPACE_SIGN.repeat(4),
-                        SPACE_SIGN.repeat(2),
-                        MID_START_DATE,
-                        MID_END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_POSTPONED)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    SPACE_SIGN.repeat(4),
+                    SPACE_SIGN.repeat(2),
+                    MID_START_DATE,
+                    MID_END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_POSTPONED)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .nameWorkInvalidLabelDisplayed()
         );
@@ -572,21 +506,17 @@ public class AddTaskTest {
     @DisplayName("Отображение валидационного сообщения при заполнении полей \"Название\" количеством символов, меньше минимального")
     public void belowMinLength() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        BELOW_MIN_NAME,
-                        WORK,
-                        MID_START_DATE,
-                        MID_END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_POSTPONED)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    BELOW_MIN_NAME,
+                    WORK,
+                    MID_START_DATE,
+                    MID_END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_POSTPONED)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .nameLengthLabelDisplayed()
         );
@@ -596,21 +526,17 @@ public class AddTaskTest {
     @DisplayName("Отображение валидационного сообщения при заполнении полей \"Название\" и \"Работа\" количеством символов, больше максимального")
     public void overMaxLength() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        OVER_MAX_NAME,
-                        OVER_MAX_WORK,
-                        MID_START_DATE,
-                        MID_END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_POSTPONED)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    OVER_MAX_NAME,
+                    OVER_MAX_WORK,
+                    MID_START_DATE,
+                    MID_END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_POSTPONED)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .nameWorkLengthLabelDisplayed()
         );
@@ -620,21 +546,17 @@ public class AddTaskTest {
     @DisplayName("Отображение валидационного сообщения при сохранении задачи с датой окончания раньше даты начала")
     public void dateCollision() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        NAME,
-                        WORK,
-                        COLLISION_START_DATE,
-                        COLLISION_END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_IN_PROCESS)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    COLLISION_START_DATE,
+                    COLLISION_END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .dateCollisionLabelDisplayed()
         );
@@ -644,21 +566,17 @@ public class AddTaskTest {
     @DisplayName("Отображение валидационного сообщения при заполнении полей \"Дата начала\" и \"Дата окончания\" датами, раньше минимальной")
     public void belowMinDate() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        NAME,
-                        WORK,
-                        BELOW_MIN_START_DATE,
-                        BELOW_MIN_END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_IN_PROCESS)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    BELOW_MIN_START_DATE,
+                    BELOW_MIN_END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .allDateInvalidLabelsDisplayed()
         );
@@ -668,21 +586,17 @@ public class AddTaskTest {
     @DisplayName("Отображение валидационного сообщения при заполнении полей \"Дата начала\" и \"Дата окончания\" датами, позже максимальной")
     public void overMaxDate() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        NAME,
-                        WORK,
-                        OVER_MAX_START_DATE,
-                        OVER_MAX_END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_IN_PROCESS)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    OVER_MAX_START_DATE,
+                    OVER_MAX_END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .allDateInvalidLabelsDisplayed()
         );
@@ -706,45 +620,37 @@ public class AddTaskTest {
     @Test
     @DisplayName("Отсутствие возможности выбрать несколько проектов")
     public void severalProjects() {
-        String choice = mainPage
-            .header
-            .clickTasksButton()
+        Long choice = mainPage.header.clickTasksButton()
             .addButton.click(AddTaskPage.class)
             .selectProjectByIndex(FIRST_INDEX)
             .selectProjectByIndex(SECOND_INDEX)
-            .getSelectedProject();
+            .getSelectedProjectId();
 
-        driver.get(MainPage.URL);
+        mainPage.get();
 
-        String project = mainPage
-            .header
-            .clickTasksButton()
-            .addButton.click(AddTaskPage.class)
-            .selectProjectByIndex(SECOND_INDEX)
-            .getSelectedProject();
-
-        assertEquals(choice, project);
+        assertEquals(
+            choice,
+            mainPage.header.clickProjectsButton()
+                .getProjectByIndex(SECOND_INDEX)
+                .getId()
+        );
     }
 
     @Test
     @DisplayName("Обязательность поля \"Название\"")
     public void nameObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        EMPTY_STRING,
-                        WORK,
-                        START_DATE,
-                        END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_IN_PROCESS)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    EMPTY_STRING,
+                    WORK,
+                    START_DATE,
+                    END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .nameLengthLabelDisplayed()
         );
@@ -754,21 +660,17 @@ public class AddTaskTest {
     @DisplayName("Обязательность поля \"Работа\"")
     public void workObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        NAME,
-                        EMPTY_STRING,
-                        START_DATE,
-                        END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_IN_PROCESS)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    EMPTY_STRING,
+                    START_DATE,
+                    END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .workLengthLabelDisplayed()
         );
@@ -778,21 +680,17 @@ public class AddTaskTest {
     @DisplayName("Обязательность поля \"Дата начала\"")
     public void startDateObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        NAME,
-                        WORK,
-                        EMPTY_STRING,
-                        END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_IN_PROCESS)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    EMPTY_STRING,
+                    END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .startDateInvalidLabelDisplayed()
         );
@@ -802,21 +700,17 @@ public class AddTaskTest {
     @DisplayName("Обязательность поля \"Дата окончания\"")
     public void endDateObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        NAME,
-                        WORK,
-                        START_DATE,
-                        EMPTY_STRING,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_IN_PROCESS)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    START_DATE,
+                    EMPTY_STRING,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .endDateInvalidLabelDisplayed()
         );
@@ -826,21 +720,17 @@ public class AddTaskTest {
     @DisplayName("Обязательность поля \"Статус\"")
     public void statusObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        NAME,
-                        WORK,
-                        START_DATE,
-                        END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        null
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    START_DATE,
+                    END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    null
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .statusInvalidLabelDisplayed()
         );
@@ -850,21 +740,17 @@ public class AddTaskTest {
     @DisplayName("Обязательность поля \"Исполнитель\"")
     public void executorObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        getProject(FIRST_INDEX),
-                        NAME,
-                        WORK,
-                        START_DATE,
-                        END_DATE,
-                        Collections.emptyList(),
-                        TaskStatus.of(STATUS_IN_PROCESS)
-                    )
+            enterTask(
+                new Task(
+                    getProject(FIRST_INDEX),
+                    NAME,
+                    WORK,
+                    START_DATE,
+                    END_DATE,
+                    Collections.emptyList(),
+                    TaskStatus.of(STATUS_IN_PROCESS)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .executorInvalidLabelDisplayed()
         );
@@ -874,21 +760,17 @@ public class AddTaskTest {
     @DisplayName("Обязательность поля \"Проект\"")
     public void projectObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
-                .addButton.click(AddTaskPage.class)
-                .enterTask(
-                    new Task(
-                        null,
-                        NAME,
-                        WORK,
-                        START_DATE,
-                        END_DATE,
-                        List.of(getPerson(FIRST_INDEX)),
-                        TaskStatus.of(STATUS_IN_PROCESS)
-                    )
+            enterTask(
+                new Task(
+                    null,
+                    NAME,
+                    WORK,
+                    START_DATE,
+                    END_DATE,
+                    List.of(getPerson(FIRST_INDEX)),
+                    TaskStatus.of(STATUS_IN_PROCESS)
                 )
+            )
                 .saveButton.click(AddTaskPage.class)
                 .projectInvalidLabelDisplayed()
         );
@@ -901,10 +783,9 @@ public class AddTaskTest {
      * @return персона
      */
     private Person getPerson(int index) {
-        driver.get(PersonListPage.URL);
-        PersonListPage persons = new PersonListPage(driver);
-        Person person = persons.getPersonByIndex(index);
-        driver.navigate().back();
+        mainPage.header.clickPersonsButton();
+        Person person = new PersonListPage(driver).getPersonByIndex(index);
+        mainPage.get();
         return person;
     }
 
@@ -915,11 +796,33 @@ public class AddTaskTest {
      * @return проект
      */
     private Project getProject(int index) {
-        driver.get(ProjectListPage.URL);
-        ProjectListPage projects = new ProjectListPage(driver);
-        Project project = projects.getProjectByIndex(index);
-        driver.navigate().back();
+        mainPage.header.clickProjectsButton();
+        Project project = new ProjectListPage(driver).getProjectByIndex(index);
+        mainPage.get();
         return project;
+    }
+
+    /**
+     * Получение последней задачи в списке
+     *
+     * @return задача
+     */
+    private Task getLastTask() {
+        Task task = mainPage.header.clickTasksButton().getLastTask();
+        mainPage.get();
+        return task;
+    }
+
+    /**
+     * Ввод задачи
+     *
+     * @param task задача
+     * @return страница добавления задачи
+     */
+    private AddTaskPage enterTask(Task task) {
+        return mainPage.header.clickTasksButton()
+            .addButton.click(AddTaskPage.class)
+            .enterTask(task);
     }
 
     /**

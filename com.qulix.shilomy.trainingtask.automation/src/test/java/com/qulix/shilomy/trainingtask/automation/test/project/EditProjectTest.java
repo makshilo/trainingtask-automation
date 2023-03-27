@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.qulix.shilomy.trainingtask.automation.model.Project;
@@ -68,23 +67,12 @@ public class EditProjectTest {
     @Test
     @DisplayName("Отмена редактирования проекта")
     public void editProjectCancel() {
-        //Получение последнего проекта
-        Project project = mainPage.header.clickProjectsButton().getLastProject();
-
-        //Получение проекта после отмены
-        Project newProject = mainPage
-            .header
-            .clickProjectsButton()
-            .editButton.click(EditProjectPage.class)
-            .enterProject(
-                new Project(
-                    NAME,
-                    SHORTNAME,
-                    DESCRIPTION))
-            .cancelButton.click(ProjectListPage.class)
-            .getLastProject();
-
-        assertEquals(project, newProject);
+        assertEquals(
+            getLastProject(),
+            enterProject(new Project(NAME, SHORTNAME, DESCRIPTION))
+                .cancelButton.click(ProjectListPage.class)
+                .getLastProject()
+        );
     }
 
     @Test
@@ -103,23 +91,16 @@ public class EditProjectTest {
     @DisplayName("Возможность редактировать поля \"Название\", \"Сокращенное название\", \"Описание\"")
     public void editAllowed() {
         //Получение последнего проекта
-        Project project = mainPage.header.clickProjectsButton().getLastProject();
-        Project updatedProject = mainPage
-            .header
-            .clickProjectsButton()
-            .editButton.click(EditProjectPage.class)
-            .enterProject(
-                new Project(
-                    NAME,
-                    SHORTNAME,
-                    DESCRIPTION))
+        Project project = new Project(NAME, SHORTNAME, DESCRIPTION);
+
+        Project updatedProject = enterProject(project)
             .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
         //Запись идентификатора
         project.setId(updatedProject.getId());
 
-        assertNotEquals(updatedProject, project);
+        assertEquals(updatedProject, project);
     }
 
     @Test
@@ -134,6 +115,29 @@ public class EditProjectTest {
                 .saveButton.click(EditProjectPage.class)
                 .minLengthLabelsDisplayed()
         );
+    }
+
+    /**
+     * Получение последнего проекта в списке
+     *
+     * @return проект
+     */
+    private Project getLastProject() {
+        Project project = mainPage.header.clickProjectsButton().getLastProject();
+        mainPage.get();
+        return project;
+    }
+
+    /**
+     * Ввод проекта
+     *
+     * @param project проект
+     * @return страница изменения проекта
+     */
+    private EditProjectPage enterProject(Project project) {
+        return mainPage.header.clickProjectsButton()
+            .addButton.click(EditProjectPage.class)
+            .enterProject(project);
     }
 
     /**

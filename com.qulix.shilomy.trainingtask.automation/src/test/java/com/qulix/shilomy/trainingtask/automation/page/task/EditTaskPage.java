@@ -25,7 +25,7 @@ import com.qulix.shilomy.trainingtask.automation.page.project.ProjectListPage;
 /**
  * Объектная модель страницы редактирования задачи
  */
-public class EditTaskPage extends BasePage {
+public class EditTaskPage extends BasePage<EditTaskPage> {
 
     /**
      * Путь страницы изменения задачи
@@ -153,7 +153,7 @@ public class EditTaskPage extends BasePage {
      * @param driver веб-драйвер
      */
     public EditTaskPage(WebDriver driver) {
-        super(driver);
+        super(URL, driver);
         PageFactory.initElements(driver, this);
     }
 

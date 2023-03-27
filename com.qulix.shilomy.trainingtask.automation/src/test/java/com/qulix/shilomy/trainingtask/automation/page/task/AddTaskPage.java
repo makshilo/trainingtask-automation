@@ -18,7 +18,7 @@ import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 /**
  * Объектная модель страницы добавления задачи
  */
-public class AddTaskPage extends BasePage {
+public class AddTaskPage extends BasePage<AddTaskPage> {
 
     /**
      * Путь страницы добавления задачи
@@ -157,7 +157,7 @@ public class AddTaskPage extends BasePage {
     private static final String VALUE = "value";
 
     public AddTaskPage(WebDriver driver) {
-        super(driver);
+        super(URL, driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -284,13 +284,13 @@ public class AddTaskPage extends BasePage {
     }
 
     /**
-     * Получение выбранного проекта
+     * Получение идентификатора выбранного проекта
      *
-     * @return проект
+     * @return идентификатор
      */
-    public String getSelectedProject() {
+    public Long getSelectedProjectId() {
         Select projectChoice = new Select(projectSelect);
-        return projectChoice.getFirstSelectedOption().getText();
+        return Long.parseLong(projectChoice.getFirstSelectedOption().getAttribute(VALUE));
     }
 
     /**

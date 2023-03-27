@@ -68,9 +68,7 @@ public class EditTaskTest {
     @DisplayName("Отображение элементов формы редактирования задачи")
     public void elementsDisplayed() {
         assertTrue(
-            mainPage
-                .header
-                .clickTasksButton()
+            mainPage.header.clickTasksButton()
                 .editButton.click(EditTaskPage.class)
                 .elementsDisplayed()
         );
@@ -79,13 +77,9 @@ public class EditTaskTest {
     @Test
     @DisplayName("Отмена редактирования задачи")
     public void editTaskCancel() {
-        Task task = mainPage.header.clickTasksButton().getLastTask();
-
-        Task newLastTask = mainPage
-            .header
-            .clickTasksButton()
-            .editButton.click(EditTaskPage.class)
-            .enterTask(
+        assertEquals(
+            getLastTask(),
+            enterTask(
                 new Task(
                     getProject(FIRST_INDEX),
                     NAME,
@@ -96,10 +90,9 @@ public class EditTaskTest {
                     TaskStatus.of(STATUS_NOT_STARTED)
                 )
             )
-            .cancelButton.click(TaskListPage.class)
-            .getLastTask();
-
-        assertEquals(task, newLastTask);
+                .cancelButton.click(TaskListPage.class)
+                .getLastTask()
+        );
     }
 
     @Test
@@ -117,27 +110,22 @@ public class EditTaskTest {
     @Test
     @DisplayName("Возможность редактировать поля \"Название\", \"Работа\", \"Дата начала\", \"Дата окончания\", \"Статус\", \"Исполнитель\"")
     public void editAllowed() {
-        Task task = mainPage.header.clickTasksButton().getLastTask();
+        Task task = new Task(
+            getProject(SECOND_INDEX),
+            NAME,
+            WORK,
+            START_DATE,
+            END_DATE,
+            List.of(getPerson(SECOND_INDEX)),
+            TaskStatus.of(STATUS_NOT_STARTED)
+        );
 
-        Task updatedTask = mainPage
-            .header
-            .clickTasksButton()
-            .editButton.click(EditTaskPage.class)
-            .enterTask(
-                new Task(
-                    getProject(SECOND_INDEX),
-                    NAME,
-                    WORK,
-                    START_DATE,
-                    END_DATE,
-                    List.of(getPerson(SECOND_INDEX)),
-                    TaskStatus.of(STATUS_NOT_STARTED)
-                )
-            )
-            .saveButton.click(TaskListPage.class)
-            .getLastTask();
-
-        assertNotEquals(task, updatedTask);
+        assertNotEquals(
+            getLastTask(),
+            enterTask(task)
+                .saveButton.click(TaskListPage.class)
+                .getLastTask()
+        );
     }
 
     @Test
@@ -180,6 +168,29 @@ public class EditTaskTest {
         Project project = projects.getProjectByIndex(index);
         driver.navigate().back();
         return project;
+    }
+
+    /**
+     * Получение последней задачи в списке
+     *
+     * @return задача
+     */
+    private Task getLastTask() {
+        Task task = mainPage.header.clickTasksButton().getLastTask();
+        mainPage.get();
+        return task;
+    }
+
+    /**
+     * Ввод задачи
+     *
+     * @param task задача
+     * @return страница добавления задачи
+     */
+    private EditTaskPage enterTask(Task task) {
+        return mainPage.header.clickTasksButton()
+            .addButton.click(EditTaskPage.class)
+            .enterTask(task);
     }
 
     /**

@@ -81,20 +81,20 @@ public class ProjectListTest {
     @Test
     @DisplayName("Удаление проекта")
     public void deleteProject() {
-        Long lastId = mainPage
-            .header
-            .clickProjectsButton()
-            .getProjectByIndex(FIRST_INDEX)
-            .getId();
+        assertNotSame(
+            mainPage
+                .header
+                .clickProjectsButton()
+                .getProjectByIndex(FIRST_INDEX)
+                .getId(),
 
-        Long newLastId = mainPage
-            .header
-            .clickProjectsButton()
-            .deleteButton.click(ProjectListPage.class)
-            .getProjectByIndex(FIRST_INDEX)
-            .getId();
-
-        assertNotSame(lastId, newLastId);
+            mainPage
+                .header
+                .clickProjectsButton()
+                .deleteButton.click(ProjectListPage.class)
+                .getProjectByIndex(FIRST_INDEX)
+                .getId()
+        );
     }
 
     /**

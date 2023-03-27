@@ -121,60 +121,30 @@ public class AddProjectTest {
     @Test
     @DisplayName("Отмена создания проекта")
     public void addProjectCancel() {
-        //Ролучение последнего проекта
-        Project project = mainPage.header.clickProjectsButton().getLastProject();
-
-        //Получение последнего проекта после отмены
-        Project newProject = mainPage
-            .header
-            .clickProjectsButton()
-            .addButton.click(AddProjectPage.class)
-            .enterProject(
-                new Project(
-                    NAME,
-                    SHORTNAME,
-                    DESCRIPTION
-                )
-            )
-            .cancelButton.click(ProjectListPage.class)
-            .getLastProject();
-
-        assertEquals(project, newProject);
+        assertEquals(getLastProject(),
+            enterProject(new Project(NAME, SHORTNAME, DESCRIPTION))
+                .cancelButton.click(ProjectListPage.class)
+                .getLastProject());
     }
 
     @Test
     @DisplayName("Соответствие идентификатора порядковому номеру проекта")
     public void idFormation() {
-        //Получение последнего идентификатора
-        Long maxId = mainPage.header.clickProjectsButton().getLastProject().getId();
-
-        Long newMaxId = mainPage
-            .header
-            .clickProjectsButton()
-            .addButton.click(AddProjectPage.class)
-            .enterProject(
-                new Project(
-                    NAME,
-                    SHORTNAME,
-                    DESCRIPTION
-                )
-            )
-            .saveButton.click(ProjectListPage.class)
-            .getLastProject()
-            .getId();
-
-        assertEquals(maxId + 1, newMaxId);
+        assertEquals(
+            getLastProject().getId() + 1,
+            enterProject(new Project(NAME, SHORTNAME, DESCRIPTION))
+                .saveButton.click(ProjectListPage.class)
+                .getLastProject()
+                .getId()
+        );
     }
 
     @Test
     @DisplayName("Сохранение проекта при заполнении полей допустимыми буквами, цифрами и спецсимволами")
     public void lettersDigitsSpecials() {
         Project project = new Project(DIGIT_SPECIAL_NAME, DIGIT_SPECIAL_SHORTNAME, DIGIT_SPECIAL_DESCRIPTION);
-        Project lastProject = mainPage
-            .header
-            .clickProjectsButton()
-            .addButton.click(AddProjectPage.class)
-            .enterProject(project)
+
+        Project lastProject = enterProject(project)
             .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
@@ -188,11 +158,8 @@ public class AddProjectTest {
     @DisplayName("Сохранение проекта при заполнении полей  цифрами")
     public void digitsOnly() {
         Project project = new Project(DIGIT_NAME, DIGIT_SHORTNAME, DIGIT_DESCRIPTION);
-        Project lastProject = mainPage
-            .header
-            .clickProjectsButton()
-            .addButton.click(AddProjectPage.class)
-            .enterProject(project)
+
+        Project lastProject = enterProject(project)
             .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
@@ -206,11 +173,8 @@ public class AddProjectTest {
     @DisplayName("Сохранение проекта при заполнении полей минимальным количеством символов")
     public void minLength() {
         Project project = new Project(MIN_NAME, MIN_SHORTNAME, EMPTY_STRING);
-        Project lastProject = mainPage
-            .header
-            .clickProjectsButton()
-            .addButton.click(AddProjectPage.class)
-            .enterProject(project)
+
+        Project lastProject = enterProject(project)
             .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
@@ -224,11 +188,8 @@ public class AddProjectTest {
     @DisplayName("Сохранение проекта при заполнении полей максимальным количеством символов")
     public void maxLength() {
         Project project = new Project(MAX_NAME, MAX_SHORTNAME, MAX_DESCRIPTION);
-        Project lastProject = mainPage
-            .header
-            .clickProjectsButton()
-            .addButton.click(AddProjectPage.class)
-            .enterProject(project)
+
+        Project lastProject = enterProject(project)
             .saveButton.click(ProjectListPage.class)
             .getLastProject();
 
@@ -242,17 +203,7 @@ public class AddProjectTest {
     @DisplayName("Обязательность заполнения поля \"Название\"")
     public void nameObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickProjectsButton()
-                .addButton.click(AddProjectPage.class)
-                .enterProject(
-                    new Project(
-                        EMPTY_STRING,
-                        SHORTNAME,
-                        DESCRIPTION
-                    )
-                )
+            enterProject(new Project(EMPTY_STRING, SHORTNAME, DESCRIPTION))
                 .saveButton.click(AddProjectPage.class)
                 .nameLengthLabelDisplayed()
         );
@@ -262,17 +213,7 @@ public class AddProjectTest {
     @DisplayName("Обязательность заполнения поля \"Сокращенное название\"")
     public void shortNameObligation() {
         assertTrue(
-            mainPage
-                .header
-                .clickProjectsButton()
-                .addButton.click(AddProjectPage.class)
-                .enterProject(
-                    new Project(
-                        NAME,
-                        EMPTY_STRING,
-                        DESCRIPTION
-                    )
-                )
+            enterProject(new Project(NAME, EMPTY_STRING, DESCRIPTION))
                 .saveButton.click(AddProjectPage.class)
                 .shortNameLengthLabelDisplayed()
         );
@@ -282,17 +223,7 @@ public class AddProjectTest {
     @DisplayName("Отображение валидационного сообщения при попытке сохранения неуникальных данных в поле \"Название\"")
     public void nameUniqueness() {
         assertTrue(
-            mainPage
-                .header
-                .clickProjectsButton()
-                .addButton.click(AddProjectPage.class)
-                .enterProject(
-                    new Project(
-                        NAME,
-                        SHORTNAME,
-                        DESCRIPTION
-                    )
-                )
+            enterProject(new Project(NAME, SHORTNAME, DESCRIPTION))
                 .saveButton.click(AddProjectPage.class)
                 .nameExistsLabelDisplayed()
         );
@@ -302,17 +233,7 @@ public class AddProjectTest {
     @DisplayName("Отображение валидационного сообщения при попытке сохранения неуникальных данных в поле \"Сокращённое название\"")
     public void shortNameUniqueness() {
         assertTrue(
-            mainPage
-                .header
-                .clickProjectsButton()
-                .addButton.click(AddProjectPage.class)
-                .enterProject(
-                    new Project(
-                        UNIQUE_NAME,
-                        SHORTNAME,
-                        DESCRIPTION
-                    )
-                )
+            enterProject(new Project(UNIQUE_NAME, SHORTNAME, DESCRIPTION))
                 .saveButton.click(AddProjectPage.class)
                 .shortNameExistsLabelDisplayed()
         );
@@ -322,17 +243,7 @@ public class AddProjectTest {
     @DisplayName("Отображение валидационного сообщения при  заполнении полей пробелами")
     public void whitespaceValidation() {
         assertTrue(
-            mainPage
-                .header
-                .clickProjectsButton()
-                .addButton.click(AddProjectPage.class)
-                .enterProject(
-                    new Project(
-                        SPACE_SIGN.repeat(5),
-                        SPACE_SIGN.repeat(5),
-                        SPACE_SIGN.repeat(10)
-                    )
-                )
+            enterProject(new Project(SPACE_SIGN.repeat(5), SPACE_SIGN.repeat(5), SPACE_SIGN.repeat(10)))
                 .saveButton.click(AddProjectPage.class)
                 .allInvalidLabelsDisplayed()
         );
@@ -342,17 +253,7 @@ public class AddProjectTest {
     @DisplayName("Отображение валидационного сообщения при  заполнении полей недопустимыми спецсимволами")
     public void specialSymbolValidation() {
         assertTrue(
-            mainPage
-                .header
-                .clickProjectsButton()
-                .addButton.click(AddProjectPage.class)
-                .enterProject(
-                    new Project(
-                        INVALID_SPECIAL_NAME,
-                        INVALID_SPECIAL_SHORTNAME,
-                        INVALID_SPECIAL_DESCRIPTION
-                    )
-                )
+            enterProject(new Project(INVALID_SPECIAL_NAME, INVALID_SPECIAL_SHORTNAME, INVALID_SPECIAL_DESCRIPTION))
                 .saveButton.click(AddProjectPage.class)
                 .allInvalidLabelsDisplayed()
         );
@@ -362,17 +263,7 @@ public class AddProjectTest {
     @DisplayName("Отображение валидационного сообщения при заполнении полей  количеством символов, меньше минимального")
     public void belowMinLength() {
         assertTrue(
-            mainPage
-                .header
-                .clickProjectsButton()
-                .addButton.click(AddProjectPage.class)
-                .enterProject(
-                    new Project(
-                        BELOW_MIN_NAME,
-                        BELOW_MIN_SHORTNAME,
-                        EMPTY_STRING
-                    )
-                )
+            enterProject(new Project(BELOW_MIN_NAME, BELOW_MIN_SHORTNAME, EMPTY_STRING))
                 .saveButton.click(AddProjectPage.class)
                 .minLengthLabelsDisplayed()
         );
@@ -382,20 +273,33 @@ public class AddProjectTest {
     @DisplayName("Отображение валидационного сообщения при заполнении полей количеством символов, больше максимального")
     public void overMaxLength() {
         assertTrue(
-            mainPage
-                .header
-                .clickProjectsButton()
-                .addButton.click(AddProjectPage.class)
-                .enterProject(
-                    new Project(
-                        OVER_MAX_NAME,
-                        OVER_MAX_SHORTNAME,
-                        OVER_MAX_DESCRIPTION
-                    )
-                )
+            enterProject(new Project(OVER_MAX_NAME, OVER_MAX_SHORTNAME, OVER_MAX_DESCRIPTION))
                 .saveButton.click(AddProjectPage.class)
                 .allLengthLabelsDisplayed()
         );
+    }
+
+    /**
+     * Получение последнего проекта в списке
+     *
+     * @return проект
+     */
+    private Project getLastProject() {
+        Project project = mainPage.header.clickProjectsButton().getLastProject();
+        mainPage.get();
+        return project;
+    }
+
+    /**
+     * Ввод проекта
+     *
+     * @param project проект
+     * @return страница добавления проекта
+     */
+    private AddProjectPage enterProject(Project project) {
+        return mainPage.header.clickProjectsButton()
+            .addButton.click(AddProjectPage.class)
+            .enterProject(project);
     }
 
     /**

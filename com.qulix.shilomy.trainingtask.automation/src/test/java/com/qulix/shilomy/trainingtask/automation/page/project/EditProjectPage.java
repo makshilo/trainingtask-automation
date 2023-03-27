@@ -13,7 +13,7 @@ import com.qulix.shilomy.trainingtask.automation.page.BasePage;
 /**
  * Объектная модель страницы редактирования проекта
  */
-public class EditProjectPage extends BasePage {
+public class EditProjectPage extends BasePage<EditProjectPage> {
 
     /**
      * Путь страницы изменения проекта
@@ -83,7 +83,7 @@ public class EditProjectPage extends BasePage {
      * @param driver веб-драйвер
      */
     public EditProjectPage(WebDriver driver) {
-        super(driver);
+        super(URL, driver);
         PageFactory.initElements(driver, this);
     }
 
